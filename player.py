@@ -1,13 +1,16 @@
 import pygame
 import math
+from pygame.locals import *
 '''
 BLUE= (50,50,225)
 screen = pygame.display.set_mode((700,500))
 pygame.display.set_caption('Sprite Animation')
-background_color: BLUE'''
+background_color: BLUE
 knight_red = pygame.image.load('spritesheet_red_knight.png').convert_alpha()
-knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
+knight_red = pygame.transform.smoothscale(knight_red, (128, 56))'''
 
+
+#All this Animation stuff isn't  used yet
 class Animation:
 
     def __init__(self, sprite_sheet, frame_width, frame_height, animation_row, num_frames, speed):
@@ -34,7 +37,7 @@ class Animation:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-class Scheme:
+class Scheme:   #The key controls for movement
     def __init__(self):
         self.move_forwards = K_w
         self.move_backwards = K_s
@@ -45,9 +48,10 @@ class Player:
     def __init__(self, start_pos, control_scheme):
 
         self.scheme = control_scheme
-        self.image_name = "frames/red_knight_run_f1"
+        self.image_name = "frames/red_knight_run_f1.png"
         self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
 
+        #The default stats for character attributes
         self.acceleration = 200.0
         self.speed = 0.0
         self.max_speed = 200.0
@@ -71,7 +75,7 @@ class Player:
         self.move_left = False
 
 
-    def processing_events(self, event):
+    def processing_events(self, event):     #For movement control events
         if event.type == pygame.KEYDOWN:    #key pressed
             if event.key == self.scheme.move_forwards:
                 self.move_forwards = True
@@ -97,6 +101,7 @@ class Player:
         if self.health == 0:
             self.should_die = True
 
+        #Logic for the movement calculations (currently unrefined)
         if self.move_forwards or self.move_backwards or self.move_right or self.move_left:
             if self.move_forwards:
                 self.speed += self.acceleration * time_delta
@@ -120,7 +125,7 @@ class Player:
 
             self.total_speed = math.sqrt(self.strafe_speed **2 + self.speed **2)
 
-            test_move_position = [0, 0]
+            test_move_position = [0, 0]             #Don't even know yet
             test_move_position[0] = self.position[0]
             test_move_position[1] = self.position[1]
             forward_y_movement = time_delta * self.speed
@@ -128,6 +133,10 @@ class Player:
             test_move_position[0] += forward_x_movement
             test_move_position[1] += forward_y_movement
 
+    '''def update_sprite(self,all_sprites, time_delta):
+        all_sprites.add(self.sprite_image)
+        return all_sprites
+'''
 
 class RespawnPlayer:
     def __init__(self, player):

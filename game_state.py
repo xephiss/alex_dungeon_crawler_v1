@@ -30,7 +30,7 @@ class GameState:
         self.instructions_text_pos_rect = self.instructions_text.get_rect()
         self.instructions_text_pos_rect.center = (400, 100)
 
-        Animation(knight_red, 16, 22, 0, 4, 0.1)
+        #Animation(knight_red, 16, 22, 0, 4, 0.1)
 
     def stop(self):
         self.background_surf = None
