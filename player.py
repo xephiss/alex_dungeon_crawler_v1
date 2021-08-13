@@ -4,7 +4,7 @@ screen = pygame.display.set_mode((700,500))
 pygame.display.set_caption('Sprite Animation')
 background_color: BLUE
 knight_red = pygame.image.load('spritesheet_red_knight.png').convert_alpha()
-
+knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
 
 class Animation:
 
@@ -32,7 +32,7 @@ class Animation:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-'''myInstance_1 = Animation(knight_red, 16, 22, 0, 4, 0.1)
+myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
 
 clock = pygame.time.Clock()
 running = True
@@ -51,4 +51,4 @@ while running:
     screen.blit(myInstance_1.display_frame,(64,64))
 
     pygame.display.flip()
-pygame.quit()'''
+pygame.quit()
