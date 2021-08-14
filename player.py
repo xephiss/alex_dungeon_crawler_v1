@@ -1,13 +1,13 @@
 import pygame
 import math
 from pygame.locals import *
-'''
+
 BLUE= (50,50,225)
 screen = pygame.display.set_mode((700,500))
 pygame.display.set_caption('Sprite Animation')
 background_color: BLUE
 knight_red = pygame.image.load('spritesheet_red_knight.png').convert_alpha()
-knight_red = pygame.transform.smoothscale(knight_red, (128, 56))'''
+knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
 
 
 #All this Animation stuff isn't  used yet
@@ -45,21 +45,16 @@ class Scheme:   #The key controls for movement
         self.move_left = K_a
 
 class Player:
-    def __init__(self, start_pos, control_scheme):
+    def __init__(self, position_x, position_y, control_scheme,):
 
         self.scheme = control_scheme
-        self.image_name = "frames/red_knight_run_f1.png"
-        self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
-
+        #self.image_name = "frames/red_knight_run_f1.png"
+        #self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         #The default stats for character attributes
-        self.acceleration = 200.0
-        self.speed = 0.0
-        self.max_speed = 200.0
-        self.max_reverse_speed = -125.0
-        self.strafe_speed = 0.0
-        self.max_strafe_speed = 200.0
-        self.total_speed = 0.0
-        self.rotate_speed = 0.5
+        self.position_x = position_x
+        self.position_y = position_y
+        self.speed = 200.0
+
 
         self.max_health = 1000
         self.health = self.max_health
@@ -67,80 +62,51 @@ class Player:
 
         self.move_accumulator = 0.0
 
-        self.position = [10,10]
 
         self.move_forwards = False
         self.move_backwards = False
         self.move_right = False
         self.move_left = False
 
-
-    def processing_events(self, event):     #For movement control events
-        if event.type == pygame.KEYDOWN:    #key pressed
-            if event.key == self.scheme.move_forwards:
+    def processing_keys(self, event):
+        if event.type == KEYDOWN:
+            if event.key == K_w:
                 self.move_forwards = True
-            if event.key == self.scheme.move_backwards:
+            if event.key == K_s:
                 self.move_backwards = True
-            if event.key == self.scheme.move_right:
-                self.move_right = True
-            if event.key == self.scheme.move_left:
+            if event.key == K_a:
                 self.move_left = True
+            if event.key == K_d:
+                self.move_right = True
 
-        if event.type == pygame.KEYUP:  #key released
-            if event.key == self.scheme.move_forwards:
+        if event.type == KEYUP:
+            if event.key == K_w:
                 self.move_forwards = False
-            if event.key == self.scheme.move_backwards:
+            if event.key == K_s:
                 self.move_backwards = False
-            if event.key == self.scheme.move_right:
-                self.move_right = False
-            if event.key == self.scheme.move_left:
+            if event.key == K_a:
                 self.move_left = False
+            if event.key == K_d:
+                self.move_right = False
 
-
-    def update_movement(self, time_delta):
-        if self.health == 0:
-            self.should_die = True
-
-        #Logic for the movement calculations (currently unrefined)
-        if self.move_forwards or self.move_backwards or self.move_right or self.move_left:
+    def update_movement(self,delta_time):
+        if self.move_forwards or self.move_backwards or self.move_left or self.move_right:
             if self.move_forwards:
-                self.speed += self.acceleration * time_delta
-                if self.speed > self.max_speed:
-                    self.speed = self.max_speed
-
-            elif self.move_backwards:
-                self.speed -= self.acceleration * time_delta
-                if self.speed < self.max_reverse_speed:
-                    self.speed = self.max_reverse_speed
-
+                self.position_y += self.speed * delta_time
+            if self.move_backwards:
+                self.position_y -= self.speed * delta_time
+            if self.move_left:
+                self.position_x -= self.speed * delta_time
             if self.move_right:
-                self.strafe_speed -= self.acceleration * time_delta
-                if abs(self.strafe_speed) > self.max_strafe_speed:
-                    self.strafe_speed = -self.max_strafe_speed
+                self.position_x += self.speed * delta_time
 
-            elif self.move_left:
-                self.strafe_speed += self.acceleration * time_delta
-                if abs(self.strafe_speed) > self.max_strafe_speed:
-                    self.strafe_speed = self.max_strafe_speed
 
-            self.total_speed = math.sqrt(self.strafe_speed **2 + self.speed **2)
 
-            test_move_position = [0, 0]             #Don't even know yet
-            test_move_position[0] = self.position[0]
-            test_move_position[1] = self.position[1]
-            forward_y_movement = time_delta * self.speed
-            forward_x_movement = time_delta * self.strafe_speed
-            test_move_position[0] += forward_x_movement
-            test_move_position[1] += forward_y_movement
 
-    '''def update_sprite(self,all_sprites, time_delta):
-        all_sprites.add(self.sprite_image)
-        return all_sprites
-'''
 
-class RespawnPlayer:
+'''class RespawnPlayer:
     def __init__(self, player):
-        self.control_scheme = player.scheme
+        self.control_scheme = player.scheme'''
 
 
 
@@ -148,25 +114,28 @@ class RespawnPlayer:
 
 
 
-'''
-myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
+
+#myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
+
+
+defaultScheme = Scheme() #Saving the control keys as this variable
+player = Player(64,64, defaultScheme)
 
 clock = pygame.time.Clock()
 running = True
 
 while running:
 
-    time_in_seconds = clock.tick()/1000.0
+    delta_time = clock.tick()/1000.0
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    myInstance_1.update(time_in_seconds)
+'''Help'''
+    #myInstance_1.update(delta_time)
 
     screen.fill(BLUE)
-    screen.blit(myInstance_1.display_frame,(64,64))
+    screen.blit(#myInstance_1,(#position_x,#position_y))
 
     pygame.display.flip()
 pygame.quit()
-'''
