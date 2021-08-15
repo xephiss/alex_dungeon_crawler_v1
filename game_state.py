@@ -1,5 +1,7 @@
 import pygame
-from player import Animation
+from pygame.locals import *
+import player
+
 
 class GameState:
     def __init__(self, window_surface):
@@ -14,6 +16,8 @@ class GameState:
         self.title_pos_rect = None
         self.instructions_text = None
         self.instructions_text_pos_rect = None
+
+        self.player1 = player.Player(64,64)
 
     def start(self):
         self.transition_target = None
@@ -39,9 +43,22 @@ class GameState:
         self.instructions_text = None
         self.instructions_text_pos_rect = None
 
-    def handle_events(self, event):
+    def handle_events(self, event, time_delta):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.transition_target = 'main_menu'
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_w:
+                self.move_forwards = True
+            if event.key == K_s:
+                self.move_backwards = True
+            if event.key == K_a:
+                self.move_left = True
+            if event.key == K_d:
+                self.move_right = True
+
+            self.player1.update_movement(time_delta)
+
 
     def update(self, time_delta):
         # clear the window to the background surface
@@ -50,6 +67,8 @@ class GameState:
         self.window_surface.blit(self.title_text, self.title_pos_rect)
         # stick the instructions below
         self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
+
+        self.player1.draw(self.window_surface)
 
 
 
