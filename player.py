@@ -20,14 +20,14 @@ background_color: BLUE'''
         self.move_left = K_a'''
 
 class Player:
-    def __init__(self, position_x, position_y):
+    def __init__(self):
 
         #self.scheme = control_scheme
         #self.image_name = "frames/red_knight_run_f1.png"
         #self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         #The default stats for character attributes
-        self.position_x = position_x
-        self.position_y = position_y
+        self.position_x = 64
+        self.position_y = 64
         self.speed = 200.0
 
 
@@ -49,7 +49,7 @@ class Player:
         frame_height = 50
         animation_row = 0
         num_frames = 4
-        speed = 20
+        frame_speed = 200
 
         knight_red = pygame.image.load('spritesheet_red_knight.png')
         knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
@@ -61,7 +61,7 @@ class Player:
 
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
-        self.speed = speed
+        self.frame_speed = frame_speed
         self.time_accumulator = 0.0
 
 
@@ -76,12 +76,12 @@ class Player:
     def update_movement(self, delta_time):
         if self.move_forwards or self.move_backwards or self.move_left or self.move_right:
             if self.move_forwards:
-                self.position_y += self.speed * delta_time
-            if self.move_backwards:
                 self.position_y -= self.speed * delta_time
+            elif self.move_backwards:
+                self.position_y += self.speed * delta_time
             if self.move_left:
                 self.position_x -= self.speed * delta_time
-            if self.move_right:
+            elif self.move_right:
                 self.position_x += self.speed * delta_time
 
     def next_frame(self):
@@ -109,7 +109,7 @@ class Player:
 
 
 #defaultScheme = Scheme() #Saving the control keys as this variable
-player = Player(64,64)
+#player = Player()
 
 clock = pygame.time.Clock()
 running = True

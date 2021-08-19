@@ -17,7 +17,7 @@ class GameState:
         self.instructions_text = None
         self.instructions_text_pos_rect = None
 
-        self.player1 = player.Player(64,64)
+        self.player1 = player.Player()
         self.time_delta = time_delta
 
     def start(self):
@@ -50,16 +50,26 @@ class GameState:
 
         if event.type == pygame.KEYDOWN:
             if event.key == K_w:
-                self.move_forwards = True
+                self.player1.move_forwards = True
             if event.key == K_s:
-                self.move_backwards = True
+                self.player1.move_backwards = True
             if event.key == K_a:
-                self.move_left = True
+                self.player1.move_left = True
             if event.key == K_d:
-                self.move_right = True
+                self.player1.move_right = True
 
-            time_delta=time_delta
-            self.player1.update_movement(time_delta)
+        if event.type == pygame.KEYUP:
+            if event.key == K_w:
+                self.player1.move_forwards = False
+            if event.key == K_s:
+                self.player1.move_backwards = False
+            if event.key == K_a:
+                self.player1.move_left = False
+            if event.key == K_d:
+                self.player1.move_right = False
+
+        time_delta=time_delta
+        self.player1.update_movement(time_delta)
 
 
     def update(self, time_delta):
@@ -71,7 +81,6 @@ class GameState:
         #self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
 
 
-        self.player1.update_movement(time_delta)
         self.player1.next_frame()
         self.player1.draw(self.window_surface)
 
