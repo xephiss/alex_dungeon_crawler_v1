@@ -49,7 +49,7 @@ class Player:
         frame_height = 50
         animation_row = 0
         num_frames = 4
-        speed = 0.1
+        speed = 20
 
         knight_red = pygame.image.load('spritesheet_red_knight.png')
         knight_red = pygame.transform.smoothscale(knight_red, (128, 56))

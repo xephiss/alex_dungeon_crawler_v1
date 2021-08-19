@@ -25,15 +25,15 @@ class GameState:
         self.background_surf = pygame.Surface((800, 600))
         self.background_surf.fill((0, 0, 0))
 
-        self.title_text = self.title_font.render('The Game', True, (255, 255, 255))
-        self.title_pos_rect = self.title_text.get_rect()
-        self.title_pos_rect.center = (400, 50)
+        #self.title_text = self.title_font.render('The Game', True, (255, 255, 255))
+        #self.title_pos_rect = self.title_text.get_rect()
+        #self.title_pos_rect.center = (400, 50)
 
-        self.instructions_text = self.instructions_font.render('Press ESC to return to main menu',
-                                                               True, (255, 255, 255))
+        #self.instructions_text = self.instructions_font.render('Press ESC to return to main menu',
+                                                               #True, (255, 255, 255))
 
-        self.instructions_text_pos_rect = self.instructions_text.get_rect()
-        self.instructions_text_pos_rect.center = (400, 100)
+        #self.instructions_text_pos_rect = self.instructions_text.get_rect()
+        #self.instructions_text_pos_rect.center = (400, 100)
 
         #Animation(knight_red, 16, 22, 0, 4, 0.1)
 
@@ -66,11 +66,13 @@ class GameState:
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
         # stick the title at the top
-        self.window_surface.blit(self.title_text, self.title_pos_rect)
+        #self.window_surface.blit(self.title_text, self.title_pos_rect)
         # stick the instructions below
-        self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
+        #self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
 
+
+        self.player1.update_movement(time_delta)
+        self.player1.next_frame()
         self.player1.draw(self.window_surface)
-
 
 
