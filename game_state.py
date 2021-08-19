@@ -4,7 +4,7 @@ import player
 
 
 class GameState:
-    def __init__(self, window_surface):
+    def __init__(self, window_surface, time_delta):
         self.transition_target = None
         self.window_surface = window_surface
 
@@ -18,6 +18,7 @@ class GameState:
         self.instructions_text_pos_rect = None
 
         self.player1 = player.Player(64,64)
+        self.time_delta = time_delta
 
     def start(self):
         self.transition_target = None
@@ -57,6 +58,7 @@ class GameState:
             if event.key == K_d:
                 self.move_right = True
 
+            time_delta=time_delta
             self.player1.update_movement(time_delta)
 
 

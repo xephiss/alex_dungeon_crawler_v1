@@ -36,7 +36,7 @@ class SettingsState:
         self.back_button.kill()
         self.back_button = None
 
-    def handle_events(self, event):
+    def handle_events(self, event, time_delta):
         if event.type == pygame.USEREVENT and event.user_type == UI_BUTTON_PRESSED:
             if event.ui_element == self.back_button:
                 self.transition_target = 'main_menu'

@@ -14,11 +14,12 @@ class GameApp:
         self.window_surface = pygame.display.set_mode((800, 600))
         self.ui_manager = pygame_gui.UIManager((800, 600))
         self.clock = pygame.time.Clock()
+        time_delta = self.clock.tick(60)/1000.0
         self.running = True
 
         self.states = {'main_menu': MainMenuState(self.window_surface, self.ui_manager),
                        'settings': SettingsState(self.window_surface, self.ui_manager),
-                       'game': GameState(self.window_surface)
+                       'game': GameState(self.window_surface, time_delta)
                        }
 
         self.active_state = self.states['main_menu']  # start the app in the main menu
@@ -34,7 +35,7 @@ class GameApp:
 
                 self.ui_manager.process_events(event)
 
-                self.active_state.handle_events(event)
+                self.active_state.handle_events(event, time_delta)
 
             self.ui_manager.update(time_delta)
 

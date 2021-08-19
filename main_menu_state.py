@@ -49,7 +49,7 @@ class MainMenuState:
         self.quit_button.kill()
         self.quit_button = None
 
-    def handle_events(self, event):
+    def handle_events(self, event, time_delta):
         if event.type == pygame.USEREVENT and event.user_type == UI_BUTTON_PRESSED:
             if event.ui_element == self.start_game_button:
                 self.transition_target = 'game'

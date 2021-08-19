@@ -73,7 +73,7 @@ class Player:
 
 
 
-    def update_movement(self,delta_time):
+    def update_movement(self, delta_time):
         if self.move_forwards or self.move_backwards or self.move_left or self.move_right:
             if self.move_forwards:
                 self.position_y += self.speed * delta_time
