@@ -1,11 +1,8 @@
 import pygame
+import red_knight_sprites
 import math
 from pygame.locals import *
-'''
-BLUE= (50,50,225)
-screen = pygame.display.set_mode((700,500))
-pygame.display.set_caption('Sprite Animation')
-background_color: BLUE'''
+
 
 
 
@@ -43,21 +40,19 @@ class Player:
         self.move_right = False
         self.move_left = False
 
-    #def set_sprite(self, sprite_sheet, frame_width, frame_height, animation_row, num_frames, speed):
 
-        frame_width = 16
-        frame_height = 50
-        animation_row = 0
-        num_frames = 4
-        frame_speed = 200
+        # Higher frame_speed means slower animation speed,
+        # as it is the time taken for each frame to be displayed for.
+        frame_speed = 0.05
 
-        knight_red = pygame.image.load('spritesheet_red_knight.png')
-        knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
-        self.frames = []
-        for frame_number in range(0, num_frames):
-            self.frames.append(knight_red.subsurface(pygame.Rect(frame_number * frame_width,
-                                                                    animation_row * frame_height + 6,
-                                                                    frame_width, frame_height)))
+        initial_frames = red_knight_sprites.running_frames
+        self.frames = []                    # Will contain a list of image sprites in animated order
+
+        size_multiplier = 1
+        for i in initial_frames:
+            # For future size changes of sprite
+            new_frame = pygame.transform.smoothscale(i, (32*size_multiplier, 56*size_multiplier))
+            self.frames.append(new_frame)
 
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
@@ -84,12 +79,17 @@ class Player:
             elif self.move_right:
                 self.position_x += self.speed * delta_time
 
-    def next_frame(self):
+    def next_frame(self, delta_time):
+        self.time_accumulator += delta_time
         # finds the next frame in the animation sequence
-        self.current_frame_index = self.current_frame_index + 1
-        if self.current_frame_index >= len(self.frames):
-            self.current_frame_index = 0
-        #self.position_x = self.position_x + (self.direction * 3)
+        if self.time_accumulator > self.frame_speed:
+            self.time_accumulator = 0.0
+            self.current_frame_index += 1
+
+            if self.current_frame_index >= len(self.frames):
+                self.current_frame_index = 0
+
+            self.display_frame = self.frames[self.current_frame_index]
 
 
 

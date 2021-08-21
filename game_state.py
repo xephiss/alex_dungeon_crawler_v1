@@ -23,7 +23,7 @@ class GameState:
     def start(self):
         self.transition_target = None
         self.background_surf = pygame.Surface((800, 600))
-        self.background_surf.fill((0, 0, 0))
+        self.background_surf.fill((200, 150, 100))
 
         #self.title_text = self.title_font.render('The Game', True, (255, 255, 255))
         #self.title_pos_rect = self.title_text.get_rect()
@@ -58,6 +58,8 @@ class GameState:
             if event.key == K_d:
                 self.player1.move_right = True
 
+
+
         if event.type == pygame.KEYUP:
             if event.key == K_w:
                 self.player1.move_forwards = False
@@ -68,7 +70,7 @@ class GameState:
             if event.key == K_d:
                 self.player1.move_right = False
 
-        time_delta=time_delta
+        time_delta = time_delta
         self.player1.update_movement(time_delta)
 
 
@@ -81,7 +83,7 @@ class GameState:
         #self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
 
 
-        self.player1.next_frame()
+        self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
 
 

@@ -22,7 +22,7 @@ class MainMenuState:
     def start(self):
         self.transition_target = None
         self.background_surf = pygame.Surface((800, 600))
-        self.background_surf.fill((0, 0, 0))
+        self.background_surf.fill((200, 160, 100))
         self.title_text = self.title_font.render('Main Menu', True, (255, 255, 255))
         self.title_pos_rect = self.title_text.get_rect()
         self.title_pos_rect.center = (400, 50)

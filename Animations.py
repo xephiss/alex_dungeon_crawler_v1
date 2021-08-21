@@ -1,15 +1,18 @@
 import pygame
+import red_knight_sprites
+
+# This file is currently not used, kept for debugging references
 
 class Animation:
 
-    def __init__(self, sprite_sheet, frame_width, frame_height, animation_row, num_frames, frame_speed):
-        knight_red = pygame.image.load('spritesheet_red_knight.png').convert_alpha()
-        knight_red = pygame.transform.smoothscale(knight_red, (128, 56))
+    def __init__(self, frame_speed):
+        initial_frames = red_knight_sprites.running_frames
         self.frames = []
-        for frame_number in range(0,num_frames):
-            self.frames.append(sprite_sheet.subsurface(pygame.Rect(frame_number*frame_width,
-                                                                   animation_row*frame_height+6,
-                                                                   frame_width, frame_height)))
+
+        for i in initial_frames:
+            new_frame = pygame.transform.smoothscale(i, (32, 56))
+            self.frames.append(new_frame)
+
 
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
