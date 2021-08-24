@@ -25,7 +25,7 @@ class Player:
         #The default stats for character attributes
         self.position_x = 64
         self.position_y = 64
-        self.speed = 200.0
+        self.speed = 5.0
 
 
         self.max_health = 1000
@@ -35,8 +35,8 @@ class Player:
         self.move_accumulator = 0.0
 
 
-        self.move_forwards = False
-        self.move_backwards = False
+        self.move_up = False
+        self.move_down = False
         self.move_right = False
         self.move_left = False
 
@@ -66,18 +66,37 @@ class Player:
         screen.blit(frame, (self.position_x, self.position_y))
 
 
+    def update_movement(self):
+        if self.move_up:
+            self.position_y -= self.speed
+        if self.move_down:
+            self.position_y += self.speed
+        if self.move_left:
+            self.position_x -= self.speed
+        if self.move_right:
+            self.position_x += self.speed
 
+    def on_key_press(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_w:
+                self.move_up = True
+            if event.key == K_s:
+                self.move_down = True
+            if event.key == K_a:
+                self.move_left = True
+            if event.key == K_d:
+                self.move_right = True
 
-    def update_movement(self, delta_time):
-        if self.move_forwards or self.move_backwards or self.move_left or self.move_right:
-            if self.move_forwards:
-                self.position_y -= self.speed * delta_time
-            elif self.move_backwards:
-                self.position_y += self.speed * delta_time
-            if self.move_left:
-                self.position_x -= self.speed * delta_time
-            elif self.move_right:
-                self.position_x += self.speed * delta_time
+    def on_key_release(self, event):
+        if event.type == pygame.KEYUP:
+            if event.key == K_w:
+                self.move_up = False
+            if event.key == K_s:
+                self.move_down = False
+            if event.key == K_a:
+                self.move_left = False
+            if event.key == K_d:
+                self.move_right = False
 
     def next_frame(self, delta_time):
         self.time_accumulator += delta_time

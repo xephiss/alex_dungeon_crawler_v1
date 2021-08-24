@@ -48,30 +48,10 @@ class GameState:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.transition_target = 'main_menu'
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == K_w:
-                self.player1.move_forwards = True
-            if event.key == K_s:
-                self.player1.move_backwards = True
-            if event.key == K_a:
-                self.player1.move_left = True
-            if event.key == K_d:
-                self.player1.move_right = True
-
-
-
-        if event.type == pygame.KEYUP:
-            if event.key == K_w:
-                self.player1.move_forwards = False
-            if event.key == K_s:
-                self.player1.move_backwards = False
-            if event.key == K_a:
-                self.player1.move_left = False
-            if event.key == K_d:
-                self.player1.move_right = False
-
         time_delta = time_delta
-        self.player1.update_movement(time_delta)
+        self.player1.on_key_press(event)
+        self.player1.on_key_release(event)
+        self.player1.update_movement()
 
 
     def update(self, time_delta):
