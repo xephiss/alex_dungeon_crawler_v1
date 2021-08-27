@@ -44,25 +44,22 @@ class GameState:
         self.instructions_text = None
         self.instructions_text_pos_rect = None
 
-    def handle_events(self, event, time_delta):
+    def handle_events(self, event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.transition_target = 'main_menu'
 
-        time_delta = time_delta
         self.player1.on_key_press(event)
         self.player1.on_key_release(event)
-        self.player1.update_movement()
-
 
     def update(self, time_delta):
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
         # stick the title at the top
-        #self.window_surface.blit(self.title_text, self.title_pos_rect)
+        # self.window_surface.blit(self.title_text, self.title_pos_rect)
         # stick the instructions below
-        #self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
+        # self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
 
-
+        self.player1.update_movement(time_delta)
         self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
 

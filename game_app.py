@@ -35,7 +35,7 @@ class GameApp:
 
                 self.ui_manager.process_events(event)
 
-                self.active_state.handle_events(event, time_delta)
+                self.active_state.handle_events(event)
 
             self.ui_manager.update(time_delta)
 

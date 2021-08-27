@@ -1,12 +1,8 @@
 import pygame
 import red_knight_sprites
-import math
 from pygame.locals import *
 
-
-
-
-#All this Animation stuff isn't  used yet
+# All this Animation stuff isn't  used yet
 
 
 '''class Scheme:   #The key controls for movement
@@ -16,17 +12,16 @@ from pygame.locals import *
         self.move_right = K_d
         self.move_left = K_a'''
 
+
 class Player:
     def __init__(self):
 
-        #self.scheme = control_scheme
-        #self.image_name = "frames/red_knight_run_f1.png"
-        #self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
-        #The default stats for character attributes
-        self.position_x = 64
-        self.position_y = 64
-        self.speed = 5.0
-
+        # self.scheme = control_scheme
+        # self.image_name = "frames/red_knight_run_f1.png"
+        # elf.sprite_image = pygame.image.load(self.image_name).convert_alpha()
+        # The default stats for character attributes
+        self.position = pygame.math.Vector2(64.0, 64.0)
+        self.speed = 300.0
 
         self.max_health = 1000
         self.health = self.max_health
@@ -34,12 +29,10 @@ class Player:
 
         self.move_accumulator = 0.0
 
-
         self.move_up = False
         self.move_down = False
         self.move_right = False
         self.move_left = False
-
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
@@ -59,22 +52,21 @@ class Player:
         self.frame_speed = frame_speed
         self.time_accumulator = 0.0
 
-
-
     def draw(self, screen):
         frame = self.frames[self.current_frame_index]
-        screen.blit(frame, (self.position_x, self.position_y))
+        screen.blit(frame, (int(self.position.x),
+                            int(self.position.y)))
 
-
-    def update_movement(self):
+    def update_movement(self, time_delta):
+        speed_delta = self.speed * time_delta
         if self.move_up:
-            self.position_y -= self.speed
+            self.position.y -= speed_delta
         if self.move_down:
-            self.position_y += self.speed
+            self.position.y += speed_delta
         if self.move_left:
-            self.position_x -= self.speed
+            self.position.x -= speed_delta
         if self.move_right:
-            self.position_x += self.speed
+            self.position.x += speed_delta
 
     def on_key_press(self, event):
         if event.type == pygame.KEYDOWN:
@@ -111,27 +103,17 @@ class Player:
             self.display_frame = self.frames[self.current_frame_index]
 
 
-
-
 '''class RespawnPlayer:
     def __init__(self, player):
         self.control_scheme = player.scheme'''
 
+# myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
 
+# defaultScheme = Scheme() #Saving the control keys as this variable
+# player = Player()d
 
-
-
-
-
-
-#myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
-
-
-#defaultScheme = Scheme() #Saving the control keys as this variable
-#player = Player()
-
-clock = pygame.time.Clock()
-running = True
+# clock = pygame.time.Clock()
+# running = True
 
 '''while running:
 
