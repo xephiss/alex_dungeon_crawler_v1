@@ -16,10 +16,10 @@ class Player:
 
         # self.scheme = control_scheme
         # self.image_name = "frames/red_knight_run_f1.png"
-        # elf.sprite_image = pygame.image.load(self.image_name).convert_alpha()
+        # self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         # The default stats for character attributes
-        self.position = pygame.math.Vector2(64.0, 64.0)
-        self.speed = 300.0
+        self.position = pygame.math.Vector2(320.0, 320.0)
+        self.speed = 256.0
 
         self.max_health = 1000
         self.health = self.max_health
@@ -32,6 +32,8 @@ class Player:
         self.move_right = False
         self.move_left = False
 
+        self.direction = False
+
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
         frame_speed = 0.05
@@ -39,10 +41,10 @@ class Player:
         initial_frames = red_knight_sprites.running_frames
         self.frames = []                    # Will contain a list of image sprites in animated order
 
-        size_multiplier = 1
+        SIZE_MULTIPLIER = 1
         for i in initial_frames:
             # For future size changes of sprite
-            new_frame = pygame.transform.smoothscale(i, (32*size_multiplier, 56*size_multiplier))
+            new_frame = pygame.transform.smoothscale(i, (32*SIZE_MULTIPLIER, 56*SIZE_MULTIPLIER))
             self.frames.append(new_frame)
 
         self.current_frame_index = 0
@@ -52,6 +54,8 @@ class Player:
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index]
+        if self.direction == True:
+            frame = pygame.transform.flip(frame, True, False)
         screen.blit(frame, (int(self.position.x),
                             int(self.position.y)))
 
@@ -74,8 +78,10 @@ class Player:
                 self.move_down = True
             if event.key == K_a:
                 self.move_left = True
+                self.direction = True
             if event.key == K_d:
                 self.move_right = True
+                self.direction = False
 
     def on_key_release(self, event):
         if event.type == pygame.KEYUP:

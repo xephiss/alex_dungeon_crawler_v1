@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import player
+import game_map
 
 
 class GameState:
@@ -18,6 +19,7 @@ class GameState:
         self.instructions_text_pos_rect = None
 
         self.player1 = player.Player()
+        self.level = game_map.Levels()
         self.time_delta = time_delta
 
     def start(self):
@@ -58,6 +60,9 @@ class GameState:
         # self.window_surface.blit(self.title_text, self.title_pos_rect)
         # stick the instructions below
         # self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
+        self.level.draw_map(self.window_surface)
+        self.level.draw_aesthetic(self.window_surface)
+        self.level.draw_collision(self.window_surface)
 
         self.player1.update_movement(time_delta)
         self.player1.next_frame(time_delta)
