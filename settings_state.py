@@ -19,13 +19,13 @@ class SettingsState:
 
     def start(self):
         self.transition_target = None
-        self.background_surf = pygame.Surface((800, 600))
+        self.background_surf = pygame.Surface((640, 640))
         self.background_surf.fill((0, 0, 0))
         self.title_text = self.title_font.render('Settings', True, (255, 255, 255))
         self.title_pos_rect = self.title_text.get_rect()
-        self.title_pos_rect.center = (400, 50)
+        self.title_pos_rect.center = (320, 50)
 
-        self.back_button = UIButton(pygame.Rect((550, 550), (200, 30)),
+        self.back_button = UIButton(pygame.Rect((400, 550), (200, 30)),
                                     'Back to menu', self.ui_manager)
 
     def stop(self):

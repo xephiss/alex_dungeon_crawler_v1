@@ -22,7 +22,7 @@ class GameState:
 
     def start(self):
         self.transition_target = None
-        self.background_surf = pygame.Surface((800, 600))
+        self.background_surf = pygame.Surface((640, 640))
         self.background_surf.fill((200, 150, 100))
 
         #self.title_text = self.title_font.render('The Game', True, (255, 255, 255))

@@ -2,8 +2,6 @@ import pygame
 import red_knight_sprites
 from pygame.locals import *
 
-# All this Animation stuff isn't  used yet
-
 
 '''class Scheme:   #The key controls for movement
     def __init__(self):

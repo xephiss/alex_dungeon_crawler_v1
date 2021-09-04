@@ -11,8 +11,8 @@ class GameApp:
     def __init__(self):
         pygame.init()
 
-        self.window_surface = pygame.display.set_mode((800, 600))
-        self.ui_manager = pygame_gui.UIManager((800, 600))
+        self.window_surface = pygame.display.set_mode((640, 640))
+        self.ui_manager = pygame_gui.UIManager((640, 640))
         self.clock = pygame.time.Clock()
         time_delta = self.clock.tick(60)/1000.0
         self.running = True

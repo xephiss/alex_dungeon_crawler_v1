@@ -21,19 +21,19 @@ class MainMenuState:
 
     def start(self):
         self.transition_target = None
-        self.background_surf = pygame.Surface((800, 600))
+        self.background_surf = pygame.Surface((640, 640))
         self.background_surf.fill((200, 160, 100))
         self.title_text = self.title_font.render('Main Menu', True, (255, 255, 255))
         self.title_pos_rect = self.title_text.get_rect()
-        self.title_pos_rect.center = (400, 50)
+        self.title_pos_rect.center = (320, 50)
 
-        self.start_game_button = UIButton(pygame.Rect((325, 240), (150, 30)),
+        self.start_game_button = UIButton(pygame.Rect((245, 210), (150, 30)),
                                           'Start Game',
                                           self.ui_manager)
-        self.settings_button = UIButton(pygame.Rect((325, 280), (150, 30)),
+        self.settings_button = UIButton(pygame.Rect((245, 260), (150, 30)),
                                         'Settings',
                                         self.ui_manager)
-        self.quit_button = UIButton(pygame.Rect((325, 320), (150, 30)),
+        self.quit_button = UIButton(pygame.Rect((245, 310), (150, 30)),
                                     'Quit',
                                     self.ui_manager)
 
