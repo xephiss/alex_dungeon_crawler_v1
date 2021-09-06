@@ -1,5 +1,6 @@
 import pygame
 import background_tiles
+import map_layouts
 
 floor_tiles = background_tiles.floor_tiles
 collideable_tiles = background_tiles.collidable_tiles
@@ -10,9 +11,9 @@ class Levels:
     def __init__(self):
         self.level_number = 1
 
-        self.level_one = {'map': background_tiles.level_one_map,
-                          'collideable': background_tiles.level_one_collision,
-                          'aesthetic': background_tiles.level_one_aesthetics}
+        self.level_one = {'map': map_layouts.level_one_map,
+                          'collideable': map_layouts.level_one_collision,
+                          'aesthetic': map_layouts.level_one_aesthetics}
         self.level_array = [self.level_one]
 
     # keytable = ('test', 'test2')
@@ -58,7 +59,8 @@ class Levels:
                 row = 0
                 column += 1
 
-#   def draw(self, screen):
-        #draw_map(screen)
-        #draw_collideable(screen)
-        #draw_aesthetic(screen)
+
+    def draw(self, screen):
+        self.draw_map(screen)
+        self.draw_collision(screen)
+        self.draw_aesthetic(screen)
