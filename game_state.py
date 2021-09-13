@@ -59,13 +59,16 @@ class GameState:
         # stick the title at the top
         # self.window_surface.blit(self.title_text, self.title_pos_rect)
         # stick the instructions below
+
         # self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
         #self.level.draw_map(self.window_surface)
         #self.level.draw_aesthetic(self.window_surface)
         #self.level.draw_collision(self.window_surface)
         self.level.draw(self.window_surface)
 
-        self.player1.update_movement(time_delta)
+        collisions = self.level.check_collision()
+
+        self.player1.update_movement(time_delta, collisions)
         self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
 

@@ -6,9 +6,11 @@ floor_tiles = background_tiles.floor_tiles
 collideable_tiles = background_tiles.collidable_tiles
 aesthetic_tiles = background_tiles.aesthetic_tiles
 
+current_tile_size = 32 * background_tiles.MULTIPLY
 
 class Levels:
     def __init__(self):
+        self.collision_mapped = False
         self.level_number = 1
 
         self.level_one = {'map': map_layouts.level_one_map,
@@ -22,11 +24,11 @@ class Levels:
 
     def draw_map(self, screen):
         current_level = self.level_array[self.level_number - 1]
-        collidable_array = current_level['map']
+        tile_array = current_level['map']                       # Stores the tile key layout for the map
         row = 0
         column = 0
-        for tile_iterate in collidable_array:
-            screen.blit(floor_tiles[tile_iterate], (64 * row, 64 * column))
+        for tile_iterate in tile_array:
+            screen.blit(floor_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
             if row != 9:
                 row += 1
             else:
@@ -35,11 +37,11 @@ class Levels:
 
     def draw_collision(self, screen):
         current_level = self.level_array[self.level_number - 1]
-        collidable_array = current_level['collideable']
+        tile_array = current_level['collideable']
         row = 0
         column = 0
-        for tile_iterate in collidable_array:
-            screen.blit(collideable_tiles[tile_iterate], (64 * row, 64 * column))
+        for tile_iterate in tile_array:
+            screen.blit(collideable_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
             if row != 9:
                 row += 1
             else:
@@ -48,11 +50,11 @@ class Levels:
 
     def draw_aesthetic(self, screen):
         current_level = self.level_array[self.level_number - 1]
-        collidable_array = current_level['aesthetic']
+        tile_array = current_level['aesthetic']
         row = 0
         column = 0
-        for tile_iterate in collidable_array:
-            screen.blit(aesthetic_tiles[tile_iterate], (64 * row, 64 * column))
+        for tile_iterate in tile_array:
+            screen.blit(aesthetic_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
             if row != 9:
                 row += 1
             else:
@@ -64,3 +66,28 @@ class Levels:
         self.draw_map(screen)
         self.draw_collision(screen)
         self.draw_aesthetic(screen)
+
+
+    def check_collision(self):
+        collision_boxes = []                        # Will hold all the 'xy' positions of top left of collisions
+        if self.collision_mapped == False:
+            current_level = self.level_array[self.level_number - 1]
+            collidable_array = current_level['collideable']
+            row = 0
+            column = 0
+            for tile_iterate in collidable_array:
+                if tile_iterate != '000':
+                    temp_x = str(row * current_tile_size)               # Holds the current collidable tile positions
+                    temp_y = str(column * current_tile_size)
+                    temp_pos = temp_x + temp_y
+                    collision_boxes.append(temp_pos)
+
+                if row != 9:
+                    row += 1
+                else:
+                    row = 0
+                    column += 1
+
+            self.collision_mapped = True
+            return collision_boxes
+

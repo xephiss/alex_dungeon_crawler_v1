@@ -1,7 +1,8 @@
 import pygame
 import red_knight_sprites
+import game_map
 from pygame.locals import *
-
+current_tile_size = game_map.current_tile_size
 
 '''class Scheme:   #The key controls for movement
     def __init__(self):
@@ -34,6 +35,8 @@ class Player:
 
         self.direction = False
 
+        self.collision_mapped = False
+
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
         frame_speed = 0.05
@@ -44,7 +47,7 @@ class Player:
         SIZE_MULTIPLIER = 1
         for i in initial_frames:
             # For future size changes of sprite
-            new_frame = pygame.transform.smoothscale(i, (32*SIZE_MULTIPLIER, 56*SIZE_MULTIPLIER))
+            new_frame = pygame.transform.smoothscale(i, (32 * SIZE_MULTIPLIER, 48 * SIZE_MULTIPLIER))
             self.frames.append(new_frame)
 
         self.current_frame_index = 0
@@ -59,10 +62,24 @@ class Player:
         screen.blit(frame, (int(self.position.x),
                             int(self.position.y)))
 
-    def update_movement(self, time_delta):
+
+
+
+    def update_movement(self, time_delta, collision):
         speed_delta = self.speed * time_delta
+        collision_boxes = collision
+
         if self.move_up:
-            self.position.y -= speed_delta
+            move_to_y = self.position.y - speed_delta
+            for positionxy in collision_boxes:
+                if int(positionxy[1]) < move_to_y < current_tile_size + int(positionxy[1]) and int(positionxy[0])\
+                        < self.position.x < current_tile_size + int(positionxy[0]):
+                    pass
+
+                else:
+                    self.position.y -= speed_delta
+
+
         if self.move_down:
             self.position.y += speed_delta
         if self.move_left:
@@ -107,30 +124,9 @@ class Player:
             self.display_frame = self.frames[self.current_frame_index]
 
 
+
+
 '''class RespawnPlayer:
     def __init__(self, player):
         self.control_scheme = player.scheme'''
 
-# myInstance_1 = Animation(knight_red, 16*2, 50, 0, 4, 0.1)
-
-# defaultScheme = Scheme() #Saving the control keys as this variable
-# player = Player()d
-
-# clock = pygame.time.Clock()
-# running = True
-
-'''while running:
-
-    delta_time = clock.tick()/1000.0
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    #myInstance_1.update(delta_time)
-
-    screen.fill(BLUE)
-    screen.blit(#myInstance_1,(#position_x,#position_y))
-
-    pygame.display.flip()
-pygame.quit()'''
