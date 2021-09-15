@@ -9,3 +9,4 @@ running_frames = [frame1.subsurface(0, 8, 32, 48),
                   frame2.subsurface(0, 8, 32, 48),
                   frame3.subsurface(0, 8, 32, 48),
                   frame4.subsurface(0, 8, 32, 48)]
+
