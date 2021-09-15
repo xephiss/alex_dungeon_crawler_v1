@@ -66,9 +66,11 @@ class GameState:
         #self.level.draw_collision(self.window_surface)
         self.level.draw(self.window_surface)
 
-        collisions = self.level.check_collision()
+        collisions = self.level.collision_boxes
+        collisions_x = self.level.collision_boxes_x
+        collisions_y = self.level.collision_boxes_y
 
-        self.player1.update_movement(time_delta, collisions)
+        self.player1.update_movement(time_delta, collisions_x, collisions_y)
         self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
 

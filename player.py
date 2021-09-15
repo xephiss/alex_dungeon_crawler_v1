@@ -20,7 +20,7 @@ class Player:
         # self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         # The default stats for character attributes
         self.position = pygame.math.Vector2(320.0, 320.0)
-        self.speed = 256.0
+        self.speed = 200.0
 
         self.max_health = 1000
         self.health = self.max_health
@@ -45,9 +45,11 @@ class Player:
         self.frames = []                    # Will contain a list of image sprites in animated order
 
         SIZE_MULTIPLIER = 1
+        self.size_x = 32 * SIZE_MULTIPLIER
+        self.size_y = 48 + SIZE_MULTIPLIER
         for i in initial_frames:
             # For future size changes of sprite
-            new_frame = pygame.transform.smoothscale(i, (32 * SIZE_MULTIPLIER, 48 * SIZE_MULTIPLIER))
+            new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))
             self.frames.append(new_frame)
 
         self.current_frame_index = 0
@@ -65,27 +67,59 @@ class Player:
 
 
 
-    def update_movement(self, time_delta, collision):
+    def update_movement(self, time_delta, collision_x, collision_y):
         speed_delta = self.speed * time_delta
-        collision_boxes = collision
+        #collision_boxes = collision
+        array_of_collision_x = collision_x
+        array_of_collision_y = collision_y
+        length = len(array_of_collision_x)
+
+        collide_y = False
+        collide_x = False
+
+        # All collision arithmetic determines the state of collision when the character is within the collidable regions
+        # With some fine tuning to centre the collisions
 
         if self.move_up:
             move_to_y = self.position.y - speed_delta
-            for positionxy in collision_boxes:
-                if int(positionxy[1]) < move_to_y < current_tile_size + int(positionxy[1]) and int(positionxy[0])\
-                        < self.position.x < current_tile_size + int(positionxy[0]):
-                    pass
 
-                else:
-                    self.position.y -= speed_delta
+            for i in range(0, length):
+                if array_of_collision_y[i] + self.size_y < move_to_y + self.size_y <= current_tile_size + array_of_collision_y[i] and\
+                        array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]:
+                    collide_y = True
+            if collide_y == False:
+                self.position.y = move_to_y
 
 
         if self.move_down:
-            self.position.y += speed_delta
+            move_to_y = self.position.y + speed_delta
+
+            for i in range (0, length):
+                if array_of_collision_y[i] - current_tile_size/4.5 < move_to_y + self.size_y <= current_tile_size + array_of_collision_y[i] and\
+                        array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]:
+                    collide_y = True
+            if collide_y == False:
+                self.position.y = move_to_y
+
+
         if self.move_left:
-            self.position.x -= speed_delta
+            move_to_x = self.position.x - speed_delta
+            for i in range (0, length):
+                if array_of_collision_x[i] - 15 < move_to_x <= current_tile_size - 15 + array_of_collision_x[i] and \
+                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y <= current_tile_size + array_of_collision_y[i]:
+                    collide_x = True
+            if collide_x == False:
+                self.position.x = move_to_x
+
+
         if self.move_right:
-            self.position.x += speed_delta
+            move_to_x = self.position.x + speed_delta
+            for i in range (0, length):
+                if array_of_collision_x[i] - 15 < move_to_x <= current_tile_size - 15 + array_of_collision_x[i] and \
+                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y <= current_tile_size + array_of_collision_y[i]:
+                    collide_x = True
+            if collide_x == False:
+                self.position.x = move_to_x
 
     def on_key_press(self, event):
         if event.type == pygame.KEYDOWN:

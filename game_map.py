@@ -18,6 +18,32 @@ class Levels:
                           'aesthetic': map_layouts.level_one_aesthetics}
         self.level_array = [self.level_one]
 
+        # Collision algorithm
+        self.collision_boxes = []
+        self.collision_boxes_x = []
+        self.collision_boxes_y = []
+        # Will hold all the 'xy' positions of top left of collisions
+        current_level = self.level_array[self.level_number - 1]
+        collidable_array = current_level['collideable']
+        row = 0
+        column = 0
+        for tile_iterate in collidable_array:
+            if tile_iterate != '000' and tile_iterate != '131':
+                temp_x = row * current_tile_size               # Holds the current collidable tile positions
+                temp_y = column * current_tile_size
+
+                self.collision_boxes_x.append(temp_x)
+                self.collision_boxes_y.append(temp_y)
+
+
+
+            if row != 9:
+                row += 1
+            else:
+                row = 0
+                column += 1
+
+
     # keytable = ('test', 'test2')
     # for i in keytable:
     #    print(tiles[i])
@@ -68,26 +94,26 @@ class Levels:
         self.draw_aesthetic(screen)
 
 
-    def check_collision(self):
-        collision_boxes = []                        # Will hold all the 'xy' positions of top left of collisions
-        if self.collision_mapped == False:
-            current_level = self.level_array[self.level_number - 1]
-            collidable_array = current_level['collideable']
-            row = 0
-            column = 0
-            for tile_iterate in collidable_array:
-                if tile_iterate != '000':
-                    temp_x = str(row * current_tile_size)               # Holds the current collidable tile positions
-                    temp_y = str(column * current_tile_size)
-                    temp_pos = temp_x + temp_y
-                    collision_boxes.append(temp_pos)
-
-                if row != 9:
-                    row += 1
-                else:
-                    row = 0
-                    column += 1
-
-            self.collision_mapped = True
-            return collision_boxes
-
+    # def check_collision(self):
+    #     collision_boxes = []                        # Will hold all the 'xy' positions of top left of collisions
+    #     if self.collision_mapped == False:
+    #         current_level = self.level_array[self.level_number - 1]
+    #         collidable_array = current_level['collideable']
+    #         row = 0
+    #         column = 0
+    #         for tile_iterate in collidable_array:
+    #             if tile_iterate != '000':
+    #                 temp_x = str(row * current_tile_size)               # Holds the current collidable tile positions
+    #                 temp_y = str(column * current_tile_size)
+    #                 temp_pos = temp_x + temp_y
+    #                 collision_boxes.append(temp_pos)
+    #
+    #             if row != 9:
+    #                 row += 1
+    #             else:
+    #                 row = 0
+    #                 column += 1
+    #
+    #         self.collision_mapped = True
+    #         return collision_boxes
+    #
