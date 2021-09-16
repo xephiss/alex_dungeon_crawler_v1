@@ -15,7 +15,9 @@ class Levels:
 
         self.level_one = {'map': map_layouts.level_one_map,
                           'collideable': map_layouts.level_one_collision,
-                          'aesthetic': map_layouts.level_one_aesthetics}
+                          'aestheticBack': map_layouts.level_one_back_aesthetics,
+                          'aestheticFront': map_layouts.level_one_front_aesthetics
+                          }
         self.level_array = [self.level_one]
 
         # Collision algorithm
@@ -74,9 +76,22 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw_aesthetic(self, screen):
+    def draw_back_aesthetic(self, screen):
         current_level = self.level_array[self.level_number - 1]
-        tile_array = current_level['aesthetic']
+        tile_array = current_level['aestheticBack']
+        row = 0
+        column = 0
+        for tile_iterate in tile_array:
+            screen.blit(aesthetic_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
+            if row != 9:
+                row += 1
+            else:
+                row = 0
+                column += 1
+
+    def draw_front_aesthetic(self, screen):
+        current_level = self.level_array[self.level_number - 1]
+        tile_array = current_level['aestheticFront']
         row = 0
         column = 0
         for tile_iterate in tile_array:
@@ -91,7 +106,7 @@ class Levels:
     def draw(self, screen):
         self.draw_map(screen)
         self.draw_collision(screen)
-        self.draw_aesthetic(screen)
+        self.draw_back_aesthetic(screen)
 
 
     # def check_collision(self):

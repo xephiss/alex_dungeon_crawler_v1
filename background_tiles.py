@@ -160,6 +160,15 @@ aesthetic_tiles = {
     # Stones
     '3': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
     '4': tilesheet.subsurface(pygame.Rect(base_coordinate * 3, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
-    '5': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 17, 32 * MULTIPLY, 32 * MULTIPLY))
+    '5': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 17, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Pillars
+    '00': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '01': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '02': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '10': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '11': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '12': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
 }
 

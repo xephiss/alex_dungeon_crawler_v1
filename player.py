@@ -46,7 +46,7 @@ class Player:
 
         SIZE_MULTIPLIER = 1
         self.size_x = 32 * SIZE_MULTIPLIER
-        self.size_y = 48 + SIZE_MULTIPLIER
+        self.size_y = 48 * SIZE_MULTIPLIER
         for i in initial_frames:
             # For future size changes of sprite
             new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))

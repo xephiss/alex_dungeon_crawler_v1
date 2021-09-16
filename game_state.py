@@ -74,4 +74,5 @@ class GameState:
         self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
 
+        self.level.draw_front_aesthetic(self.window_surface)
 
