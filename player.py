@@ -20,7 +20,7 @@ class Player:
         # self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         # The default stats for character attributes
         self.position = pygame.math.Vector2(320.0, 320.0)
-        self.speed = 200.0
+        self.speed = 185.0
 
         self.max_health = 1000
         self.health = self.max_health
@@ -39,14 +39,14 @@ class Player:
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
-        frame_speed = 0.05
+        frame_speed = 0.1
 
         initial_frames = red_knight_sprites.running_frames
         self.frames = []                    # Will contain a list of image sprites in animated order
 
         SIZE_MULTIPLIER = 1
-        self.size_x = 32 * SIZE_MULTIPLIER
-        self.size_y = 48 * SIZE_MULTIPLIER
+        self.size_x = int(32 * SIZE_MULTIPLIER)
+        self.size_y = int(48 * SIZE_MULTIPLIER)
         for i in initial_frames:
             # For future size changes of sprite
             new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))
@@ -84,8 +84,8 @@ class Player:
             move_to_y = self.position.y - speed_delta
 
             for i in range(0, length):
-                if array_of_collision_y[i] + self.size_y < move_to_y + self.size_y <= current_tile_size + array_of_collision_y[i] and\
-                        array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]:
+                if (array_of_collision_y[i] + self.size_y < move_to_y + self.size_y - 10 <= current_tile_size + array_of_collision_y[i] and
+                        array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]):
                     collide_y = True
             if collide_y == False:
                 self.position.y = move_to_y
@@ -95,7 +95,7 @@ class Player:
             move_to_y = self.position.y + speed_delta
 
             for i in range (0, length):
-                if array_of_collision_y[i] - current_tile_size/4.5 < move_to_y + self.size_y <= current_tile_size + array_of_collision_y[i] and\
+                if array_of_collision_y[i] - current_tile_size/4.5 < move_to_y + self.size_y - 10 <= current_tile_size + array_of_collision_y[i] and\
                         array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]:
                     collide_y = True
             if collide_y == False:
@@ -106,7 +106,7 @@ class Player:
             move_to_x = self.position.x - speed_delta
             for i in range (0, length):
                 if array_of_collision_x[i] - 15 < move_to_x <= current_tile_size - 15 + array_of_collision_x[i] and \
-                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y <= current_tile_size + array_of_collision_y[i]:
+                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y - 10 <= current_tile_size + array_of_collision_y[i]:
                     collide_x = True
             if collide_x == False:
                 self.position.x = move_to_x
@@ -116,7 +116,7 @@ class Player:
             move_to_x = self.position.x + speed_delta
             for i in range (0, length):
                 if array_of_collision_x[i] - 15 < move_to_x <= current_tile_size - 15 + array_of_collision_x[i] and \
-                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y <= current_tile_size + array_of_collision_y[i]:
+                        array_of_collision_y[i] - current_tile_size/5 < self.position.y + self.size_y - 10 <= current_tile_size + array_of_collision_y[i]:
                     collide_x = True
             if collide_x == False:
                 self.position.x = move_to_x

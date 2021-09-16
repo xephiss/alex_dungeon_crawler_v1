@@ -1,5 +1,7 @@
 import pygame
 from pygame.locals import *
+
+import enemy
 import player
 import game_map
 
@@ -21,6 +23,7 @@ class GameState:
         self.player1 = player.Player()
         self.level = game_map.Levels()
         self.time_delta = time_delta
+        self.enemy1 = enemy.Enemy()
 
     def start(self):
         self.transition_target = None
@@ -70,9 +73,14 @@ class GameState:
         collisions_x = self.level.collision_boxes_x
         collisions_y = self.level.collision_boxes_y
 
+        self.enemy1.next_frame(time_delta)
+        self.enemy1.draw(self.window_surface)
+
         self.player1.update_movement(time_delta, collisions_x, collisions_y)
         self.player1.next_frame(time_delta)
         self.player1.draw(self.window_surface)
+
+
 
         self.level.draw_front_aesthetic(self.window_surface)
 
