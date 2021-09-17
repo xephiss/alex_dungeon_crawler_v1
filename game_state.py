@@ -74,7 +74,7 @@ class GameState:
         collisions_y = self.level.collision_boxes_y
 
         self.enemy1.next_frame(time_delta)
-        self.enemy1.draw(self.window_surface)
+        self.enemy1.draw(self.window_surface, self.player1.position.x)
 
         self.player1.update_movement(time_delta, collisions_x, collisions_y)
         self.player1.next_frame(time_delta)

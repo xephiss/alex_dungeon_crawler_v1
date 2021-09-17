@@ -134,6 +134,9 @@ class Player:
                 self.move_right = True
                 self.direction = False
 
+            if event.key == K_p:
+                self.health = 0
+
     def on_key_release(self, event):
         if event.type == pygame.KEYUP:
             if event.key == K_w:
@@ -158,7 +161,7 @@ class Player:
             self.display_frame = self.frames[self.current_frame_index]
 
 
-
+    def player_death(self):
 
 '''class RespawnPlayer:
     def __init__(self, player):

@@ -48,12 +48,26 @@ class Enemy:
 
 
 
-    def draw(self, screen):
+    def draw(self, screen, player_x):
+
+        # Turn the enemy depending on player
+        if player_x < self.position.x:
+            self.direction = True
+        else:
+            self.direction = False
+
+
         frame = self.frames[self.current_frame_index]
         if self.direction == True:
             frame = pygame.transform.flip(frame, True, False)
-        screen.blit(frame, (int(self.position.x),
-                            int(self.position.y)))
+
+        if self.current_enemy == 'demon':
+            if self.current_frame_index == 1 or self.current_frame_index ==2:
+                screen.blit(frame, (int(self.position.x),
+                                    int(self.position.y - 2)))
+            else:
+                screen.blit(frame, (int(self.position.x),
+                                    int(self.position.y)))
 
     def next_frame(self, delta_time):
         self.time_accumulator += delta_time
