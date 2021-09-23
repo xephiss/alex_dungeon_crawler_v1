@@ -10,7 +10,6 @@ current_tile_size = 32 * background_tiles.MULTIPLY
 
 class Levels:
     def __init__(self):
-        self.collision_mapped = False
         self.level_number = 1
 
         self.level_one = {'map': map_layouts.level_one_map,
@@ -21,10 +20,10 @@ class Levels:
         self.level_array = [self.level_one]
 
         # Collision algorithm
-        self.collision_boxes = []
+        '''self.collision_boxes = []'''
         self.collision_boxes_x = []
         self.collision_boxes_y = []
-        # Will hold all the 'xy' positions of top left of collisions
+
         current_level = self.level_array[self.level_number - 1]
         collidable_array = current_level['collideable']
         row = 0
@@ -36,8 +35,6 @@ class Levels:
 
                 self.collision_boxes_x.append(temp_x)
                 self.collision_boxes_y.append(temp_y)
-
-
 
             if row != 9:
                 row += 1

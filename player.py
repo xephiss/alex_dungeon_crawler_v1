@@ -22,7 +22,7 @@ class Player:
         self.position = pygame.math.Vector2(320.0, 320.0)
         self.speed = 185.0
 
-        self.max_health = 1000
+        self.max_health = 50
         self.health = self.max_health
         self.should_die = False
 
@@ -36,6 +36,7 @@ class Player:
         self.direction = False
 
         self.collision_mapped = False
+        self.touched_state = False
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
@@ -70,6 +71,7 @@ class Player:
     def update_movement(self, time_delta, collision_x, collision_y):
         speed_delta = self.speed * time_delta
         #collision_boxes = collision
+        # Stores the top left corner of all collidable tile regions
         array_of_collision_x = collision_x
         array_of_collision_y = collision_y
         length = len(array_of_collision_x)
@@ -78,11 +80,11 @@ class Player:
         collide_x = False
 
         # All collision arithmetic determines the state of collision when the character is within the collidable regions
-        # With some fine tuning to centre the collisions
+        # With some fine tuning (the +- 10 or 15) to centre the collisions
+
 
         if self.move_up:
             move_to_y = self.position.y - speed_delta
-
             for i in range(0, length):
                 if (array_of_collision_y[i] + self.size_y < move_to_y + self.size_y - 10 <= current_tile_size + array_of_collision_y[i] and
                         array_of_collision_x[i] - 15 < self.position.x <= current_tile_size - 15 + array_of_collision_x[i]):
@@ -151,6 +153,7 @@ class Player:
     def next_frame(self, delta_time):
         self.time_accumulator += delta_time
         # finds the next frame in the animation sequence
+        # time_accumulator compares the time spent on the current frame to determine how long to show the frame for
         if self.time_accumulator > self.frame_speed:
             self.time_accumulator = 0.0
             self.current_frame_index += 1
@@ -161,7 +164,20 @@ class Player:
             self.display_frame = self.frames[self.current_frame_index]
 
 
-    def player_death(self):
+    def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height):
+        if (self.position.x < enemy_pos_x + enemy_width and self.position.x + self.size_x > enemy_pos_x
+                and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y
+           ):
+
+            # prevents health from constantly decreasing whilst in enemy
+            if not self.touched_state:
+                self.health -= 10
+                self.touched_state = True
+        else:
+            self.touched_state = False
+
+        if self.health <= 0:
+            self.should_die = True
 
 '''class RespawnPlayer:
     def __init__(self, player):

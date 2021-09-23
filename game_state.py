@@ -20,10 +20,8 @@ class GameState:
         self.instructions_text = None
         self.instructions_text_pos_rect = None
 
-        self.player1 = player.Player()
-        self.level = game_map.Levels()
         self.time_delta = time_delta
-        self.enemy1 = enemy.Enemy()
+
 
     def start(self):
         self.transition_target = None
@@ -42,6 +40,13 @@ class GameState:
 
         #Animation(knight_red, 16, 22, 0, 4, 0.1)
 
+        self.players = [player.Player()]
+
+        #self.player1 = player.Player()
+        self.level = game_map.Levels()
+
+        self.enemy1 = enemy.Enemy()
+
     def stop(self):
         self.background_surf = None
         self.title_text = None
@@ -53,8 +58,9 @@ class GameState:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.transition_target = 'main_menu'
 
-        self.player1.on_key_press(event)
-        self.player1.on_key_release(event)
+        for player in self.players:
+            player.on_key_press(event)
+            player.on_key_release(event)
 
     def update(self, time_delta):
         # clear the window to the background surface
@@ -69,16 +75,25 @@ class GameState:
         #self.level.draw_collision(self.window_surface)
         self.level.draw(self.window_surface)
 
-        collisions = self.level.collision_boxes
         collisions_x = self.level.collision_boxes_x
         collisions_y = self.level.collision_boxes_y
 
         self.enemy1.next_frame(time_delta)
-        self.enemy1.draw(self.window_surface, self.player1.position.x)
+        self.enemy1.draw(self.window_surface)
 
-        self.player1.update_movement(time_delta, collisions_x, collisions_y)
-        self.player1.next_frame(time_delta)
-        self.player1.draw(self.window_surface)
+        for player in self.players:
+
+            self.enemy1.update_player_pos(player.position.x)
+            self.enemy1.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
+            self.enemy1.attack(self.window_surface, time_delta)
+            player.update_movement(time_delta, collisions_x, collisions_y)
+            player.next_frame(time_delta)
+            # Can eventually do a 'for enemy in enemies.... when multiple instances'
+            player.player_death_damage(self.enemy1.position.x, self.enemy1.position.y, self.enemy1.size_x, self.enemy1.size_y)
+            player.draw(self.window_surface)
+
+            if player.should_die == True:
+                self.players.remove(player)
 
 
 

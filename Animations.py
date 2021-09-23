@@ -10,15 +10,15 @@ class Animation:
         self.frames = []
 
         for i in initial_frames:
-            new_frame = pygame.transform.smoothscale(i, (32, 56))
-            self.frames.append(new_frame)
-
-
+            new_frame = pygame.transform.smoothscale(i, (32, 56))   # Makes all the sprites the same size dimensions
+            self.frames.append(new_frame)                           # Adds to a list so that the animation can run
+                                                                    # via list index position
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
-        self.frame_speed = frame_speed
+        self.frame_speed = frame_speed                              # Allows frame duration rate to be adjusted per instance
         self.time_accumulator = 0.0
 
+    # This method is the logic for determining how long spent on each frame, when to switch
     def update(self, time_passed):
         self.time_accumulator += time_passed
 
