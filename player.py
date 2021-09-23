@@ -37,6 +37,7 @@ class Player:
 
         self.collision_mapped = False
         self.touched_state = False
+        self.hit_state = False
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
@@ -163,8 +164,17 @@ class Player:
 
             self.display_frame = self.frames[self.current_frame_index]
 
+    def draw_health(self, screen):
+        back_box = pygame.Rect(self.position.x - 10, self.position.y - 15, 50, 11)
+        pygame.draw.rect(screen, (0, 0, 0), back_box, 5)
 
-    def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height):
+        health_bar = pygame.Rect(self.position.x - 7, self.position.y - 11, 44 * (self.health/self.max_health), 2.8)
+        pygame.draw.rect(screen, (200, 0, 0), health_bar, 5)
+
+        #health_bar = pygame.Rect(self.position.x + 1, self.position.y - 6, 8, 3)
+        #screen.blit(back_box, self.position.x, self.position.y)
+
+    def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array):
         if (self.position.x < enemy_pos_x + enemy_width and self.position.x + self.size_x > enemy_pos_x
                 and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y
            ):
@@ -176,8 +186,23 @@ class Player:
         else:
             self.touched_state = False
 
+        if len(projectile_array) != 0:
+            for projectile in projectile_array:
+                #pass
+                if (projectile.position.x <= self.position.x + self.size_x and
+                        self.position.x <= projectile.position.x + 15 and
+                        projectile.position.y <= self.position.y + self.size_y and
+                        self.position.y <= projectile.position.y + 15):
+                    self.health -= 1
+
+
+
         if self.health <= 0:
             self.should_die = True
+
+
+
+
 
 '''class RespawnPlayer:
     def __init__(self, player):

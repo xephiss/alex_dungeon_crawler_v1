@@ -89,8 +89,9 @@ class GameState:
             player.update_movement(time_delta, collisions_x, collisions_y)
             player.next_frame(time_delta)
             # Can eventually do a 'for enemy in enemies.... when multiple instances'
-            player.player_death_damage(self.enemy1.position.x, self.enemy1.position.y, self.enemy1.size_x, self.enemy1.size_y)
+            player.player_death_damage(self.enemy1.position.x, self.enemy1.position.y, self.enemy1.size_x, self.enemy1.size_y, self.enemy1.active_projectiles)
             player.draw(self.window_surface)
+            player.draw_health(self.window_surface)
 
             if player.should_die == True:
                 self.players.remove(player)

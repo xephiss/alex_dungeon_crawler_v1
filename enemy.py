@@ -8,7 +8,7 @@ current_tile_size = game_map.current_tile_size
 
 class Enemy:
     def __init__(self):
-        self.position = pygame.math.Vector2(400.0, 400.0)
+        self.position = pygame.math.Vector2(325.0, 390.0)
 
         self.direction = False
 
@@ -32,12 +32,10 @@ class Enemy:
 
         self.projectile = self.enemy_dict[self.current_enemy]
 
-
-
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
         frame_speed = 0.12
-        attack_speed = 2.5
+        attack_speed = 2.2
 
         initial_frames = []
         if self.current_enemy == 'rangeDemon':
@@ -107,16 +105,18 @@ class Enemy:
         # Prevents constant firing, by implementing a reload time
         if self.reloading == True:
             self.attack_time_accumulator += delta_time
+            # Can make attack speed semi_random
             if self.attack_time_accumulator > self.attack_speed:
                 self.attack_time_accumulator = 0.0
                 self.reloading = False
 
         if self.reloading == False:
+            # If the player is left or right, with a bit of a view region so that it is not a single pixel line trigger
             if self.position.y - 2 < player_y + player_height/2 and player_y < self.position.y + self.size_y:
                 if self.current_enemy_type == 'range':
                     self.active_projectiles.append(projectile_sprite.Projectile(self.projectile, self.position.x,
                                                                                 (self.position.y + self.size_y/3),
-                                                                                player_x))
+                                                                                player_x, self.size_x/1.5))
                     self.reloading = True
 
                 else:
