@@ -3,7 +3,7 @@ import background_tiles
 import map_layouts
 
 floor_tiles = background_tiles.floor_tiles
-collideable_tiles = background_tiles.collidable_tiles
+collidable_tiles = background_tiles.collidable_tiles
 aesthetic_tiles = background_tiles.aesthetic_tiles
 
 current_tile_size = 32 * background_tiles.MULTIPLY
@@ -12,8 +12,9 @@ class Levels:
     def __init__(self):
         self.level_number = 1
 
+        self.collidable = 'collidable'
         self.level_one = {'map': map_layouts.level_one_map,
-                          'collideable': map_layouts.level_one_collision,
+                          'collidable': map_layouts.level_one_collision,
                           'aestheticBack': map_layouts.level_one_back_aesthetics,
                           'aestheticFront': map_layouts.level_one_front_aesthetics
                           }
@@ -25,7 +26,7 @@ class Levels:
         self.collision_boxes_y = []
 
         current_level = self.level_array[self.level_number - 1]
-        collidable_array = current_level['collideable']
+        collidable_array = current_level['collidable']
         row = 0
         column = 0
         for tile_iterate in collidable_array:
@@ -62,11 +63,11 @@ class Levels:
 
     def draw_collision(self, screen):
         current_level = self.level_array[self.level_number - 1]
-        tile_array = current_level['collideable']
+        tile_array = current_level['collidable']
         row = 0
         column = 0
         for tile_iterate in tile_array:
-            screen.blit(collideable_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
+            screen.blit(collidable_tiles[tile_iterate], (current_tile_size * row, current_tile_size * column))
             if row != 9:
                 row += 1
             else:

@@ -7,8 +7,8 @@ from pygame.locals import *
 current_tile_size = game_map.current_tile_size
 
 class Enemy:
-    def __init__(self):
-        self.position = pygame.math.Vector2(325.0, 390.0)
+    def __init__(self, position_x, position_y):
+        self.position = pygame.math.Vector2(position_x, position_y)
 
         self.direction = False
 
@@ -35,7 +35,7 @@ class Enemy:
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
         frame_speed = 0.12
-        attack_speed = 2.2
+        attack_speed = 2.0
 
         initial_frames = []
         if self.current_enemy == 'rangeDemon':
@@ -132,3 +132,4 @@ class Enemy:
 
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
+

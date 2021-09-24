@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 import enemy
+import enemy_spawn
 import player
 import game_map
 
@@ -44,8 +45,11 @@ class GameState:
 
         #self.player1 = player.Player()
         self.level = game_map.Levels()
+        self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
 
-        self.enemy1 = enemy.Enemy()
+        self.enemy_count = 0
+        self.active_enemies = []
+        #self.enemy1 = enemy.Enemy()
 
     def stop(self):
         self.background_surf = None
@@ -78,18 +82,26 @@ class GameState:
         collisions_x = self.level.collision_boxes_x
         collisions_y = self.level.collision_boxes_y
 
-        self.enemy1.next_frame(time_delta)
-        self.enemy1.draw(self.window_surface)
+        if self.enemy_count < 2: ########################
+            self.spawn_tiles.spawn()
+            self.active_enemies.append(enemy.Enemy(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y))
+            self.enemy_count += 1
+
+
+        for enemy_inst in self.active_enemies:
+            enemy_inst.next_frame(time_delta)
+            enemy_inst.draw(self.window_surface)
 
         for player in self.players:
-
-            self.enemy1.update_player_pos(player.position.x)
-            self.enemy1.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
-            self.enemy1.attack(self.window_surface, time_delta)
+            for enemy_inst in self.active_enemies:
+                enemy_inst.update_player_pos(player.position.x)
+                enemy_inst.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
+                enemy_inst.attack(self.window_surface, time_delta)
             player.update_movement(time_delta, collisions_x, collisions_y)
             player.next_frame(time_delta)
-            # Can eventually do a 'for enemy in enemies.... when multiple instances'
-            player.player_death_damage(self.enemy1.position.x, self.enemy1.position.y, self.enemy1.size_x, self.enemy1.size_y, self.enemy1.active_projectiles)
+            # !Can eventually do a 'for enemy in enemies.... when multiple instances'
+            for enemy_inst in self.active_enemies:
+                player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles)
             player.draw(self.window_surface)
             player.draw_health(self.window_surface)
 

@@ -188,7 +188,6 @@ class Player:
 
         if len(projectile_array) != 0:
             for projectile in projectile_array:
-                #pass
                 if (projectile.position.x <= self.position.x + self.size_x and
                         self.position.x <= projectile.position.x + 15 and
                         projectile.position.y <= self.position.y + self.size_y and
