@@ -10,6 +10,7 @@ current_tile_size = 32 * background_tiles.MULTIPLY
 
 class Levels:
     def __init__(self):
+        self.mapped_level = False
         self.level_number = 1
 
         self.collidable = 'collidable'

@@ -3,6 +3,7 @@ spritesheet = pygame.image.load('frames/Spritesheet_dungeon.png')
 
 class Projectile:
     def __init__(self, projectile_type, spawn_x, spawn_y, player_x, additional_x):
+        self.death = False
         self.speed = 120.0
         self.time_accumulator = 0.0
         self.spin_speed = 0.1
@@ -48,6 +49,9 @@ class Projectile:
             self.position.x -= speed_delta
         elif self.direction == 'right':
             self.position.x += speed_delta
+
+    def projectile_death(self):
+        self.death = True
 
 
 

@@ -123,12 +123,20 @@ class Enemy:
                     # Melee not implemented yet
                     pass
 
-    def attack(self, screen, delta_time):
+    def attack(self, screen, delta_time, collidablexy):
         if self.current_enemy_type == 'range':
             for projectile in self.active_projectiles:
                 projectile.draw(screen)
                 projectile.update_movement(delta_time)
                 projectile.rotation(delta_time)
+
+                for collidable_tile in collidablexy:
+                    if (projectile.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(projectile.position.x) + 6 and
+                    projectile.position.y  < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(projectile.position.y) + 6):
+                        projectile.projectile_death()
+                        # For future planning of delayed projectile death for death animation
+                        if projectile.death == True:
+                            self.active_projectiles.remove(projectile)
 
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)

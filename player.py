@@ -22,7 +22,7 @@ class Player:
         self.position = pygame.math.Vector2(320.0, 320.0)
         self.speed = 185.0
 
-        self.max_health = 50
+        self.max_health = 100
         self.health = self.max_health
         self.should_die = False
 
@@ -58,6 +58,8 @@ class Player:
         self.display_frame = self.frames[self.current_frame_index]
         self.frame_speed = frame_speed
         self.time_accumulator = 0.0
+
+        self.hurt_time_accumulator = 0.0
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index]
@@ -174,17 +176,22 @@ class Player:
         #health_bar = pygame.Rect(self.position.x + 1, self.position.y - 6, 8, 3)
         #screen.blit(back_box, self.position.x, self.position.y)
 
-    def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array):
+    def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array, delta_time):
+        invulnerable_time = 5.0
         if (self.position.x < enemy_pos_x + enemy_width and self.position.x + self.size_x > enemy_pos_x
                 and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y
            ):
 
             # prevents health from constantly decreasing whilst in enemy
+            if self.touched_state:
+                self.hurt_time_accumulator += delta_time
+                if self.hurt_time_accumulator > invulnerable_time:
+                    self.touched_state = False
+                    self.hurt_time_accumulator = 0.0
             if not self.touched_state:
                 self.health -= 10
                 self.touched_state = True
-        else:
-            self.touched_state = False
+
 
         if len(projectile_array) != 0:
             for projectile in projectile_array:
