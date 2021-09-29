@@ -1,4 +1,6 @@
 import pygame
+
+import player_projectile
 import red_knight_sprites
 import game_map
 from pygame.locals import *
@@ -22,10 +24,16 @@ class Player:
         self.position = pygame.math.Vector2(320.0, 320.0)
         self.speed = 185.0
 
+        # health states
         self.max_health = 100
         self.health = self.max_health
-        self.should_die = False
 
+        self.should_die = False
+        self.touched_state = False
+        self.hit_state = False
+        self.hurt_time_accumulator = 0.0
+
+        # movement states
         self.move_accumulator = 0.0
 
         self.move_up = False
@@ -36,8 +44,15 @@ class Player:
         self.direction = False
 
         self.collision_mapped = False
-        self.touched_state = False
-        self.hit_state = False
+
+        # attack states
+        self.current_weapon = 'fireball'
+        self.attacked = False
+        self.attack_accumulator = 0.0
+        self.attack_delay = 2.0     # Can change in an attack method
+        self.attack_up, self.attack_down, self.attack_left, self.attack_right = False, False, False, False
+        self.active_attacks = []
+
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
@@ -59,7 +74,7 @@ class Player:
         self.frame_speed = frame_speed
         self.time_accumulator = 0.0
 
-        self.hurt_time_accumulator = 0.0
+
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index]
@@ -67,9 +82,6 @@ class Player:
             frame = pygame.transform.flip(frame, True, False)
         screen.blit(frame, (int(self.position.x),
                             int(self.position.y)))
-
-
-
 
     def update_movement(self, time_delta, collision_x, collision_y):
         speed_delta = self.speed * time_delta
@@ -139,7 +151,16 @@ class Player:
                 self.move_right = True
                 self.direction = False
 
-            if event.key == K_p:
+            if event.key == K_UP:
+                self.attack_up = True
+            if event.key == K_DOWN:
+                self.attack_down = True
+            if event.key == K_LEFT:
+                self.attack_left = True
+            if event.key == K_RIGHT:
+                self.attack_right = True
+
+            if event.key == K_p:    # Death Key
                 self.health = 0
 
     def on_key_release(self, event):
@@ -152,6 +173,15 @@ class Player:
                 self.move_left = False
             if event.key == K_d:
                 self.move_right = False
+
+            if event.key == K_UP:
+                self.attack_up = False
+            if event.key == K_DOWN:
+                self.attack_down = False
+            if event.key == K_LEFT:
+                self.attack_left = False
+            if event.key == K_RIGHT:
+                self.attack_right = False
 
     def next_frame(self, delta_time):
         self.time_accumulator += delta_time
@@ -177,7 +207,8 @@ class Player:
         #screen.blit(back_box, self.position.x, self.position.y)
 
     def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array, delta_time):
-        invulnerable_time = 5.0
+        # Provides a contact only invulnerable duration
+        invulnerable_time = 3.0
         if (self.position.x < enemy_pos_x + enemy_width and self.position.x + self.size_x > enemy_pos_x
                 and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y
            ):
@@ -201,10 +232,48 @@ class Player:
                         self.position.y <= projectile.position.y + 15):
                     self.health -= 1
 
-
-
         if self.health <= 0:
             self.should_die = True
+
+    def player_attack_call(self, delta_time):
+        hp_percent = self.health/self.max_health
+        # Will only be able to attack in the four cardinal directions
+        if self.attacked == False:
+            if self.attack_up == True:
+                self.active_attacks.append(player_projectile.PlayerProjectile(self.current_weapon, 'up', hp_percent, self.position))
+                self.attacked = True
+            elif self.attack_down == True:
+                self.active_attacks.append(player_projectile.PlayerProjectile(self.current_weapon, 'down', hp_percent, self.position))
+                self.attacked = True
+            elif self.attack_left == True:
+                self.active_attacks.append(player_projectile.PlayerProjectile(self.current_weapon, 'left', hp_percent, self.position))
+                self.attacked = True
+            elif self.attack_right == True:
+                self.active_attacks.append(player_projectile.PlayerProjectile(self.current_weapon, 'right', hp_percent, self.position))
+                self.attacked = True
+
+        # Timer so attacks have a pause
+        if self.attacked == True:
+            self.attack_accumulator += delta_time
+            if self.attack_accumulator > self.attack_delay:
+                self.attack_accumulator = 0
+                self.attacked = False
+
+    def player_attack_update(self, screen, delta_time, collision_proj):
+        for attack in self.active_attacks:
+            attack.draw(screen)
+            attack.update(delta_time)
+            attack.move(delta_time)
+
+            if self.current_weapon == 'fireball':
+                for collidable_tile in collision_proj:
+                    if (attack.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(attack.position.x) + 6 and
+                    attack.position.y  < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(attack.position.y) + 6):
+                        attack.death = True
+                        # For future planning of delayed projectile death for death animation
+                        if attack.death == True:
+                            self.active_attacks.remove(attack)
+
 
 
 

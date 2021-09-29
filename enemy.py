@@ -9,8 +9,8 @@ current_tile_size = game_map.current_tile_size
 class Enemy:
     def __init__(self, position_x, position_y):
         self.position = pygame.math.Vector2(position_x, position_y)
-
         self.direction = False
+        self.should_die = False
 
         # For random spawning of which unit
         random_type = random.randint(1, 2)
@@ -81,6 +81,8 @@ class Enemy:
                 screen.blit(frame, (int(self.position.x),
                                     int(self.position.y)))
 
+
+
     def update_player_pos(self, player_x):
 
         # Turn the enemy depending on player
@@ -105,7 +107,7 @@ class Enemy:
         # Prevents constant firing, by implementing a reload time
         if self.reloading == True:
             self.attack_time_accumulator += delta_time
-            # Can make attack speed semi_random
+            # Can make attack speed semi_random in the future
             if self.attack_time_accumulator > self.attack_speed:
                 self.attack_time_accumulator = 0.0
                 self.reloading = False

@@ -109,6 +109,8 @@ class GameState:
                 enemy_inst.attack(self.window_surface, time_delta, self.collidablexy_projectile)
             player.update_movement(time_delta, collisions_x, collisions_y)
             player.next_frame(time_delta)
+            player.player_attack_call(time_delta)
+            player.player_attack_update(self.window_surface, time_delta, self.collidablexy_projectile)
             # !Can eventually do a 'for enemy in enemies.... when multiple instances'
             for enemy_inst in self.active_enemies:
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)
