@@ -97,7 +97,7 @@ class PlayerProjectile:
     def draw(self, screen):
         screen.blit(self.display_frame, (self.position.x, self.position.y))
 
-    def move(self, delta_time):
+    def move(self, delta_time, player_pos):
         if self.weapon == 'fireball':
             speed_delta = 120 * delta_time
             if self.direction == 'up':
@@ -109,4 +109,8 @@ class PlayerProjectile:
             else:
                 self.position.x += speed_delta
 
+        else:
+            # Flame and Sword follow player
+            self.position.x = player_pos.x
+            self.position.y = player_pos.y
 

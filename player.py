@@ -47,7 +47,7 @@ class Player:
 
         # attack states
         # Weapons: sword, fireball, flame
-        self.current_weapon = 'flame'
+        self.current_weapon = 'sword'
         self.attacked = False
         self.attack_accumulator = 0.0
         self.attack_delay = 1.0     # Can change in an attack method
@@ -197,32 +197,46 @@ class Player:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-    def draw_health(self, screen):
-        back_box = pygame.Rect(self.position.x - 10, self.position.y - 15, 50, 11)
-        pygame.draw.rect(screen, (0, 0, 0), back_box, 5)
+    def draw_player_timer(self, screen):
+        # Health Bar
+        hp_back_box = pygame.Rect(self.position.x - 10, self.position.y - 15, 50, 11)       # (pos x/y), width, height
+        pygame.draw.rect(screen, (0, 0, 0), hp_back_box, 5)     # Surface, image, border-line thickness
 
         health_bar = pygame.Rect(self.position.x - 7, self.position.y - 11, 44 * (self.health/self.max_health), 2.8)
         pygame.draw.rect(screen, (200, 0, 0), health_bar, 5)
 
-        #health_bar = pygame.Rect(self.position.x + 1, self.position.y - 6, 8, 3)
-        #screen.blit(back_box, self.position.x, self.position.y)
+        # Invulnerable Bar
+        invulnerable_bar = pygame.Rect(35.5, 617, 114 * ((3 - self.hurt_time_accumulator) / 3.0), 3)
+        pygame.draw.rect(screen, (20, 150, 150), invulnerable_bar, 8)
+
+        #invulnerable_front_box = pygame.Rect(32, 600, 100, 14)
+        #pygame.draw.rect(screen, (0, 0, 0), invulnerable_front_box, 5)
+
 
     def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array, delta_time):
         # Provides a contact only invulnerable duration
         invulnerable_time = 3.0
         if (self.position.x < enemy_pos_x + enemy_width and self.position.x + self.size_x > enemy_pos_x
-                and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y
-           ):
+                and self.position.y < enemy_pos_y + enemy_height and self.position.y + self.size_y > enemy_pos_y):
 
             # prevents health from constantly decreasing whilst in enemy
-            if self.touched_state:
-                self.hurt_time_accumulator += delta_time
-                if self.hurt_time_accumulator > invulnerable_time:
-                    self.touched_state = False
-                    self.hurt_time_accumulator = 0.0
             if not self.touched_state:
                 self.health -= 10
                 self.touched_state = True
+        if self.touched_state:
+            self.hurt_time_accumulator += delta_time
+            if self.hurt_time_accumulator > invulnerable_time:
+                self.touched_state = False
+                self.hurt_time_accumulator = 0.0
+
+            # if self.touched_state:
+            #     self.hurt_time_accumulator += delta_time
+            #     if self.hurt_time_accumulator > invulnerable_time:
+            #         self.touched_state = False
+            #         self.hurt_time_accumulator = 0.0
+            # if not self.touched_state:
+            #     self.health -= 10
+            #     self.touched_state = True
 
 
         if len(projectile_array) != 0:
@@ -264,7 +278,7 @@ class Player:
         for attack in self.active_attacks:
             attack.draw(screen)
             attack.update(delta_time)
-            attack.move(delta_time)
+            attack.move(delta_time, self.position)
 
             if self.current_weapon == 'fireball':
                 for collidable_tile in collision_proj:

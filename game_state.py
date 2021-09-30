@@ -15,12 +15,15 @@ class GameState:
 
         self.title_font = pygame.font.Font(None, 64)
         self.instructions_font = pygame.font.Font(None, 32)
+        self.ui_font = pygame.font.Font(None, 20)
 
         self.background_surf = None
         self.title_text = None
         self.title_pos_rect = None
         self.instructions_text = None
         self.instructions_text_pos_rect = None
+        self.ui_text = None
+        self.ui_text_pos_rect = None
 
         self.time_delta = time_delta
 
@@ -39,6 +42,10 @@ class GameState:
 
         #self.instructions_text_pos_rect = self.instructions_text.get_rect()
         #self.instructions_text_pos_rect.center = (400, 100)
+
+        self.ui_text = self.ui_font.render('Collision Invulnerability', True, (200, 200, 200))
+        self.ui_text_pos_rect = self.ui_text.get_rect()
+        self.ui_text_pos_rect.center = (105, 600)
 
         #Animation(knight_red, 16, 22, 0, 4, 0.1)
 
@@ -80,6 +87,8 @@ class GameState:
         #self.level.draw_map(self.window_surface)
         #self.level.draw_aesthetic(self.window_surface)
         #self.level.draw_collision(self.window_surface)
+
+        # Background and map tiles drawn before all game entities
         self.level.draw(self.window_surface)
 
         # Collision Codes
@@ -115,12 +124,21 @@ class GameState:
             for enemy_inst in self.active_enemies:
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)
             player.draw(self.window_surface)
-            player.draw_health(self.window_surface)
+            player.draw_player_timer(self.window_surface)
 
             if player.should_die == True:
                 self.players.remove(player)
 
-
-
+        # Front-ground aesthetic is drawn after all other game entities
         self.level.draw_front_aesthetic(self.window_surface)
+
+
+        # UI Stuff
+        self.window_surface.blit(self.ui_text, self.ui_text_pos_rect)
+        invulnerable_front_box = pygame.Rect(32, 612, 120, 14)      # Pos x, y, width, height
+        pygame.draw.rect(self.window_surface, (0, 0, 0), invulnerable_front_box, 5)     # Colour, image, line size
+
+
+
+
 
