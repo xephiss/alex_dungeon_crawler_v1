@@ -46,10 +46,11 @@ class Player:
         self.collision_mapped = False
 
         # attack states
-        self.current_weapon = 'fireball'
+        # Weapons: sword, fireball, flame
+        self.current_weapon = 'flame'
         self.attacked = False
         self.attack_accumulator = 0.0
-        self.attack_delay = 2.0     # Can change in an attack method
+        self.attack_delay = 1.0     # Can change in an attack method
         self.attack_up, self.attack_down, self.attack_left, self.attack_right = False, False, False, False
         self.active_attacks = []
 
@@ -271,8 +272,8 @@ class Player:
                     attack.position.y  < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(attack.position.y) + 6):
                         attack.death = True
                         # For future planning of delayed projectile death for death animation
-                        if attack.death == True:
-                            self.active_attacks.remove(attack)
+            if attack.death == True:
+                self.active_attacks.remove(attack)
 
 
 

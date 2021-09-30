@@ -6,6 +6,7 @@ class CollisionClass:
         self.collidable_array = level_dict['collidable']
         self.collidable_positions = []
 
+    # For every tile which is not blank '000', there must be collision
     def collision_area(self, level_dict):
         self.collidable_array = level_dict['collidable']
         index = 0
@@ -20,6 +21,7 @@ class CollisionClass:
             # Y-axis = (index // 10) * current_tile_size
             # X-axis = (index % 10) * current_tile_size
 
+    # Projectiles will fly over pits. Tiles: '5XX'
     def collision_area_projectile(self, level_dict):
         self.collidable_array = level_dict['collidable']
         index = 0
