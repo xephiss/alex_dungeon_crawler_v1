@@ -13,6 +13,8 @@ sword_array = []
 fireballMULTI = 1
 fireballSHEET = 800 * fireballMULTI     # spritesheet dimensions
 fireballSIZE = 100 * fireballMULTI      # sprite tile dimension
+fireballBUFFER1 = 35
+fireballBUFFER2 = 30
 
 # Cardinal directions have individual lists
 fireball_array_r = []
@@ -23,7 +25,10 @@ fireball_array_d = []
 for i in range(0, 62):
     fireball_row = (i // 8)
     fireball_column = (i % 8)
-    fireball_array_r.append(fireball_sheet.subsurface(fireball_row * fireballSIZE, fireball_column * fireballSIZE, fireballSIZE, fireballSIZE))
+    fireball_array_r.append(fireball_sheet.subsurface(fireball_row * fireballSIZE + fireballBUFFER2,
+                                                      fireball_column * fireballSIZE + fireballBUFFER1,
+                                                      fireballSIZE - 2 * fireballBUFFER2,
+                                                      fireballSIZE - 2 * fireballBUFFER1))
 
 temp = fireball_array_r
 for i in temp:
@@ -89,20 +94,22 @@ for colourset in range(0, 4):
         temp_frame = sword_slash_sheet.subsurface(35 * slashframe * swordMULTI, 32 * colourset * swordMULTI, 35 * swordMULTI, 32 * swordMULTI)
         initial_temp_array.append(temp_frame)
 
-    temp_array_u = initial_temp_array
+    # Rotations may make image to look inverted, so a transform.flip is used at times
     for i in initial_temp_array:
-        temp_array_r.append(pygame.transform.rotate(i, -90))
+        temp_array_l.append(pygame.transform.flip(i, False, True))
     for i in initial_temp_array:
-        temp_array_d.append(pygame.transform.rotate(i, 180))
+        temp_array_u.append(pygame.transform.rotate(i, -90))
     for i in initial_temp_array:
-        temp_array_l.append(pygame.transform.rotate(i, 90))
+        temp_array_r.append(pygame.transform.flip(pygame.transform.rotate(i, 180), False, False))
+    for i in initial_temp_array:
+        temp_array_d.append(pygame.transform.rotate(i, 90))
 
     # Four cardinal directions
     # Four colour sets in the sword array
-    sword_array_right.append(temp_array_r)
-    sword_array_left.append(temp_array_l)
     sword_array_up.append(temp_array_u)
     sword_array_down.append(temp_array_d)
+    sword_array_left.append(temp_array_l)
+    sword_array_right.append(temp_array_r)
 sword_array = [sword_array_right, sword_array_left, sword_array_up, sword_array_down]
 # Direction -> Colour -> Frame
 

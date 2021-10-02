@@ -124,7 +124,7 @@ class GameState:
             for enemy_inst in self.active_enemies:
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)
             player.draw(self.window_surface)
-            player.draw_player_timer(self.window_surface)
+            player.draw_player_bar(self.window_surface)
 
             if player.should_die == True:
                 self.players.remove(player)

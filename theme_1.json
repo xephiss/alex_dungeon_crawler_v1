@@ -1,0 +1,39 @@
+{
+  "button": {
+    "colours": {
+      "normal_bg": "#803900",
+      "hovered_bg": "#553355",
+      "normal_text": "#000000",
+      "hover_text": "#555555",
+      "normal_border": "#000000"
+    },
+    "font": {
+      "name": "CinzelDecorative",
+      "size": "16",
+      "regular_resource": {
+        "package": "Fonts.Cinzel",
+        "resource": "CinzelDecorative-Regular.ttf"
+      }
+    },
+    "misc":
+    {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "1"
+    }
+  },
+  "title_screen": {
+    "font": {
+      "bold": "1",
+      "name": "CinzelDecorative",
+      "size": "32",
+      "bold_resource": {
+        "package": "Font.Cinzel",
+        "resource": "CinzelDecorative-Bold.ttf"
+      },
+      "colours": {
+        "normal_text": "#ccffcc"
+      }
+    }
+  }
+
+}
