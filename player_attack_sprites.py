@@ -12,9 +12,11 @@ sword_array = []
 # Size can be changed here
 fireballMULTI = 1
 fireballSHEET = 800 * fireballMULTI     # spritesheet dimensions
-fireballSIZE = 100 * fireballMULTI      # sprite tile dimension
-fireballBUFFER1 = 35
-fireballBUFFER2 = 30
+fireballSIZE = 100 * fireballMULTI
+fireball_width = 45 * fireballMULTI      # sprite tile dimension
+fireball_height = 34 * fireballMULTI
+fireballBUFFER1 = 30        # X-axis buffer
+fireballBUFFER2 = 35        # Y-axis buffer
 
 # Cardinal directions have individual lists
 fireball_array_r = []
@@ -25,10 +27,10 @@ fireball_array_d = []
 for i in range(0, 62):
     fireball_row = (i // 8)
     fireball_column = (i % 8)
-    fireball_array_r.append(fireball_sheet.subsurface(fireball_row * fireballSIZE + fireballBUFFER2,
-                                                      fireball_column * fireballSIZE + fireballBUFFER1,
-                                                      fireballSIZE - 2 * fireballBUFFER2,
-                                                      fireballSIZE - 2 * fireballBUFFER1))
+    fireball_array_r.append(fireball_sheet.subsurface(fireball_row * fireballSIZE + fireballBUFFER1,
+                                                      fireball_column * fireballSIZE + fireballBUFFER2,
+                                                      fireball_width,
+                                                      fireball_height))
 
 temp = fireball_array_r
 for i in temp:

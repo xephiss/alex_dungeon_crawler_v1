@@ -27,9 +27,22 @@ class CollisionClass:
         index = 0
         self.collidable_positions_projectile = []
         for iterable_tile in self.collidable_array:
-            if iterable_tile != '000' and not (500 <= int(iterable_tile) <= 544):
+            # Top and bottom tiles have different hit-boxes
+            if iterable_tile == '111':
+                x_temp = (index % 10) * current_tile_size
+                y_temp = (index // 10) * current_tile_size - 20
+                self.collidable_positions_projectile.append([x_temp, y_temp])
+
+            elif iterable_tile == '131':
+                x_temp = (index % 10) * current_tile_size
+                y_temp = (index // 10) * current_tile_size + 20
+                self.collidable_positions_projectile.append([x_temp, y_temp])
+
+            elif iterable_tile != '000' and not (500 <= int(iterable_tile) <= 544):
                 x_temp = (index % 10) * current_tile_size
                 y_temp = (index // 10) * current_tile_size
                 self.collidable_positions_projectile.append([x_temp, y_temp])
+
+
 
             index += 1

@@ -4,18 +4,22 @@ import pygame
 
 class PlayerProjectile:
     def __init__(self, weapon, direction, health, spawn_pos, player_momentum):
-        self.momentum = player_momentum
-
+        self.weapon = weapon
+        # Animation Attributes
         self.time_accumulator = 0.0
         self.current_frame_index = 0
         self.animation_delay = 0
+        self.direction = direction
+        # Positional Attributes
         self.position = pygame.math.Vector2(spawn_pos.x, spawn_pos.y)
         self.change_position = pygame.math.Vector2(0, 0)
-        self.weapon = weapon
-        self.direction = direction
+        self.momentum = player_momentum
+
+        # Projectile and interaction Attributes
         self.death = False
         self.current_projectile_array = None
-        sword_direction_array = None
+        self.hit_enemy = False
+
 
         if weapon == 'fireball':
             if direction == 'right':
@@ -25,7 +29,7 @@ class PlayerProjectile:
             if direction == 'left':
                 self.current_projectile_array = player_attack_sprites.fireball_array[1]
                 self.position.x -= 32
-                self.position.y += 16
+                self.position.y += 10
             if direction == 'up':
                 self.current_projectile_array = player_attack_sprites.fireball_array[2]
                 self.position.x -= 2
@@ -34,6 +38,9 @@ class PlayerProjectile:
                 self.current_projectile_array = player_attack_sprites.fireball_array[3]
                 self.position.x += 5
                 self.position.y += 25
+
+            self.width = player_attack_sprites.fireball_width
+            self.height = player_attack_sprites.fireball_height
 
             # Animation delay for fireball
             self.animation_delay = 0.05
@@ -61,6 +68,8 @@ class PlayerProjectile:
             self.position.x += self.change_position.x
             self.position.y += self.change_position.y
 
+            self.width = 96 * player_attack_sprites.flameMULTI
+            self.height = 16 * player_attack_sprites.flameMULTI
             # Animation speed for flame
             self.animation_delay = 0.15
 
@@ -94,6 +103,9 @@ class PlayerProjectile:
                 self.current_projectile_array = sword_direction_array[0]
             elif health > 0.0:
                 self.current_projectile_array = sword_direction_array[1]
+
+            self.width = 175 * player_attack_sprites.swordMULTI
+            self.height = 128 * player_attack_sprites.swordMULTI
 
             # Animation speed for sword
             self.animation_delay = 0.1

@@ -49,7 +49,7 @@ class Player:
 
         # attack states
         # Weapons: sword, fireball, flame
-        self.current_weapon = 'sword'
+        self.current_weapon = 'fireball'
         self.attacked = False
         self.attack_accumulator = 0.0
         self.attack_delay = 1.0     # Can change in an attack method
@@ -291,10 +291,10 @@ class Player:
             attack.update(delta_time)
             attack.move(delta_time, self.position)
 
-            if self.current_weapon == 'fireball':
+            if self.current_weapon == 'fireball':   ## CHANGE this to weapon in the instance rather than current weapon
                 for collidable_tile in collision_proj:
-                    if (attack.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(attack.position.x) + 6 and
-                    attack.position.y < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(attack.position.y) + 6):
+                    if (attack.position.x + 20 < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(attack.position.x) + 17 and
+                    attack.position.y < collidable_tile[1] + current_tile_size - 5 and collidable_tile[1] < int(attack.position.y)):
                         attack.death = True
                         # For future planning of delayed projectile death for death animation
             if attack.death == True:

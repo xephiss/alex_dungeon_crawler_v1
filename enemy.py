@@ -8,9 +8,16 @@ current_tile_size = game_map.current_tile_size
 
 class Enemy:
     def __init__(self, position_x, position_y):
+        # Positional States
         self.position = pygame.math.Vector2(position_x, position_y)
         self.direction = False
+
+        # Health States
+        self.max_hp = 100
+        self.hp = self.max_hp
         self.should_die = False
+        self.hit_state = False
+        self.hurt_time_accumulator = 0.0
 
         # For random spawning of which unit
         random_type = random.randint(1, 2)
@@ -103,6 +110,10 @@ class Enemy:
 
             self.display_frame = self.frames[self.current_frame_index]
 
+        # Health validation here so a death animation can be added
+        if self.hp <= 0:
+            self.should_die = True
+
     def check_attack(self, player_x, player_y, player_height, delta_time):
         # Prevents constant firing, by implementing a reload time
         if self.reloading == True:
@@ -143,3 +154,13 @@ class Enemy:
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
 
+    def health_update(self, player_attacks_array, delta_time):
+        for player_attack in player_attacks_array:
+            # Check collision with all projectile
+            if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
+            and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):
+                # Damaged state
+                if not player_attack.hit_enemy:
+                    self.hp -= 30
+                    player_attack.hit_enemy = True
+            # Position comparison to take damage
