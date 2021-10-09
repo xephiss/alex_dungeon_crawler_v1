@@ -1,6 +1,13 @@
 import pygame
 import background_tiles
+import levels_file.level_one
+import levels_file.level_two
+import levels_file.level_three
+import levels_file.level_four
+import levels_file.level_five
+import levels_file.level_six
 import map_layouts
+
 
 floor_tiles = background_tiles.floor_tiles
 collidable_tiles = background_tiles.collidable_tiles
@@ -11,15 +18,16 @@ current_tile_size = 32 * background_tiles.MULTIPLY
 class Levels:
     def __init__(self):
         self.mapped_level = False
-        self.level_number = 1
+        self.level_number = 2
 
         self.collidable = 'collidable'
-        self.level_one = {'map': map_layouts.level_one_map,
-                          'collidable': map_layouts.level_one_collision,
-                          'aestheticBack': map_layouts.level_one_back_aesthetics,
-                          'aestheticFront': map_layouts.level_one_front_aesthetics
-                          }
-        self.level_array = [self.level_one]
+        level_one = levels_file.level_one.level_one_dict
+        level_two = levels_file.level_two.level_two_dict
+        level_three = levels_file.level_three.level_three_dict
+        level_four = levels_file.level_four.level_four_dict
+        level_five = levels_file.level_five.level_five_dict
+        level_six = levels_file.level_six.level_six_dict
+        self.level_array = [level_one, level_two, level_three, level_four, level_five, level_six]
 
         # Collision algorithm
         '''self.collision_boxes = []'''
@@ -44,7 +52,27 @@ class Levels:
                 row = 0
                 column += 1
 
+    def get_level(self):
+        self.collision_boxes_x = []
+        self.collision_boxes_y = []
 
+        current_level = self.level_array[self.level_number - 1]
+        collidable_array = current_level['collidable']
+        row = 0
+        column = 0
+        for tile_iterate in collidable_array:
+            if tile_iterate != '000' and tile_iterate != '131':
+                temp_x = row * current_tile_size               # Holds the current collidable tile positions
+                temp_y = column * current_tile_size
+
+                self.collision_boxes_x.append(temp_x)
+                self.collision_boxes_y.append(temp_y)
+
+            if row != 9:
+                row += 1
+            else:
+                row = 0
+                column += 1
     # keytable = ('test', 'test2')
     # for i in keytable:
     #    print(tiles[i])

@@ -76,6 +76,23 @@ class GameState:
             player.on_key_press(event)
             player.on_key_release(event)
 
+        # Debugging: level change
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_0:
+            self.level.level_number += 1
+            self.level.level_number = self.level.level_number % len(self.level.level_array)     # Remainder
+            # Loops the levels via button press
+            if self.level.level_number == 0:
+                self.level.level_number = len(self.level.level_array)
+            if self.level.level_number > len(self.level.level_array):
+                self.level.level_number = 1
+
+            self.level.get_level()
+            self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
+            self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
+            self.level.mapped_level = False
+            if len(self.active_enemies) < 2:
+                self.enemy_count = 0
+
     def update(self, time_delta):
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
