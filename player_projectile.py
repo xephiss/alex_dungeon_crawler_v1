@@ -182,6 +182,7 @@ class PlayerProjectile:
 
         else:
             # Flame and Sword follow player
+            # Projectile position = player position, plus the fine tuned adjustments
             if self.weapon == 'sword':
                 self.position.x = player_pos.x + self.change_position.x
                 self.position.y = player_pos.y + self.change_position.y

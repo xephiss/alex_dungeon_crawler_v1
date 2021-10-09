@@ -21,11 +21,26 @@
       "shape_corner_radius": "1"
     }
   },
-  "title_screen": {
+  "title_screen_back": {
     "font": {
       "bold": "1",
       "name": "CinzelDecorative",
-      "size": "32",
+      "size": "40",
+      "bold_resource": {
+        "package": "Font.Cinzel",
+        "resource": "CinzelDecorative-Bold.ttf"
+      },
+      "colours": {
+        "normal_text": "#ccffcc",
+        "hover_text": "#ccffcc"
+      }
+    }
+  },
+    "title_screen_front": {
+    "font": {
+      "bold": "1",
+      "name": "CinzelDecorative",
+      "size": "40",
       "bold_resource": {
         "package": "Font.Cinzel",
         "resource": "CinzelDecorative-Bold.ttf"

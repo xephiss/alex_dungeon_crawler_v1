@@ -10,7 +10,7 @@ class GameApp:
 
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption('Game')
+        pygame.display.set_caption('Krypt')
         self.window_surface = pygame.display.set_mode((640, 640))
         # Can add theme file after the (640, 640)
         self.ui_manager = pygame_gui.UIManager((640, 640), 'theme_1.json')
