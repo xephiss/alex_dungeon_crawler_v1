@@ -24,6 +24,8 @@ fireball_array_l = []
 fireball_array_u = []
 fireball_array_d = []
 
+# Cuts each frame out of the spritesheet, fireballBUFFER removes the whitespace between frame region (100x100),
+# and actual frame
 for i in range(0, 62):
     fireball_row = (i // 8)
     fireball_column = (i % 8)
@@ -46,18 +48,21 @@ fireball_array = [fireball_array_r, fireball_array_l, fireball_array_u, fireball
 
 # Creating array for flame projectiles
 flameMULTI = 2
+# Resizing sprite
 h_flame_sheet = pygame.transform.smoothscale(h_flame_sheet, (int(96 * flameMULTI), int(16 * flameMULTI)))
 
-# For left or right facing arrays
+# For left or right facing flame arrays
 h_flame_array_r = []
 h_flame_array_l = []
 for i in range(0, 3):
     h_flame_array_r.append(h_flame_sheet.subsurface(i * 32 * flameMULTI, 0, 32 * flameMULTI, 16 * flameMULTI))
-temp = h_flame_array_r  # Need a temporary holding as the pygame..rotate,uses the actual data rather than as a reference
+temp = h_flame_array_r  # Need a temporary holding as the pygame..rotate,uses the actual data rather than as a copy
 for i in temp:
     h_flame_array_l.append(pygame.transform.rotate(i, 180))
 
+# Resizing sprite
 v_flame_sheet = pygame.transform.smoothscale(v_flame_sheet, (int(16 * flameMULTI), int(128 * flameMULTI)))
+# For up and down facing flame arrays
 v_flame_array_d = []
 v_flame_array_u = []
 for i in range(0, 4):
@@ -72,7 +77,7 @@ flame_array = [[h_flame_array_r, h_flame_array_l], [v_flame_array_u, v_flame_arr
 swordMULTI = 2
 sword_slash_sheet = pygame.transform.smoothscale(sword_slash_sheet, (int(175 * swordMULTI), int(128 * swordMULTI)))
 
-# Directional sprite arrays
+# Directional sprite arrays for sword slash
 # temp will hold a single colour, single direction
 temp_array_u = []
 temp_array_r = []
@@ -88,6 +93,7 @@ sword_array_down = []
 # Sword slashes: Blue, Purple, White, Yellow
 for colourset in range(0, 4):
     initial_temp_array = []
+    # Single direction, all colours
     temp_array_u = []
     temp_array_r = []
     temp_array_d = []
@@ -113,7 +119,7 @@ for colourset in range(0, 4):
     sword_array_left.append(temp_array_l)
     sword_array_right.append(temp_array_r)
 sword_array = [sword_array_right, sword_array_left, sword_array_up, sword_array_down]
-# Direction -> Colour -> Frame
+# 3D Array: Direction -> Colour -> Frame
 
 # for i in range(0, 5):
 #     sword_array[i] = pygame.transform.rotate(sword_array[i], 45)

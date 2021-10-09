@@ -10,6 +10,8 @@ class PlayerProjectile:
         self.current_frame_index = 0
         self.animation_delay = 0
         self.direction = direction
+        sword_direction_array = []      # Prevents python alert for local variable line 100, 102...
+        self.attack_delay = 1.0         # Different weapons have different fire rate
         # Positional Attributes
         self.position = pygame.math.Vector2(spawn_pos.x, spawn_pos.y)
         self.change_position = pygame.math.Vector2(0, 0)
@@ -19,6 +21,7 @@ class PlayerProjectile:
         self.death = False
         self.current_projectile_array = None
         self.hit_enemy = False
+        self.weapon_damage = 30
 
 
         if weapon == 'fireball':
@@ -44,6 +47,9 @@ class PlayerProjectile:
 
             # Animation delay for fireball
             self.animation_delay = 0.05
+            # Fireball Unique attributes
+            self.weapon_damage = 20
+            self.attack_delay = 0.8
 
         elif weapon == 'flame':
             # Make sure the correct flame direction sprite is being used through the 2d Array
@@ -72,6 +78,9 @@ class PlayerProjectile:
             self.height = 16 * player_attack_sprites.flameMULTI
             # Animation speed for flame
             self.animation_delay = 0.15
+            # Flame unique attributes
+            self.weapon_damage = 50
+            self.attack_delay = 1.0
 
         else:       # Swords
             if direction == 'right':
@@ -95,20 +104,27 @@ class PlayerProjectile:
             self.position.y += self.change_position.y
 
             # Different colour slash depending on percentage health : White -> Yellow -> Blue -> Purple
+            # Different attack colour delas different damage
             if health > 0.75:
                 self.current_projectile_array = sword_direction_array[2]
+                self.weapon_damage = 10
             elif health > 0.5:
                 self.current_projectile_array = sword_direction_array[3]
+                self.weapon_damage = 15
             elif health > 0.25:
                 self.current_projectile_array = sword_direction_array[0]
+                self.weapon_damage = 20
             elif health > 0.0:
                 self.current_projectile_array = sword_direction_array[1]
+                self.weapon_damage = 25
 
             self.width = 175 * player_attack_sprites.swordMULTI
             self.height = 128 * player_attack_sprites.swordMULTI
 
             # Animation speed for sword
             self.animation_delay = 0.1
+            # Sword unique attributes
+            self.attack_delay = 0.7
 
         self.number_frames = len(self.current_projectile_array)
         # Default direction is right, unless it is 'flame[1] (vertical)'
@@ -171,3 +187,8 @@ class PlayerProjectile:
                 self.position.x = player_pos.x + self.change_position.x
                 self.position.y = player_pos.y + self.change_position.y
 
+
+    # Debugging
+    def hitbox(self, screen):
+        rectangle = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
+        pygame.draw.rect(screen, (200,150,200,20), rectangle)

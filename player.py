@@ -55,6 +55,7 @@ class Player:
         self.attack_delay = 1.0     # Can change in an attack method
         self.attack_up, self.attack_down, self.attack_left, self.attack_right = False, False, False, False
         self.active_attacks = []
+        #self.weapon_damage = 30
 
 
         # Higher frame_speed means slower animation speed,
@@ -163,8 +164,18 @@ class Player:
             if event.key == K_RIGHT:
                 self.attack_right = True
 
+            # Debugging and Testing
             if event.key == K_p:    # Death Key
                 self.health = 0
+            if event.key == K_o:    # Heal Key
+                self.health += 20
+            if event.key == K_1:    # Sword
+                self.current_weapon = 'sword'
+            if event.key == K_2:    # Flame
+                self.current_weapon = 'flame'
+            if event.key == K_3:    # Fireball
+                self.current_weapon = 'fireball'
+
 
     def on_key_release(self, event):
         if event.type == pygame.KEYUP:
@@ -233,6 +244,8 @@ class Player:
                 self.touched_state = False
                 self.hurt_time_accumulator = 0.0
 
+        if self.health > self.max_health:
+            self.health = self.max_health
             # if self.touched_state:
             #     self.hurt_time_accumulator += delta_time
             #     if self.hurt_time_accumulator > invulnerable_time:
@@ -287,11 +300,13 @@ class Player:
 
     def player_attack_update(self, screen, delta_time, collision_proj):
         for attack in self.active_attacks:
+            attack.hitbox(screen)           # Debugging hit box
             attack.draw(screen)
             attack.update(delta_time)
             attack.move(delta_time, self.position)
+            self.attack_delay = attack.attack_delay
 
-            if self.current_weapon == 'fireball':   ## CHANGE this to weapon in the instance rather than current weapon
+            if attack.weapon == 'fireball':   ## CHANGE this to weapon in the instance rather than current weapon
                 for collidable_tile in collision_proj:
                     if (attack.position.x + 20 < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(attack.position.x) + 17 and
                     attack.position.y < collidable_tile[1] + current_tile_size - 5 and collidable_tile[1] < int(attack.position.y)):
@@ -300,12 +315,4 @@ class Player:
             if attack.death == True:
                 self.active_attacks.remove(attack)
 
-
-
-
-
-
-'''class RespawnPlayer:
-    def __init__(self, player):
-        self.control_scheme = player.scheme'''
 

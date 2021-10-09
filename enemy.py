@@ -154,13 +154,13 @@ class Enemy:
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
 
-    def health_update(self, player_attacks_array, delta_time):
+    def health_update(self, player_attacks_array):
         for player_attack in player_attacks_array:
             # Check collision with all projectile
             if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
             and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):
                 # Damaged state
                 if not player_attack.hit_enemy:
-                    self.hp -= 30
+                    self.hp -= player_attack.weapon_damage
                     player_attack.hit_enemy = True
             # Position comparison to take damage

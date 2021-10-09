@@ -125,7 +125,7 @@ class GameState:
             # !Can eventually do a 'for enemy in enemies.... when multiple instances'
             for enemy_inst in self.active_enemies:
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)
-                enemy_inst.health_update(player.active_attacks, time_delta)
+                enemy_inst.health_update(player.active_attacks)
             player.draw(self.window_surface)
             player.draw_player_bar(self.window_surface)
 
