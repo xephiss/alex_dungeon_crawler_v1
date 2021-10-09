@@ -22,6 +22,7 @@ class PlayerProjectile:
         self.current_projectile_array = None
         self.hit_enemy = False
         self.weapon_damage = 30
+        self.hitbox = pygame.Rect(0, 0, 0, 0)       # Declares the hitbox variable as a .rect surface
 
 
         if weapon == 'fireball':
@@ -124,7 +125,7 @@ class PlayerProjectile:
             # Animation speed for sword
             self.animation_delay = 0.1
             # Sword unique attributes
-            self.attack_delay = 0.7
+            self.attack_delay = 0.5
 
         self.number_frames = len(self.current_projectile_array)
         # Default direction is right, unless it is 'flame[1] (vertical)'
@@ -164,6 +165,7 @@ class PlayerProjectile:
 
     def draw(self, screen):
         screen.blit(self.display_frame, (self.position.x, self.position.y))
+        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
 
     def move(self, delta_time, player_pos):
         if self.weapon == 'fireball':
@@ -188,7 +190,9 @@ class PlayerProjectile:
                 self.position.y = player_pos.y + self.change_position.y
 
 
-    # Debugging
-    def hitbox(self, screen):
-        rectangle = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
-        pygame.draw.rect(screen, (200,150,200,20), rectangle)
+# Debugging
+debugging = False
+if debugging:
+    def debug_hitbox(self, screen):
+        self.rectangle = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
+        pygame.draw.rect(screen, (200,150,200,20), self.rectangle)

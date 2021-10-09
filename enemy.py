@@ -155,12 +155,23 @@ class Enemy:
                     self.active_projectiles.remove(projectile)
 
     def health_update(self, player_attacks_array):
+        sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
         for player_attack in player_attacks_array:
             # Check collision with all projectile
-            if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
-            and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):
+            '''if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
+            and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):''' # Old code
+            if pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
                 # Damaged state
                 if not player_attack.hit_enemy:
                     self.hp -= player_attack.weapon_damage
                     player_attack.hit_enemy = True
             # Position comparison to take damage
+
+
+# Debugging methods
+    def hitbox(self, screen, player_attacks_array):
+        rectangle = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
+        pygame.draw.rect(screen, (200,100,100,20), rectangle)
+        for player_attack in player_attacks_array:
+            if pygame.Rect.colliderect(rectangle, player_attack.hitbox):
+                print('Collided')

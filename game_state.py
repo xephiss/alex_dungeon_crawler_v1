@@ -101,31 +101,38 @@ class GameState:
             self.collidablexy_projectile = self.collision_class.collidable_positions_projectile
             self.level.mapped_level = True
 
+        # Spawn a number of enemies
         if self.enemy_count < 2:
             self.spawn_tiles.spawn()
             self.active_enemies.append(enemy.Enemy(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y))
             self.enemy_count += 1
 
-
+        # Update independent enemy methods
         for enemy_inst in self.active_enemies:
             enemy_inst.next_frame(time_delta)
             enemy_inst.draw(self.window_surface)
             if enemy_inst.should_die == True:
                 self.active_enemies.remove(enemy_inst)
 
+        # Update methods that depend on player
         for player in self.players:
-            for enemy_inst in self.active_enemies:
-                enemy_inst.update_player_pos(player.position.x)
-                enemy_inst.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
-                enemy_inst.attack(self.window_surface, time_delta, self.collidablexy_projectile)
+            #for enemy_inst in self.active_enemies:
+
             player.update_movement(time_delta, collisions_x, collisions_y)
             player.next_frame(time_delta)
             player.player_attack_call(time_delta)
             player.player_attack_update(self.window_surface, time_delta, self.collidablexy_projectile)
-            # !Can eventually do a 'for enemy in enemies.... when multiple instances'
+
+            # Update enemy - player interactions
             for enemy_inst in self.active_enemies:
+                enemy_inst.update_player_pos(player.position.x)
+                enemy_inst.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
+                enemy_inst.attack(self.window_surface, time_delta, self.collidablexy_projectile)
+
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)
                 enemy_inst.health_update(player.active_attacks)
+                #enemy_inst.hitbox(self.window_surface, player.active_attacks)  # Debugging hitbox
+
             player.draw(self.window_surface)
             player.draw_player_bar(self.window_surface)
 

@@ -300,7 +300,7 @@ class Player:
 
     def player_attack_update(self, screen, delta_time, collision_proj):
         for attack in self.active_attacks:
-            attack.hitbox(screen)           # Debugging hit box
+            #attack.debug_hitbox(screen)     # Debugging hit box
             attack.draw(screen)
             attack.update(delta_time)
             attack.move(delta_time, self.position)
