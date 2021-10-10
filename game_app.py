@@ -12,7 +12,7 @@ class GameApp:
         pygame.init()
         pygame.display.set_caption('Krypt')
         self.window_surface = pygame.display.set_mode((640, 640))
-        # Can add theme file after the (640, 640)
+        # Adds theme file after the (640, 640)
         self.ui_manager = pygame_gui.UIManager((640, 640), 'theme_1.json')
         self.clock = pygame.time.Clock()
         time_delta = self.clock.tick(60)/1000.0

@@ -10,12 +10,13 @@ class MainMenuState:
         self.transition_target = None
         self.window_surface = window_surface
         self.ui_manager = ui_manager
-        #self.title_font = pygame.font.Font(None, 64)
+        # self.title_font = pygame.font.Font(None, 64)  - Old Code
         # Receive styling for fonts
         self.title_font_front = self.ui_manager.get_theme().get_font(["title_screen_front"])
         self.title_font_back = self.ui_manager.get_theme().get_font(["title_screen_back"])
 
         self.background_surf = None
+        # Need declaration of attributes for both title text so that they can be called and stopped
         self.title_text1 = None
         self.title_pos_rect1 = None
         self.title_text2 = None
@@ -30,13 +31,15 @@ class MainMenuState:
         self.background_surf = pygame.Surface((640, 640))
         self.background_surf.fill((200, 160, 100))
 
+        # Renders the title text and position
         self.title_text1 = self.title_font_front.render('Krypt', True, (200, 10, 50))
-        self.title_pos_rect1 = self.title_text1.get_rect()
-        self.title_pos_rect1.center = (321, 79)
+        self.title_pos_rect1 = self.title_text1.get_rect()      # Receive area
+        self.title_pos_rect1.center = (321, 79)                 # Define position to render center
         self.title_text2 = self.title_font_back.render('Krypt', True, (200, 120, 30))
         self.title_pos_rect2 = self.title_text2.get_rect()
         self.title_pos_rect2.center = (319, 80)
 
+        # Uses the values in the attribute 'ui_manager' to style buttons
         self.start_game_button = UIButton(pygame.Rect((245, 210), (150, 30)),
                                           'Start Game',
                                           self.ui_manager)
@@ -48,6 +51,7 @@ class MainMenuState:
                                     self.ui_manager)
 
     def stop(self):
+        # Stops all main-menu related processes
         self.background_surf = None
         self.title_text1 = None
         self.title_pos_rect1 = None

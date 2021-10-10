@@ -211,10 +211,15 @@ class Player:
             self.display_frame = self.frames[self.current_frame_index]
 
     def draw_player_bar(self, screen):
-        # Health Bar: Red Health and Black Outline
+        # Changeable colour variable
+        colour_hex = int(255 * self.health/self.max_health)
+        if self.health > 20:        # Buffer colour for more time as red
+            colour_hex -= 20
+
+        # Health Bar: Coloured Health and Black Outline
         health_bar = pygame.Surface((44 * (self.health / self.max_health), 7))     # Width, Height
         health_bar.set_alpha(100)           # Sets transparency (alpha value)
-        health_bar.fill((200, 0, 0))        # Fills colour
+        health_bar.fill((200, colour_hex, 0))        # Fills colour, change with health proportion
         screen.blit(health_bar, (self.position.x - 6, self.position.y - 12))        # Position
 
         hp_front_box = pygame.Rect(self.position.x - 8, self.position.y - 13, 47, 9)       # (pos x/y), width, height

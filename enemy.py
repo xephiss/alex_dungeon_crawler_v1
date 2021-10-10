@@ -154,18 +154,43 @@ class Enemy:
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
 
-    def health_update(self, player_attacks_array):
+    def health_update(self, player_attacks_array, delta_time, player_weapon):
         sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
         for player_attack in player_attacks_array:
             # Check collision with all projectile
             '''if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
             and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):''' # Old code
+            # Area collision testing using built-in pygame get_rect area
             if pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
-                # Damaged state
-                if not player_attack.hit_enemy:
+                if not self.hit_state:
                     self.hp -= player_attack.weapon_damage
-                    player_attack.hit_enemy = True
-            # Position comparison to take damage
+                    self.hit_state = True
+
+            # Different weapon animations affects invulnerability time needed for enemy
+            if player_weapon == 'fireball':
+                if not pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
+                    self.hurt_time_accumulator += delta_time
+                    if self.hurt_time_accumulator > 0.7:
+                        self.hit_state = False
+                        self.hurt_time_accumulator = 0
+
+            elif player_weapon == 'sword':
+                self.hurt_time_accumulator += delta_time
+                if self.hurt_time_accumulator > 0.7:
+                    self.hit_state = False
+                    self.hurt_time_accumulator = 0
+
+            elif player_weapon == 'flame':
+                self.hurt_time_accumulator += delta_time
+                if self.hurt_time_accumulator > 1.1:
+                    self.hit_state = False
+                    self.hurt_time_accumulator = 0
+
+                # if not player_attack.hit_enemy:
+                #     self.hp -= player_attack.weapon_damage
+                #     player_attack.hit_enemy = True
+
+
 
 
 # Debugging methods
