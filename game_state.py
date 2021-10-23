@@ -43,11 +43,10 @@ class GameState:
         #self.instructions_text_pos_rect = self.instructions_text.get_rect()
         #self.instructions_text_pos_rect.center = (400, 100)
 
+        # Creating the character UI text, and defining the position
         self.ui_text = self.ui_font.render('Collision Invulnerability', True, (200, 200, 200))
         self.ui_text_pos_rect = self.ui_text.get_rect()
         self.ui_text_pos_rect.center = (105, 600)
-
-        #Animation(knight_red, 16, 22, 0, 4, 0.1)
 
         self.players = [player.Player()]
 
@@ -161,7 +160,7 @@ class GameState:
 
 
         # UI Stuff
-        self.window_surface.blit(self.ui_text, self.ui_text_pos_rect)
+        self.window_surface.blit(self.ui_text, self.ui_text_pos_rect)   # Draw the text
         invulnerable_front_box = pygame.Rect(32, 612, 120, 14)      # Pos x, y, width, height
         pygame.draw.rect(self.window_surface, (0, 0, 0), invulnerable_front_box, 5)     # Colour, image, line size
 

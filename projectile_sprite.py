@@ -1,24 +1,26 @@
 import pygame
 spritesheet = pygame.image.load('frames/Spritesheet_dungeon.png')
 
+# Projectile Class for Enemy Projectiles
 class Projectile:
     def __init__(self, projectile_type, spawn_x, spawn_y, player_x, additional_x):
-        self.death = False
-        self.speed = 120.0
+        self.death = False      # When True, delete the instance
+        self.speed = 120.0      # Movement speed
+        # Timer and animation attributes
         self.time_accumulator = 0.0
-        self.spin_speed = 0.1
+        self.spin_speed = 0.1   # Rate of spin speed
+        self.current_frame_index = 0
 
+        # Determines whether the projectile should fire left or right
         if player_x <= spawn_x:
             self.direction = 'left'
         else:
             self.direction = 'right'
             spawn_x += additional_x
 
-        self.position = pygame.math.Vector2(spawn_x, spawn_y)
+        self.position = pygame.math.Vector2(spawn_x, spawn_y)   # Position to spawn
         self.projectile_image = projectile_type
-
-        self.current_frame_index = 0
-
+        # For rotating the sprite
         projectile_frame1 = self.projectile_image
         projectile_frame2 = pygame.transform.rotate(self.projectile_image, 45)
         projectile_frame3 = pygame.transform.rotate(self.projectile_image, 90)

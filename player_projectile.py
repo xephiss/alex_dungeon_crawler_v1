@@ -164,8 +164,8 @@ class PlayerProjectile:
                 self.display_frame = self.current_projectile_array[self.current_frame_index]
 
     def draw(self, screen):
-        screen.blit(self.display_frame, (self.position.x, self.position.y))
-        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
+        screen.blit(self.display_frame, (self.position.x, self.position.y))     # Frame sprite
+        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))   # Rectangle hit-region
 
     def move(self, delta_time, player_pos):
         if self.weapon == 'fireball':

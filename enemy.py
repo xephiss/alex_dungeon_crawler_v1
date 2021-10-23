@@ -69,13 +69,21 @@ class Enemy:
         self.active_projectiles = []
         self.reloading = False
 
-
+        # Damage states for a white blit as an impact frame
+        self.in_damage_state = False
+        self.hit_damage_time = 0.2
+        self.hit_damage_timer = 0.0
+        self.white_hit_surf = pygame.surface.Surface((self.size_x, self.size_y))
+        self.white_hit_surf.fill(pygame.Color('#FFFFFF'))
 
     def draw(self, screen):
-
-        frame = self.frames[self.current_frame_index]
+        frame = self.frames[self.current_frame_index].copy()
         if self.direction == True:
             frame = pygame.transform.flip(frame, True, False)
+
+        # Uses built-in function to add an rgb colour over the drawn entity
+        if self.in_damage_state:
+            frame.blit(self.white_hit_surf, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
         if self.current_enemy == 'rangeDemon':
             if self.current_frame_index == 1 or self.current_frame_index == 2:
@@ -113,6 +121,13 @@ class Enemy:
         # Health validation here so a death animation can be added
         if self.hp <= 0:
             self.should_die = True
+
+        # Timer for the white impact frames
+        if self.in_damage_state:
+            self.hit_damage_timer += delta_time
+            if self.hit_damage_timer > self.hit_damage_time:
+                self.in_damage_state = False
+                self.hit_damage_timer = 0.0
 
     def check_attack(self, player_x, player_y, player_height, delta_time):
         # Prevents constant firing, by implementing a reload time
@@ -155,9 +170,9 @@ class Enemy:
                     self.active_projectiles.remove(projectile)
 
     def health_update(self, player_attacks_array, delta_time, player_weapon):
+
         sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
-        for player_attack in player_attacks_array:
-            # Check collision with all projectile
+        for player_attack in player_attacks_array:                  # Check collision with all projectile
             '''if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
             and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):''' # Old code
             # Area collision testing using built-in pygame get_rect area
@@ -165,6 +180,7 @@ class Enemy:
                 if not self.hit_state:
                     self.hp -= player_attack.weapon_damage
                     self.hit_state = True
+                    self.in_damage_state = True
 
             # Different weapon animations affects invulnerability time needed for enemy
             if player_weapon == 'fireball':

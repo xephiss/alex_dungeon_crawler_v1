@@ -7,6 +7,7 @@ import levels_file.level_four
 import levels_file.level_five
 import levels_file.level_six
 import map_layouts
+# Import all these in another file, then import that file
 
 
 floor_tiles = background_tiles.floor_tiles
