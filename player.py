@@ -4,6 +4,7 @@ import player_projectile
 import red_knight_sprites
 import game_map
 from pygame.locals import *
+import  player_health_hit_bar
 current_tile_size = game_map.current_tile_size
 
 '''class Scheme:   #The key controls for movement
@@ -86,6 +87,7 @@ class Player:
             frame = pygame.transform.flip(frame, True, False)
         screen.blit(frame, (int(self.position.x),
                             int(self.position.y)))
+        player_health_hit_bar.draw_player_bar(self, screen)
 
     def update_movement(self, time_delta, collision_x, collision_y):
         speed_delta = self.speed * time_delta
@@ -210,7 +212,7 @@ class Player:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-    def draw_player_bar(self, screen):
+    '''def draw_player_bar(self, screen):
         # Changeable colour variable
         colour_hex = int(255 * self.health/self.max_health)
         if self.health > 20:        # Buffer colour for more time as red
@@ -231,7 +233,7 @@ class Player:
 
         #invulnerable_front_box = pygame.Rect(32, 600, 100, 14)
         #pygame.draw.rect(screen, (0, 0, 0), invulnerable_front_box, 5)
-
+'''
 
     def player_death_damage(self, enemy_pos_x, enemy_pos_y, enemy_width, enemy_height, projectile_array, delta_time):
         # Provides a contact only invulnerable duration

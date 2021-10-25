@@ -150,7 +150,7 @@ class GameState:
                 #enemy_inst.hitbox(self.window_surface, player.active_attacks)  # Debugging hitbox
 
             player.draw(self.window_surface)
-            player.draw_player_bar(self.window_surface)
+            #daplayer.draw_player_bar(self.window_surface)
 
             if player.should_die == True:
                 self.players.remove(player)

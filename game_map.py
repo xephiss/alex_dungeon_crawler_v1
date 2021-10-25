@@ -1,13 +1,7 @@
 import pygame
 import background_tiles
-import levels_file.level_one
-import levels_file.level_two
-import levels_file.level_three
-import levels_file.level_four
-import levels_file.level_five
-import levels_file.level_six
-import map_layouts
-# Import all these in another file, then import that file
+import levels_file.level_collection as level_collection     # Stores it as a variable
+# Imports all the levels in another file, then import that file: level_collection
 
 
 floor_tiles = background_tiles.floor_tiles
@@ -22,12 +16,12 @@ class Levels:
         self.level_number = 2
 
         self.collidable = 'collidable'
-        level_one = levels_file.level_one.level_one_dict
-        level_two = levels_file.level_two.level_two_dict
-        level_three = levels_file.level_three.level_three_dict
-        level_four = levels_file.level_four.level_four_dict
-        level_five = levels_file.level_five.level_five_dict
-        level_six = levels_file.level_six.level_six_dict
+        level_one = level_collection.level_one.level_one_dict
+        level_two = level_collection.level_two.level_two_dict
+        level_three = level_collection.level_three.level_three_dict
+        level_four = level_collection.level_four.level_four_dict
+        level_five = level_collection.level_five.level_five_dict
+        level_six = level_collection.level_six.level_six_dict
         self.level_array = [level_one, level_two, level_three, level_four, level_five, level_six]
 
         # Collision algorithm
@@ -78,7 +72,7 @@ class Levels:
     # for i in keytable:
     #    print(tiles[i])
 
-    def draw_map(self, screen):
+    def draw_map(self, screen):     # Draws the background map tiles, e.g the floor
         current_level = self.level_array[self.level_number - 1]
         tile_array = current_level['map']                       # Stores the tile key layout for the map
         row = 0
@@ -91,7 +85,7 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw_collision(self, screen):
+    def draw_collision(self, screen):   # Draws tiles that are collided with, e.g the pillars
         current_level = self.level_array[self.level_number - 1]
         tile_array = current_level['collidable']
         row = 0
@@ -104,7 +98,7 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw_back_aesthetic(self, screen):
+    def draw_back_aesthetic(self, screen):      # Draws tiles which are underneath the player
         current_level = self.level_array[self.level_number - 1]
         tile_array = current_level['aestheticBack']
         row = 0
@@ -117,7 +111,7 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw_front_aesthetic(self, screen):
+    def draw_front_aesthetic(self, screen):     # Draws tiles that are in front of the player
         current_level = self.level_array[self.level_number - 1]
         tile_array = current_level['aestheticFront']
         row = 0
@@ -130,7 +124,7 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw(self, screen):
+    def draw(self, screen):     # Single method to call all of the other methods
         self.draw_map(screen)
         self.draw_collision(screen)
         self.draw_back_aesthetic(screen)
