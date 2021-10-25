@@ -55,6 +55,9 @@ class Projectile:
     def projectile_death(self):
         self.death = True
 
-
+    def general_updates(self, screen, delta_time):
+        self.draw(screen)
+        self.update_movement(delta_time)
+        self.rotation(delta_time)
 
 # In enemy file, need a reload speed

@@ -1,6 +1,7 @@
 import pygame
 import random
 import range_enemy_sprite
+import melee_enemy_sprite
 import projectile_sprite
 import game_map
 from pygame.locals import *
@@ -9,50 +10,68 @@ current_tile_size = game_map.current_tile_size
 class Enemy:
     def __init__(self, position_x, position_y):
         # Positional States
-        self.position = pygame.math.Vector2(position_x, position_y)
+        self.position = pygame.math.Vector2(position_x + 10, position_y + 5)
         self.direction = False
 
-        # Health States
-        self.max_hp = 100
+        # Health Attributes
+        self.max_hp = 100       # Should differ between enemies
         self.hp = self.max_hp
         self.should_die = False
         self.hit_state = False
         self.hurt_time_accumulator = 0.0
 
-        # For random spawning of which unit
-        random_type = random.randint(1, 2)
-        random_enemy = random.randint(1, 2)
+        # Sprite Attributes
+        size_multiplier = 1.0
 
+        # For random spawning of which unit
+        random_enemy = random.randint(0, 1)
+        random_type = random.randint(0, 1)
+        if random_type == 0:
+            self.current_enemy_type = 'range'
+        else:
+            self.current_enemy_type = 'melee'
+
+        # Projectile Dictionary holds name and corresponding sprite of enemy projectiles
         self.projectile_dict = {'skull': pygame.transform.smoothscale(range_enemy_sprite.spritesheet.subsurface(293, 327, 6, 6), (15, 15))}
         # Enemy Dictionary holds the Enemy name, nad it's corresponding projectile type
         self.enemy_dict = {'rangeDemon': self.projectile_dict['skull'],
                            'other': None}
 
         # Current_enemy_type will eventually be affected by random chance
-        self.current_enemy_type = 'range'
         if self.current_enemy_type == 'range':
-            possible_enemies = ['rangeDemon', 'other']
+            possible_enemies = ['rangeDemon', 'rangeDemon']     # Second range enemy not yet implemented
+        elif self.current_enemy_type == 'melee':
+            possible_enemies = ['slime', 'slime']
 
+        self.current_enemy = possible_enemies[random_enemy]
+        '''
         # will remove the number 2 later as currently only 'rangeDemon' exists
-        if random_enemy == 1 or random_enemy == 2:
-            self.current_enemy = 'rangeDemon'
+        # Will use: self.current_enemy = possible_enemies[random_enemy]
+        if random_enemy == 0 or random_enemy == 1:
+            self.current_enemy = "rangeDemon" 
+            '''
 
-        self.projectile = self.enemy_dict[self.current_enemy]
+        initial_frames = []
+        if self.current_enemy_type == 'range':
+            # Stores the related projectile sprite
+            self.projectile = self.enemy_dict[self.current_enemy]
+            if self.current_enemy == 'rangeDemon':
+                initial_frames = range_enemy_sprite.demon_idle_frames
+                size_multiplier = 1.4
+        else:
+            if self.current_enemy == 'slime':
+                initial_frames = melee_enemy_sprite.slime_animation_frames
+                size_multiplier = 0.7
 
         # Higher frame_speed means slower animation speed,
         # as it is the time taken for each frame to be displayed for.
         frame_speed = 0.12
         attack_speed = 2.0
-
-        initial_frames = []
-        if self.current_enemy == 'rangeDemon':
-            initial_frames = range_enemy_sprite.demon_idle_frames
         self.frames = []                    # Initialises attribute as list type
 
-        SIZE_MULTIPLIER = 1.4
-        # Add a if demon here eventually
-        self.size_x = int(32 * SIZE_MULTIPLIER)
-        self.size_y = int(36 * SIZE_MULTIPLIER)
+        # Changes sprite size
+        self.size_x = int(32 * size_multiplier)
+        self.size_y = int(36 * size_multiplier)
         for i in initial_frames:
             # For future size changes of sprite
             new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))
@@ -78,11 +97,11 @@ class Enemy:
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index].copy()
-        if self.direction == True:
+        if self.direction == True:      # Face left or right
             frame = pygame.transform.flip(frame, True, False)
 
         # Uses built-in function to add an rgb colour over the drawn entity
-        if self.in_damage_state:
+        if self.in_damage_state:        # Flashes white when hit
             frame.blit(self.white_hit_surf, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
         if self.current_enemy == 'rangeDemon':
@@ -96,6 +115,8 @@ class Enemy:
                 screen.blit(frame, (int(self.position.x),
                                     int(self.position.y)))
 
+        else:       # General draw instruction
+            screen.blit(frame, (int(self.position.x), int(self.position.y)))
 
 
     def update_player_pos(self, player_x):
@@ -141,7 +162,7 @@ class Enemy:
         if self.reloading == False:
             # If the player is left or right, with a bit of a view region so that it is not a single pixel line trigger
             if self.position.y - 2 < player_y + player_height/2 and player_y < self.position.y + self.size_y:
-                if self.current_enemy_type == 'range':
+                if self.current_enemy_type == 'range':      # Ranged enemies spawn a projectile
                     self.active_projectiles.append(projectile_sprite.Projectile(self.projectile, self.position.x,
                                                                                 (self.position.y + self.size_y/3),
                                                                                 player_x, self.size_x/1.5))
@@ -154,9 +175,10 @@ class Enemy:
     def attack(self, screen, delta_time, collidablexy):
         if self.current_enemy_type == 'range':
             for projectile in self.active_projectiles:
-                projectile.draw(screen)
-                projectile.update_movement(delta_time)
-                projectile.rotation(delta_time)
+                projectile.general_updates(screen, delta_time)  # Draw, movement and rotation methods are in this
+                #projectile.draw(screen)
+                #projectile.update_movement(delta_time)
+                #projectile.rotation(delta_time)
 
                 for collidable_tile in collidablexy:
                     if (projectile.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(projectile.position.x) + 6 and
@@ -186,7 +208,7 @@ class Enemy:
             if player_weapon == 'fireball':
                 if not pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
                     self.hurt_time_accumulator += delta_time
-                    if self.hurt_time_accumulator > 0.7:
+                    if self.hurt_time_accumulator > 0.7:        # Can optimise this to call a variable instead of 0.7
                         self.hit_state = False
                         self.hurt_time_accumulator = 0
 
@@ -205,7 +227,7 @@ class Enemy:
                 # if not player_attack.hit_enemy:
                 #     self.hp -= player_attack.weapon_damage
                 #     player_attack.hit_enemy = True
-
+    """Can take all this out and put in another file. Then reference a 'general update' method that holds all updates"""
 
 
 
@@ -216,3 +238,5 @@ class Enemy:
         for player_attack in player_attacks_array:
             if pygame.Rect.colliderect(rectangle, player_attack.hitbox):
                 print('Collided')
+
+# USE INHERITANCE
