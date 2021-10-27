@@ -149,7 +149,7 @@ class GameState:
                 enemy_inst.update_player_pos(player.position.x)
 
                 for hitbox in enemy_hitboxes:
-                    enemy_inst.move(player.position, player.hitbox, hitbox, len(enemy_hitboxes))
+                    enemy_inst.move(player.position, player.hitbox, hitbox, len(enemy_hitboxes), self.collidablexy)
                 enemy_inst.check_attack(player.position.x, player.position.y, player.size_y, time_delta)
                 enemy_inst.attack(self.window_surface, time_delta, self.collidablexy_projectile)
 

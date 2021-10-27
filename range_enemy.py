@@ -98,12 +98,12 @@ class RangeEnemy(EnemyBlueprint):
                     if (projectile.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(projectile.position.x) + 6 and
                     projectile.position.y  < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(projectile.position.y) + 6):
                         projectile.projectile_death()
-                        # For future planning of delayed projectile death for death animation
-                        if projectile.death == True:
-                            self.active_projectiles.remove(projectile)
+                # For future planning of delayed projectile death for death animation
+                if projectile.death == True:
+                    self.active_projectiles.remove(projectile)
 
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
 
-    def move(self, player_pos, player_hitbox, other_hitbox, number_divide):
+    def move(self, player_pos, player_hitbox, other_hitbox, number_divide, collideablexy):
         pass

@@ -9,7 +9,7 @@ class MeleeEnemy(EnemyBlueprint):
     def __init__(self, position_x, position_y):
         super().__init__(position_x, position_y)        # Inherits all attributes from Parent
         self.current_enemy_type = 'melee'
-        self.speed = 1.5
+        self.speed = 1.7
         self.hp = 70
 
         # To pick a random melee enemy
@@ -32,19 +32,23 @@ class MeleeEnemy(EnemyBlueprint):
         self.display_frame = self.frames[self.current_frame_index]
         self.sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
 
-        # White impact frame
+        # Coloured impact frame
         self.white_hit_surf = pygame.surface.Surface((self.size_x, self.size_y))
         self.white_hit_surf.fill(pygame.Color('#FFFFFF'))
+
+        self.red_hit_surf = pygame.surface.Surface((self.size_x, self.size_y))
+        self.red_hit_surf.fill(pygame.Color('#201111'))
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index].copy()
         if self.direction == True:      # Face left or right
             frame = pygame.transform.flip(frame, True, False)
 
-        # Uses built-in function to add an rgb colour over the drawn entity
+        # Uses built-in function to blend an rgb colour over the drawn entity
         if self.in_damage_state:        # Flashes white when hit
             frame.blit(self.white_hit_surf, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
-
+        if self.reloading:
+            frame.blit(self.red_hit_surf, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
         # General draw instruction
         screen.blit(frame, (int(self.position.x), int(self.position.y)))
 
@@ -66,10 +70,11 @@ class MeleeEnemy(EnemyBlueprint):
     def attack(self, screen, delta_time, collidablexy):
         pass
 
-    def move(self, player_pos, player_hitbox, other_hitbox, number_divide):
+    def move(self, player_pos, player_hitbox, other_hitbox, number_divide, collideablexy):
         if (not self.reloading and
                 not pygame.Rect.colliderect(self.sprite_hitbox, player_hitbox) and
                 not (pygame.Rect.colliderect(self.sprite_hitbox, other_hitbox) and self.sprite_hitbox != other_hitbox)
+
         ):
             # Use functions to calculate distacne between points, and displacement vector
             length = pythagoras_length(self.position.x - player_pos.x, self.position.y - player_pos.y)
@@ -77,7 +82,12 @@ class MeleeEnemy(EnemyBlueprint):
             unit = unit_vector(displacement, length)
             # Divide by number of entities as otherwise it moves 'n' times per cycle
             self.position += (unit * self.speed/abs(number_divide-0.2))
+            if map_collision_v1(self.position, collideablexy):      # If it moves into a wall, move back
+                self.position -= (unit * self.speed / abs(number_divide))
         # Check if overlapping any other enemy
         if pygame.Rect.colliderect(self.sprite_hitbox, other_hitbox) and self.sprite_hitbox != other_hitbox:
             self.position += pygame.math.Vector2(random.randint(-1, 1), random.randint(-1, 1))
-
+        # If this enemy touches player, then pause movement for a brief period
+        if pygame.Rect.colliderect(self.sprite_hitbox, player_hitbox) and not self.reloading:
+            self.attack_speed = round(random.uniform(0.2, 0.8), 2)
+            self.reloading = True
