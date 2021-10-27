@@ -38,6 +38,7 @@ class RangeEnemy(EnemyBlueprint):
             new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))
             self.frames.append(new_frame)
         self.display_frame = self.frames[self.current_frame_index]
+        self.sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
 
         # White impact frame
         self.white_hit_surf = pygame.surface.Surface((self.size_x, self.size_y))
@@ -103,3 +104,6 @@ class RangeEnemy(EnemyBlueprint):
 
                 if projectile.position.x < 0 or projectile.position.x > 640:
                     self.active_projectiles.remove(projectile)
+
+    def move(self, player_pos, player_hitbox, other_hitbox, number_divide):
+        pass

@@ -2,14 +2,18 @@ import pygame
 import random
 import melee_enemy_sprite
 from enemy_blueprint_parent import EnemyBlueprint
+from game_arithmetic import *
 
 
 class MeleeEnemy(EnemyBlueprint):
     def __init__(self, position_x, position_y):
         super().__init__(position_x, position_y)        # Inherits all attributes from Parent
         self.current_enemy_type = 'melee'
+        self.speed = 1.5
+        self.hp = 70
 
-        random_enemy = random.randint(0, 1)             # To pick a random melee enemy
+        # To pick a random melee enemy
+        random_enemy = random.randint(0, 1)
         possible_enemies = ['slime', 'slime']
         self.current_enemy = possible_enemies[random_enemy]
 
@@ -26,6 +30,7 @@ class MeleeEnemy(EnemyBlueprint):
             new_frame = pygame.transform.smoothscale(i, (self.size_x, self.size_y))
             self.frames.append(new_frame)
         self.display_frame = self.frames[self.current_frame_index]
+        self.sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
 
         # White impact frame
         self.white_hit_surf = pygame.surface.Surface((self.size_x, self.size_y))
@@ -60,4 +65,19 @@ class MeleeEnemy(EnemyBlueprint):
 
     def attack(self, screen, delta_time, collidablexy):
         pass
+
+    def move(self, player_pos, player_hitbox, other_hitbox, number_divide):
+        if (not self.reloading and
+                not pygame.Rect.colliderect(self.sprite_hitbox, player_hitbox) and
+                not (pygame.Rect.colliderect(self.sprite_hitbox, other_hitbox) and self.sprite_hitbox != other_hitbox)
+        ):
+            # Use functions to calculate distacne between points, and displacement vector
+            length = pythagoras_length(self.position.x - player_pos.x, self.position.y - player_pos.y)
+            displacement = displacement_vector(player_pos, self.position)
+            unit = unit_vector(displacement, length)
+            # Divide by number of entities as otherwise it moves 'n' times per cycle
+            self.position += (unit * self.speed/abs(number_divide-0.2))
+        # Check if overlapping any other enemy
+        if pygame.Rect.colliderect(self.sprite_hitbox, other_hitbox) and self.sprite_hitbox != other_hitbox:
+            self.position += pygame.math.Vector2(random.randint(-1, 1), random.randint(-1, 1))
 

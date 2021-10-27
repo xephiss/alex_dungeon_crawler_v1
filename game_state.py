@@ -127,9 +127,11 @@ class GameState:
             self.enemy_count += 1
 
         # Update independent enemy methods
+        enemy_hitboxes = []
         for enemy_inst in self.active_enemies:
             enemy_inst.next_frame(time_delta)
             enemy_inst.draw(self.window_surface)
+            enemy_hitboxes.append(enemy_inst.sprite_hitbox)
             if enemy_inst.should_die == True:
                 self.active_enemies.remove(enemy_inst)
 
@@ -145,7 +147,10 @@ class GameState:
             # Update enemy - player interactions
             for enemy_inst in self.active_enemies:
                 enemy_inst.update_player_pos(player.position.x)
-                enemy_inst.check_attack(player.position.x, player.position.y, player.size_y ,time_delta)
+
+                for hitbox in enemy_hitboxes:
+                    enemy_inst.move(player.position, player.hitbox, hitbox, len(enemy_hitboxes))
+                enemy_inst.check_attack(player.position.x, player.position.y, player.size_y, time_delta)
                 enemy_inst.attack(self.window_surface, time_delta, self.collidablexy_projectile)
 
                 player.player_death_damage(enemy_inst.position.x, enemy_inst.position.y, enemy_inst.size_x, enemy_inst.size_y, enemy_inst.active_projectiles, time_delta)

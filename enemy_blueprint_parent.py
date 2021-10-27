@@ -7,8 +7,7 @@ class EnemyBlueprint:
         self.direction = False
 
         # Health Attributes
-        self.max_hp = 100  # Should differ between enemies
-        self.hp = self.max_hp
+        self.hp = 100  # Should differ between enemies
         self.should_die = False
         self.hit_state = False
         self.hurt_time_accumulator = 0.0
@@ -52,7 +51,7 @@ class EnemyBlueprint:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-        # Health validation here so a death animation can be added
+        # Health validation here, also so a death animation can be added
         if self.hp <= 0:
             self.should_die = True
 
@@ -64,12 +63,12 @@ class EnemyBlueprint:
                 self.hit_damage_timer = 0.0
 
     def health_update(self, player_attacks_array, delta_time, player_weapon):
-        sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
+        self.sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
         for player_attack in player_attacks_array:                  # Check collision with all projectile
             '''if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
             and self.position.y < player_attack.position.y + player_attack.height and self.position.y + self.size_y > player_attack.position.y):''' # Old code
             # Area collision testing using built-in pygame get_rect area
-            if pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
+            if pygame.Rect.colliderect(self.sprite_hitbox, player_attack.hitbox):
                 if not self.hit_state:
                     self.hp -= player_attack.weapon_damage
                     self.hit_state = True
@@ -77,7 +76,7 @@ class EnemyBlueprint:
 
             # Different weapon animations affects invulnerability time needed for enemy
             if player_weapon == 'fireball':
-                if not pygame.Rect.colliderect(sprite_hitbox, player_attack.hitbox):
+                if not pygame.Rect.colliderect(self.sprite_hitbox, player_attack.hitbox):
                     self.hurt_time_accumulator += delta_time
                     if self.hurt_time_accumulator > 0.7:        # Can optimise this to call a variable instead of 0.7
                         self.hit_state = False

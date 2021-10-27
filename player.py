@@ -76,6 +76,7 @@ class Player:
 
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
+        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
         self.frame_speed = frame_speed
         self.time_accumulator = 0.0
 
@@ -87,6 +88,7 @@ class Player:
             frame = pygame.transform.flip(frame, True, False)
         screen.blit(frame, (int(self.position.x),
                             int(self.position.y)))
+        self.hitbox = frame.get_rect(topleft=(self.position.x, self.position.y))
         player_health_hit_bar.draw_player_bar(self, screen)
 
     def update_movement(self, time_delta, collision_x, collision_y):
