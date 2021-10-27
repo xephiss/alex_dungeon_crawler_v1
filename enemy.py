@@ -1,3 +1,5 @@
+# File no longer Used due to instantiation
+
 import pygame
 import random
 import range_enemy_sprite
@@ -22,7 +24,7 @@ class Enemy:
 
         # Sprite Attributes
         size_multiplier = 1.0
-
+        """!!!^^"""
         # For random spawning of which unit
         random_enemy = random.randint(0, 1)
         random_type = random.randint(0, 1)

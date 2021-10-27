@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+import enemy_instance
 import enemy
 import enemy_spawn
 import collision_file
@@ -120,7 +121,9 @@ class GameState:
         # Spawn a number of enemies
         if self.enemy_count < 2:
             self.spawn_tiles.spawn()
-            self.active_enemies.append(enemy.Enemy(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y))
+            enemy_generated = enemy_instance.EnemyInstance(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y)
+            enemy_inst = enemy_generated.enemy_inst
+            self.active_enemies.append(enemy_inst)
             self.enemy_count += 1
 
         # Update independent enemy methods
