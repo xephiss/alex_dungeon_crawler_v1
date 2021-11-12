@@ -16,12 +16,13 @@ current_tile_size = game_map.current_tile_size
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, end_of_level_tiles):
 
         # self.scheme = control_scheme
         # self.image_name = "frames/red_knight_run_f1.png"
         # self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         # The default stats for character attributes
+        self.end_of_level_tiles = end_of_level_tiles
         self.position = pygame.math.Vector2(320.0, 320.0)
         self.speed = 185.0
         self.momentum = 0.0
@@ -81,7 +82,6 @@ class Player:
         self.time_accumulator = 0.0
 
 
-
     def draw(self, screen):
         frame = self.frames[self.current_frame_index]
         if self.direction == True:
@@ -101,6 +101,10 @@ class Player:
 
         collide_y = False
         collide_x = False
+
+        for end_tile in self.end_of_level_tiles:
+            if self.hitbox.colliderect(end_tile.rect):
+                end_tile.on_collided()
 
         # All collision arithmetic determines the state of collision when the character is within the collidable regions
         # With some fine tuning (the +- 10 or 15) to centre the collisions

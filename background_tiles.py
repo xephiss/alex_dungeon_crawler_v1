@@ -15,8 +15,9 @@ base_coordinate = 32 * MULTIPLY
 floor_tiles = {
     # 'test': 'hi',
     # 'test2': 'hi2',
-    # Filler tile
+    # Filler tile: Blank, Black
     '000': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 18, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '999': tilesheet.subsurface(pygame.Rect(base_coordinate * 7, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
     # Floor tiles
     '001': tilesheet.subsurface(pygame.Rect(base_coordinate * 7, base_coordinate * 5, 32 * MULTIPLY, 32 * MULTIPLY)),
     '002': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 5, 32 * MULTIPLY, 32 * MULTIPLY)),
@@ -35,6 +36,8 @@ floor_tiles = {
     '016': tilesheet.subsurface(pygame.Rect(base_coordinate * 12, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
     '017': tilesheet.subsurface(pygame.Rect(base_coordinate * 13, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
     '018': tilesheet.subsurface(pygame.Rect(base_coordinate * 14, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
+    # Cracked
+    '019': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 15, 32 * MULTIPLY, 32 * MULTIPLY)),
 
 }
 
@@ -109,6 +112,7 @@ collidable_tiles = {
     '407': tilesheet.subsurface(pygame.Rect(base_coordinate * 14, base_coordinate * 0, 32 * MULTIPLY, 32 * MULTIPLY)),
     '408': tilesheet.subsurface(pygame.Rect(base_coordinate * 9, base_coordinate * 2, 32 * MULTIPLY, 32 * MULTIPLY)),
     '409': tilesheet.subsurface(pygame.Rect(base_coordinate * 10, base_coordinate * 2, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '420': tilesheet.subsurface(pygame.Rect(base_coordinate * 13, base_coordinate * 2, 32 * MULTIPLY, 32 * MULTIPLY)),
 
     '410': tilesheet.subsurface(pygame.Rect(base_coordinate * 7, base_coordinate * 1, 32 * MULTIPLY, 32 * MULTIPLY)),
     '411': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 1, 32 * MULTIPLY, 32 * MULTIPLY)),
@@ -120,6 +124,18 @@ collidable_tiles = {
     '417': tilesheet.subsurface(pygame.Rect(base_coordinate * 14, base_coordinate * 1, 32 * MULTIPLY, 32 * MULTIPLY)),
     '418': tilesheet.subsurface(pygame.Rect(base_coordinate * 9, base_coordinate * 3, 32 * MULTIPLY, 32 * MULTIPLY)),
     '419': tilesheet.subsurface(pygame.Rect(base_coordinate * 10, base_coordinate * 3, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '430': tilesheet.subsurface(pygame.Rect(base_coordinate * 13, base_coordinate * 3, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Back wall Pillar merged
+    '421': tilesheet.subsurface(pygame.Rect(base_coordinate * 12, base_coordinate * 2, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '431': tilesheet.subsurface(pygame.Rect(base_coordinate * 12, base_coordinate * 3, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Wall into pit (descending)
+    '422': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 9, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '423': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 9, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '432': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 10, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '433': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 10, 32 * MULTIPLY, 32 * MULTIPLY)),
 
     # Pit tiles
     '500': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 12, 32 * MULTIPLY, 32 * MULTIPLY)),
@@ -133,6 +149,8 @@ collidable_tiles = {
     '512': tilesheet.subsurface(pygame.Rect(base_coordinate * 7, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
     '513': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
     '514': tilesheet.subsurface(pygame.Rect(base_coordinate * 9, base_coordinate * 13, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '519': tilesheet.subsurface(pygame.Rect(base_coordinate * 8, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
 
     '520': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
     '521': tilesheet.subsurface(pygame.Rect(base_coordinate * 6, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
@@ -167,7 +185,10 @@ aesthetic_tiles = {
     '4': tilesheet.subsurface(pygame.Rect(base_coordinate * 3, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
     '5': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 17, 32 * MULTIPLY, 32 * MULTIPLY)),
 
-    # Pillars
+    # Candle
+    '6': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Pillars       (The +1 is because there was a black pixel line at the top
     '00': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 13 + 1, 32 * MULTIPLY, 32 * MULTIPLY)),
     '01': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 13 + 1, 32 * MULTIPLY, 32 * MULTIPLY)),
     '02': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 13 + 1, 32 * MULTIPLY, 32 * MULTIPLY)),
@@ -175,5 +196,33 @@ aesthetic_tiles = {
     '10': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
     '11': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
     '12': tilesheet.subsurface(pygame.Rect(base_coordinate * 2, base_coordinate * 14, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Vines
+    '03': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '04': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 16, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '13': tilesheet.subsurface(pygame.Rect(base_coordinate * 0, base_coordinate * 17, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '14': tilesheet.subsurface(pygame.Rect(base_coordinate * 1, base_coordinate * 17, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Floors
+    '001': tilesheet.subsurface(pygame.Rect(base_coordinate * 4, base_coordinate * 4, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '002': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 4, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '003': tilesheet.subsurface(pygame.Rect(base_coordinate * 6, base_coordinate * 4, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '011': tilesheet.subsurface(pygame.Rect(base_coordinate * 4, base_coordinate * 5, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '012': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 5, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '013': tilesheet.subsurface(pygame.Rect(base_coordinate * 6, base_coordinate * 5, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '021': tilesheet.subsurface(pygame.Rect(base_coordinate * 4, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '022': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '023': tilesheet.subsurface(pygame.Rect(base_coordinate * 6, base_coordinate * 6, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    '031': tilesheet.subsurface(pygame.Rect(base_coordinate * 4, base_coordinate * 7, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '032': tilesheet.subsurface(pygame.Rect(base_coordinate * 5, base_coordinate * 7, 32 * MULTIPLY, 32 * MULTIPLY)),
+    '033': tilesheet.subsurface(pygame.Rect(base_coordinate * 6, base_coordinate * 7, 32 * MULTIPLY, 32 * MULTIPLY)),
+
+    # Bottom Wall
+    '131': tilesheet.subsurface(pygame.Rect(base_coordinate * 4, base_coordinate * 2, 32 * MULTIPLY, 32 * MULTIPLY)),
+
 }
 

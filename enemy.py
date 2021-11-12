@@ -43,7 +43,7 @@ class Enemy:
         if self.current_enemy_type == 'range':
             possible_enemies = ['rangeDemon', 'rangeDemon']     # Second range enemy not yet implemented
         elif self.current_enemy_type == 'melee':
-            possible_enemies = ['slime', 'slime']
+            possible_enemies = ['slime', 'slime']               # Second melee enemy not yet implemented
 
         self.current_enemy = possible_enemies[random_enemy]
         '''
@@ -82,7 +82,7 @@ class Enemy:
         self.current_frame_index = 0
         self.display_frame = self.frames[self.current_frame_index]
         self.frame_speed = frame_speed
-        self.time_accumulator = 0.0
+        self.time_accumulator = random.randint(0, 110)/100
 
         self.attack_time_accumulator = 0.0
         self.attack_speed = attack_speed

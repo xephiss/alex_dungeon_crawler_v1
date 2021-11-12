@@ -6,7 +6,12 @@ def draw_player_bar(self, screen):
     if self.health > self.max_health:       # Validates health again, in case of healing overflowing
         self.health = self.max_health
     # Changeable colour variable
-    colour_hex = int(255 * self.health / self.max_health)
+    health_prop = 255 * self.health / self.max_health
+    if health_prop < 0:
+        health_prop = 0
+    elif health_prop > 255:
+        health_prop = 255
+    colour_hex = int(health_prop)
     if self.health > 20:  # Buffer colour for more time as red
         colour_hex -= 20
 

@@ -2,7 +2,7 @@ import pygame
 import background_tiles
 import levels_file.level_collection as level_collection     # Stores it as a variable
 # Imports all the levels in another file, then import that file: level_collection
-
+from level_entities import Ladder
 
 floor_tiles = background_tiles.floor_tiles
 collidable_tiles = background_tiles.collidable_tiles
@@ -13,7 +13,7 @@ current_tile_size = 32 * background_tiles.MULTIPLY
 class Levels:
     def __init__(self):
         self.mapped_level = False
-        self.level_number = 2
+        self.level_number = 1
 
         self.collidable = 'collidable'
         level_one = level_collection.level_one.level_one_dict
@@ -23,6 +23,9 @@ class Levels:
         level_five = level_collection.level_five.level_five_dict
         level_six = level_collection.level_six.level_six_dict
         self.level_array = [level_one, level_two, level_three, level_four, level_five, level_six]
+        self.max_levels = len(self.level_array)
+
+        self.end_of_level_tiles = []
 
         # Collision algorithm
         '''self.collision_boxes = []'''
@@ -48,6 +51,10 @@ class Levels:
                 column += 1
 
     def get_level(self):
+        self.clear_end_of_level_tiles()
+        if self.level_number >= self.max_levels:
+            self.level_number = 1
+
         self.collision_boxes_x = []
         self.collision_boxes_y = []
 
@@ -128,4 +135,13 @@ class Levels:
         self.draw_map(screen)
         self.draw_collision(screen)
         self.draw_back_aesthetic(screen)
+
+        for tile in self.end_of_level_tiles:
+            tile.draw(screen)
+
+    def spawn_end_of_level_tile(self, x_position: float, y_position: float):
+        self.end_of_level_tiles.append(Ladder(x_position, y_position))
+
+    def clear_end_of_level_tiles(self):
+        self.end_of_level_tiles = []
 

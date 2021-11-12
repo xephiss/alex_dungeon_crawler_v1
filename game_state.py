@@ -28,6 +28,9 @@ class GameState:
 
         self.time_delta = time_delta
 
+        # Level attributes
+        self.cleared_level = False
+        self.touched_next_level = False
 
     def start(self):
         self.transition_target = None
@@ -49,17 +52,21 @@ class GameState:
         self.ui_text_pos_rect = self.ui_text.get_rect()
         self.ui_text_pos_rect.center = (105, 600)
 
-        self.players = [player.Player()]
+
 
         #self.player1 = player.Player()
         self.level = game_map.Levels()
         self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
         self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
 
+        self.players = [player.Player(self.level.end_of_level_tiles)]
 
         self.enemy_count = 0
         self.active_enemies = []
         #self.enemy1 = enemy.Enemy()
+
+        # Debugging
+        self.touched_next_level = True
 
     def stop(self):
         self.background_surf = None
@@ -86,6 +93,7 @@ class GameState:
             if self.level.level_number > len(self.level.level_array):
                 self.level.level_number = 1
 
+            # Resets and remaps collision
             self.level.get_level()
             self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
             self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
@@ -101,9 +109,9 @@ class GameState:
         # stick the instructions below
 
         # self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
-        #self.level.draw_map(self.window_surface)
-        #self.level.draw_aesthetic(self.window_surface)
-        #self.level.draw_collision(self.window_surface)
+        # self.level.draw_map(self.window_surface)
+        # self.level.draw_aesthetic(self.window_surface)
+        # self.level.draw_collision(self.window_surface)
 
         # Background and map tiles drawn before all game entities
         self.level.draw(self.window_surface)
@@ -125,6 +133,34 @@ class GameState:
             enemy_inst = enemy_generated.enemy_inst
             self.active_enemies.append(enemy_inst)
             self.enemy_count += 1
+            self.cleared_level = False
+
+        if len(self.active_enemies) == 0:   # Changes cleared level state when all enemies are dead
+            self.cleared_level = True
+
+
+        # Checking if level has been cleared, collision with gem, and all enemies killed, then increment level
+        if self.cleared_level is True and len(self.active_enemies) == 0:
+            self.level.spawn_end_of_level_tile(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y)
+
+        has_touched_end_tile = False
+        for end_tile in self.level.end_of_level_tiles:
+            if end_tile.touched_by_player:
+                has_touched_end_tile = True
+        if has_touched_end_tile:
+            self.level.level_number += 1
+            if self.level.level_number >= self.level.max_levels:
+                self.level.level_number = 1
+            self.enemy_count = 0
+
+            # Resets and remaps collision
+            self.level.get_level()
+            self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
+            self.collision_class = collision_file.CollisionClass(
+                self.level.level_array[self.level.level_number - 1])
+            self.level.mapped_level = False
+
+
 
         # Update independent enemy methods
         enemy_hitboxes = []
