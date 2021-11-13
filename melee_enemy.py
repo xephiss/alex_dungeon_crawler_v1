@@ -10,7 +10,7 @@ class MeleeEnemy(EnemyBlueprint):
         super().__init__(position_x, position_y)        # Inherits all attributes from Parent
         self.current_enemy_type = 'melee'
         self.speed = 1.7
-        self.hp = 70
+        self.hp = 48
 
         # To pick a random melee enemy
         random_enemy = random.randint(0, 1)

@@ -6,17 +6,17 @@ def draw_player_bar(self, screen):
     if self.health > self.max_health:       # Validates health again, in case of healing overflowing
         self.health = self.max_health
     # Changeable colour variable
-    health_prop = 255 * self.health / self.max_health
+    health_prop = self.health / self.max_health
     if health_prop < 0:
         health_prop = 0
-    elif health_prop > 255:
-        health_prop = 255
-    colour_hex = int(health_prop)
+    elif health_prop > 1:
+        health_prop = 1
+    colour_hex = int(health_prop * 255)
     if self.health > 20:  # Buffer colour for more time as red
         colour_hex -= 20
 
     # Health Bar: Coloured Health and Black Outline
-    health_bar = pygame.Surface((44 * (self.health / self.max_health), 7))  # Width (proportional), Height
+    health_bar = pygame.Surface((44 * (health_prop), 7))  # Width (proportional), Height
     health_bar.set_alpha(100)  # Sets transparency (alpha value)
     health_bar.fill((200, colour_hex, 0))  # Fills colour (RGB), Green changes with health proportion
     screen.blit(health_bar, (self.position.x - 6, self.position.y - 12))  # Position to draw

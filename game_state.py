@@ -100,6 +100,8 @@ class GameState:
             self.level.mapped_level = False
             if len(self.active_enemies) < 2:
                 self.enemy_count = 0
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_6:
+            print(self.players[0].position)
 
     def update(self, time_delta):
         # clear the window to the background surface
@@ -119,11 +121,13 @@ class GameState:
         # Collision Codes
         collisions_x = self.level.collision_boxes_x
         collisions_y = self.level.collision_boxes_y
-        if self.level.mapped_level == False:
+        if self.level.mapped_level == False:        # Maps collidable regions
             self.collision_class.collision_area(self.level.level_array[self.level.level_number - 1])
             self.collision_class.collision_area_projectile(self.level.level_array[self.level.level_number - 1])
             self.collidablexy = self.collision_class.collidable_positions
             self.collidablexy_projectile = self.collision_class.collidable_positions_projectile
+
+            self.spawn_tiles.general_spawn()        # Maps general valid tile once
             self.level.mapped_level = True
 
         # Spawn a number of enemies
@@ -139,15 +143,15 @@ class GameState:
             self.cleared_level = True
 
 
-        # Checking if level has been cleared, collision with gem, and all enemies killed, then increment level
+        # Checking if level has been cleared, collision with end tile, and all enemies killed, then increment level
         if self.cleared_level is True and len(self.active_enemies) == 0:
-            self.level.spawn_end_of_level_tile(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y)
+            self.level.spawn_end_of_level_tile(self.spawn_tiles.general_spawn_x, self.spawn_tiles.general_spawn_y)
 
         has_touched_end_tile = False
         for end_tile in self.level.end_of_level_tiles:
             if end_tile.touched_by_player:
                 has_touched_end_tile = True
-        if has_touched_end_tile:
+        if has_touched_end_tile:        # Level only increments when collision is true
             self.level.level_number += 1
             if self.level.level_number >= self.level.max_levels:
                 self.level.level_number = 1
@@ -159,6 +163,9 @@ class GameState:
             self.collision_class = collision_file.CollisionClass(
                 self.level.level_array[self.level.level_number - 1])
             self.level.mapped_level = False
+            self.level.clear_end_of_level_tiles()
+
+
 
 
 
@@ -198,6 +205,8 @@ class GameState:
 
             if player.should_die == True:
                 self.players.remove(player)
+
+            player.end_of_level_tiles = self.level.end_of_level_tiles
 
         # Front-ground aesthetic is drawn after all other game entities
         self.level.draw_front_aesthetic(self.window_surface)

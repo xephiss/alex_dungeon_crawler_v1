@@ -9,24 +9,28 @@ class SettingsState:
         self.transition_target = None
         self.window_surface = window_surface
         self.ui_manager = ui_manager
-        self.title_font = pygame.font.Font(None, 64)
+        self.title_font = self.ui_manager.get_theme().get_font(["title_screen_front"])
 
         self.background_surf = None
         self.title_text = None
         self.title_pos_rect = None
 
         self.back_button = None
+        self.health_setting_button = None
 
     def start(self):
         self.transition_target = None
         self.background_surf = pygame.Surface((640, 640))
-        self.background_surf.fill((0, 0, 0))
-        self.title_text = self.title_font.render('Settings', True, (255, 255, 255))
+        self.background_surf.fill((190, 150, 90))
+        self.title_text = self.title_font.render('Settings', True, (150, 30, 30))
         self.title_pos_rect = self.title_text.get_rect()
         self.title_pos_rect.center = (320, 50)
 
+        # Buttons
         self.back_button = UIButton(pygame.Rect((400, 550), (200, 30)),
                                     'Back to menu', self.ui_manager)
+        self.health_setting_button = UIButton(pygame.Rect((140, 180), (180, 30)),
+                                              'Toggle Health%', self.ui_manager)
 
     def stop(self):
         self.background_surf = None
@@ -48,5 +52,3 @@ class SettingsState:
         self.window_surface.blit(self.title_text, self.title_pos_rect)
 
         self.ui_manager.draw_ui(self.window_surface)  # Draw the UI Bits
-
-

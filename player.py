@@ -4,7 +4,8 @@ import player_projectile
 import red_knight_sprites
 import game_map
 from pygame.locals import *
-import  player_health_hit_bar
+import player_health_hit_bar
+import settings_file
 current_tile_size = game_map.current_tile_size
 
 '''class Scheme:   #The key controls for movement
@@ -24,11 +25,11 @@ class Player:
         # The default stats for character attributes
         self.end_of_level_tiles = end_of_level_tiles
         self.position = pygame.math.Vector2(320.0, 320.0)
-        self.speed = 185.0
+        self.speed = 185.0 * settings_file.movement_modifier
         self.momentum = 0.0
 
         # health states
-        self.max_health = 100
+        self.max_health = 100 * settings_file.health_modifier
         self.health = self.max_health
 
         self.should_die = False
@@ -102,9 +103,11 @@ class Player:
         collide_y = False
         collide_x = False
 
+        # Test for collision with the end tile
         for end_tile in self.end_of_level_tiles:
             if self.hitbox.colliderect(end_tile.rect):
                 end_tile.on_collided()
+
 
         # All collision arithmetic determines the state of collision when the character is within the collidable regions
         # With some fine tuning (the +- 10 or 15) to centre the collisions
@@ -152,24 +155,24 @@ class Player:
 
     def on_key_press(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == K_w:
+            if event.key == settings_file.move_key_up:
                 self.move_up = True
-            if event.key == K_s:
+            if event.key == settings_file.move_key_down:
                 self.move_down = True
-            if event.key == K_a:
+            if event.key == settings_file.move_key_left:
                 self.move_left = True
                 self.direction = True
-            if event.key == K_d:
+            if event.key == settings_file.move_key_right:
                 self.move_right = True
                 self.direction = False
 
-            if event.key == K_UP:
+            if event.key == settings_file.attack_key_up:
                 self.attack_up = True
-            if event.key == K_DOWN:
+            if event.key == settings_file.attack_key_down:
                 self.attack_down = True
-            if event.key == K_LEFT:
+            if event.key == settings_file.attack_key_left:
                 self.attack_left = True
-            if event.key == K_RIGHT:
+            if event.key == settings_file.attack_key_right:
                 self.attack_right = True
 
             # Debugging and Testing
