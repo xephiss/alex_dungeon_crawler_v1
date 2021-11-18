@@ -74,6 +74,7 @@ class SettingsState:
         self.health_setting_button.kill()
         self.movement_setting_button.kill()
         self.damage_setting_button.kill()
+
         self.health_setting_button = None
         self.back_button = None
         self.movement_setting_button = None
@@ -88,10 +89,26 @@ class SettingsState:
                 if self.health_modifier > 2.0:
                     self.health_modifier = 0.3
 
+            if event.ui_element == self.movement_setting_button:
+                self.movement_modifier += 0.1
+                if self.movement_modifier > 2.0:
+                    self.movement_modifier = 0.5
+
+            if event.ui_element == self.damage_setting_button:
+                self.damage_modifier += 0.1
+                if self.damage_modifier > 2.0:
+                    self.damage_modifier = 0.3
+
             settings_saved = open("settings_save.txt.", "w")
             settings_saved.write(str(self.movement_preset) + str(self.health_modifier)
                                  + "\n" + str(self.movement_modifier) + "\n" + str(self.damage_modifier) + "\n")
             settings_saved.close()
+            self.health_text = self.settings_font.render(str(round(self.health_modifier * 100, 3)), True,
+                                                         (250, 100, 30))
+            self.movement_text = self.settings_font.render(str(round(self.movement_modifier * 100, 3)), True,
+                                                         (250, 100, 30))
+            self.damage_text = self.settings_font.render(str(round(self.damage_modifier * 100, 3)), True,
+                                                         (250, 100, 30))
 
     def update(self, time_delta):
         # clear the window to the background surface
