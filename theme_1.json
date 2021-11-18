@@ -49,6 +49,20 @@
         "normal_text": "#ccffcc"
       }
     }
+  },
+  "settings_text": {
+    "font": {
+      "bold": "1",
+      "name": "CinzelDecorative",
+      "size": "20",
+      "bold_resource": {
+        "package": "Font.Cinzel",
+        "resource": "CinzelDecorative-Bold.ttf"
+      },
+      "colours": {
+        "normal_text": "#ccffcc"
+      }
+    }
   }
 
 }

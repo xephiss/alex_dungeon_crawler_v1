@@ -1,12 +1,13 @@
 from pygame.locals import *
 
 settings_saved = open('settings_save.txt', 'r')   # Opens a text file
-preset = settings_saved.readline() # Reads and saves the first line
-health_modifier = int(settings_saved.readline())
-movement_modifier = int(settings_saved.readline())
+preset = str(settings_saved.readline()) # Reads and saves the first line
+health_modifier = float(str(settings_saved.readline())[0:3])
+movement_modifier = float(settings_saved.readline())
+damage_modifier = float(settings_saved.readline())
 settings_saved.close()
 
-if preset == 'preset wasd':
+if preset == 'preset_wasd\n':
     move_key_up = K_w
     move_key_down = K_s
     move_key_left = K_a
@@ -17,7 +18,7 @@ if preset == 'preset wasd':
     attack_key_left = K_LEFT
     attack_key_right = K_RIGHT
 
-elif preset == 'preset arrow':
+elif preset == 'preset_arrow\n':
     move_key_up = K_UP
     move_key_down = K_DOWN
     move_key_left = K_LEFT
