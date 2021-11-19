@@ -20,7 +20,7 @@ class Player:
 
         self.end_of_level_tiles = end_of_level_tiles
         self.position = pygame.math.Vector2(320.0, 320.0)
-        self.speed = 185.0 * settings_file.movement_modifier
+        self.speed = 185.0 * self.settings[2]
         self.momentum = 0.0
 
         # health states

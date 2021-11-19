@@ -62,7 +62,7 @@ class EnemyBlueprint:
                 self.in_damage_state = False
                 self.hit_damage_timer = 0.0
 
-    def health_update(self, player_attacks_array, delta_time, player_weapon):
+    def health_update(self, player_attacks_array, delta_time, player_weapon, player_damage_modifier):
         self.sprite_hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
         for player_attack in player_attacks_array:                  # Check collision with all projectile
             '''if (self.position.x < player_attack.position.x + player_attack.width and self.position.x + self.size_x > player_attack.position.x
@@ -70,7 +70,7 @@ class EnemyBlueprint:
             # Area collision testing using built-in pygame get_rect area
             if pygame.Rect.colliderect(self.sprite_hitbox, player_attack.hitbox):
                 if not self.hit_state:
-                    self.hp -= player_attack.weapon_damage
+                    self.hp -= player_attack.weapon_damage * player_damage_modifier
                     self.hit_state = True
                     self.in_damage_state = True
 
