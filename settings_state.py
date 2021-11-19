@@ -83,7 +83,7 @@ class SettingsState:
         self.preset_wasd_button = UIButton(pygame.Rect((150, 125), (100, 25)),
                                               'Preset 1', self.ui_manager)
         self.preset_arrow_button_button = UIButton(pygame.Rect((150, 150), (100, 25)),
-                                              'Preset 2', self.ui_manager)
+                                               'Preset 2', self.ui_manager)
 
     def stop(self):
         # Stops all running processes
