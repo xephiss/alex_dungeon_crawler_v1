@@ -18,11 +18,14 @@ class GameApp:
         time_delta = self.clock.tick(60)/1000.0
         self.running = True
 
+        self.health = 0.0
+
         self.states = {'main_menu': MainMenuState(self.window_surface, self.ui_manager),
                        'settings': SettingsState(self.window_surface, self.ui_manager),
-                       'game': GameState(self.window_surface, time_delta)
+                       #'game': GameState(self.window_surface, time_delta)
                        }
-
+        self.settings = self.states['settings'].settings_array
+        self.states['game'] = GameState(self.window_surface, time_delta, self.settings)
         self.active_state = self.states['main_menu']  # start the app in the main menu
         self.active_state.start()
 
@@ -49,6 +52,8 @@ class GameApp:
                     self.active_state.start()
                 elif self.active_state.transition_target == 'quit':
                     self.running = False
+
+            self.states['game'].settings = self.states['settings'].settings_array
 
             pygame.display.update()
 

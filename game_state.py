@@ -10,7 +10,7 @@ import game_map
 
 
 class GameState:
-    def __init__(self, window_surface, time_delta):
+    def __init__(self, window_surface, time_delta, settings):
         self.transition_target = None
         self.window_surface = window_surface
 
@@ -31,6 +31,9 @@ class GameState:
         # Level attributes
         self.cleared_level = False
         self.touched_next_level = False
+
+        # Receives the settings
+        self.settings = settings
 
     def start(self):
         self.transition_target = None
@@ -59,7 +62,7 @@ class GameState:
         self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
         self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
 
-        self.players = [player.Player(self.level.end_of_level_tiles)]
+        self.players = [player.Player(self.level.end_of_level_tiles, self.settings)]
 
         self.enemy_count = 0
         self.active_enemies = []

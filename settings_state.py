@@ -24,10 +24,15 @@ class SettingsState:
         self.movement_setting_button = None
         self.damage_setting_button = None
 
+        # Loads the settings and places it into a single array so that it can be called as a whole
         self.movement_preset = settings_file.preset
         self.health_modifier = settings_file.health_modifier
         self.movement_modifier = settings_file.movement_modifier
         self.damage_modifier = settings_file.damage_modifier
+        self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier, self.damage_modifier]
+
+
+
 
     def start(self):
         self.transition_target = None
@@ -38,15 +43,16 @@ class SettingsState:
         self.title_pos_rect = self.title_text.get_rect()
         self.title_pos_rect.center = (320, 50)
 
-        self.health_text = self.settings_font.render(str(settings_file.health_modifier * 100), True, (250, 100, 30))
+        self.health_text = self.settings_font.render(str(round(self.health_modifier * 100, 3)), True, (250, 100, 30))
         self.health_text_pos_rect = self.health_text.get_rect()
         self.health_text_pos_rect.center = (400, 195)
 
-        self.movement_text = self.settings_font.render(str(settings_file.movement_modifier * 100), True, (250, 100, 30))
+        self.movement_text = self.settings_font.render(str(round(self.movement_modifier * 100, 3)), True,
+                                                       (250, 100, 30))
         self.movement_text_pos_rect = self.movement_text.get_rect()
         self.movement_text_pos_rect.center = (400, 255)
 
-        self.damage_text = self.settings_font.render(str(settings_file.damage_modifier * 100), True, (250, 100, 30))
+        self.damage_text = self.settings_font.render(str(round(self.damage_modifier * 100, 3)), True, (250, 100, 30))
         self.damage_text_pos_rect = self.damage_text.get_rect()
         self.damage_text_pos_rect.center = (400, 315)
 
@@ -56,11 +62,9 @@ class SettingsState:
         self.health_setting_button = UIButton(pygame.Rect((140, 180), (200, 30)),
                                               'Toggle Health%', self.ui_manager)
         self.movement_setting_button = UIButton(pygame.Rect((140, 240), (200, 30)),
-                                              'Toggle Movement%', self.ui_manager)
+                                                'Toggle Movement%', self.ui_manager)
         self.damage_setting_button = UIButton(pygame.Rect((140, 300), (200, 30)),
                                               'Toggle Damage%', self.ui_manager)
-
-
 
     def stop(self):
         # Stops all running processes
@@ -106,9 +110,11 @@ class SettingsState:
             self.health_text = self.settings_font.render(str(round(self.health_modifier * 100, 3)), True,
                                                          (250, 100, 30))
             self.movement_text = self.settings_font.render(str(round(self.movement_modifier * 100, 3)), True,
-                                                         (250, 100, 30))
+                                                           (250, 100, 30))
             self.damage_text = self.settings_font.render(str(round(self.damage_modifier * 100, 3)), True,
                                                          (250, 100, 30))
+            self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
+                                   self.damage_modifier]
 
     def update(self, time_delta):
         # clear the window to the background surface
@@ -120,3 +126,6 @@ class SettingsState:
         self.window_surface.blit(self.damage_text, self.damage_text_pos_rect)
 
         self.ui_manager.draw_ui(self.window_surface)  # Draw the UI Bits
+
+        self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
+                               self.damage_modifier]

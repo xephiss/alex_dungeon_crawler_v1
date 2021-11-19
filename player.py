@@ -8,28 +8,23 @@ import player_health_hit_bar
 import settings_file
 current_tile_size = game_map.current_tile_size
 
-'''class Scheme:   #The key controls for movement
-    def __init__(self):
-        self.move_forwards = K_w
-        self.move_backwards = K_s
-        self.move_right = K_d
-        self.move_left = K_a'''
-
 
 class Player:
-    def __init__(self, end_of_level_tiles):
+    def __init__(self, end_of_level_tiles, settings):
 
         # self.scheme = control_scheme
         # self.image_name = "frames/red_knight_run_f1.png"
         # self.sprite_image = pygame.image.load(self.image_name).convert_alpha()
         # The default stats for character attributes
+        self.settings = settings
+
         self.end_of_level_tiles = end_of_level_tiles
         self.position = pygame.math.Vector2(320.0, 320.0)
         self.speed = 185.0 * settings_file.movement_modifier
         self.momentum = 0.0
 
         # health states
-        self.max_health = 100 * settings_file.health_modifier
+        self.max_health = 100 * self.settings[1]
         self.health = self.max_health
 
         self.should_die = False
