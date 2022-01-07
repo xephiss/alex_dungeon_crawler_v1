@@ -1,8 +1,13 @@
 import pygame
+import pygame_gui
+
 import settings_file
 
 from pygame_gui.elements import UIButton, UIHorizontalSlider
 from pygame_gui import UI_BUTTON_PRESSED
+
+# Debug
+from pygame.locals import *
 
 
 class SettingsState:
@@ -28,7 +33,7 @@ class SettingsState:
         self.preset_wasd_button = None
         self.preset_arrow_button = None
 
-        self.sliderTest = None
+        self.health_setting_slider = None
 
         # Loads the settings and places it into a single array so that it can be called as a whole
         self.movement_preset = settings_file.preset
@@ -93,8 +98,8 @@ class SettingsState:
         self.preset_arrow_button = UIButton(pygame.Rect((340, 130), (100, 25)),
                                                'Preset 2', self.ui_manager)
 
-        # Slider[(Position), (Dimensions), Default start value, Range of valid values, Format]
-        self.sliderTest = UIHorizontalSlider(pygame.Rect((140, 580), (300, 20)), 1.0, (0.2, 2.0), self.ui_manager)
+        # Slider[(Position), (Dimensions), Default start value (variable), Range of valid values, Format]
+        self.health_setting_slider = UIHorizontalSlider(pygame.Rect((140, 580), (300, 20)), self.health_modifier, (0.3, 2.0), self.ui_manager)
 
 
     def stop(self):
@@ -112,6 +117,8 @@ class SettingsState:
         self.preset_wasd_button.kill()
         self.preset_arrow_button.kill()
 
+        self.health_setting_slider.kill()
+
         self.health_setting_button = None
         self.back_button = None
         self.movement_setting_button = None
@@ -119,10 +126,13 @@ class SettingsState:
         self.preset_wasd_button = None
         self.preset_arrow_button = None
 
+        self.health_setting_slider = None
+
     def handle_events(self, event):
         if event.type == pygame.USEREVENT and event.user_type == UI_BUTTON_PRESSED:
             if event.ui_element == self.back_button:
                 self.transition_target = 'main_menu'
+
             if event.ui_element == self.health_setting_button:
                 self.health_modifier += 0.1
                 if self.health_modifier > 2.1:
@@ -166,6 +176,19 @@ class SettingsState:
             self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
                                    self.damage_modifier]
 
+            # Debugs
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
+                if event.ui_element == self.health_setting_slider:
+                    print(event.value)
+
+
+                    self.health_modifier_test = event.value
+                    self.health_modifier = (self.health_modifier_test * 100 // 10) / 10 # // is integer division
+                    print(self.health_modifier)
+
+
+
     def update(self, time_delta):
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
@@ -183,7 +206,9 @@ class SettingsState:
         self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
                                self.damage_modifier]
 
-        slider_value = round(self.sliderTest.get_current_value(), 3)
+        #slider_value = round(self.sliderTest.get_current_value(), 3)
         #print(slider_value)
+        value = self.health_setting_slider.get_current_value()
+        #print(value)
 
 
