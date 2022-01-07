@@ -62,7 +62,7 @@ class GameState:
         self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
         self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
 
-        self.players = [player.Player(self.level.end_of_level_tiles, self.settings)]
+        self.players = [player.Player(self.level.end_of_level_tiles, self.settings)]    # Creates player instance
 
         self.enemy_count = 0
         self.active_enemies = []
@@ -101,7 +101,7 @@ class GameState:
             self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
             self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
             self.level.mapped_level = False
-            if len(self.active_enemies) < 2:
+            if len(self.active_enemies) < 4:    #Number of enemies
                 self.enemy_count = 0
         if event.type == pygame.KEYDOWN and event.key == pygame.K_6:
             print(self.players[0].position)
@@ -133,8 +133,8 @@ class GameState:
             self.spawn_tiles.general_spawn()        # Maps general valid tile once
             self.level.mapped_level = True
 
-        # Spawn a number of enemies
-        if self.enemy_count < 2:
+        # Spawn a number of enemies after reset
+        if self.enemy_count < 4:
             self.spawn_tiles.spawn()
             enemy_generated = enemy_instance.EnemyInstance(self.spawn_tiles.spawn_x, self.spawn_tiles.spawn_y)
             enemy_inst = enemy_generated.enemy_inst
@@ -148,7 +148,7 @@ class GameState:
 
         # Checking if level has been cleared, collision with end tile, and all enemies killed, then increment level
         if self.cleared_level is True and len(self.active_enemies) == 0:
-            self.level.spawn_end_of_level_tile(self.spawn_tiles.general_spawn_x, self.spawn_tiles.general_spawn_y)
+                self.level.spawn_end_of_level_tile(self.spawn_tiles.general_spawn_x, self.spawn_tiles.general_spawn_y)
 
         has_touched_end_tile = False
         for end_tile in self.level.end_of_level_tiles:
@@ -157,16 +157,17 @@ class GameState:
         if has_touched_end_tile:        # Level only increments when collision is true
             self.level.level_number += 1
             if self.level.level_number >= self.level.max_levels:
+                # Loops the levels for now so that there is no index error
                 self.level.level_number = 1
-            self.enemy_count = 0
+            self.enemy_count = 0    # Resets the enemy count so enemies can be spawned on the next level
 
             # Resets and remaps collision
             self.level.get_level()
             self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
             self.collision_class = collision_file.CollisionClass(
-                self.level.level_array[self.level.level_number - 1])
+                self.level.level_array[self.level.level_number - 1])    # Collision for projectiles
             self.level.mapped_level = False
-            self.level.clear_end_of_level_tiles()
+            self.level.clear_end_of_level_tiles()   # Makes sure the ladder is cleared (may be redundant)
 
 
         # Update independent enemy methods

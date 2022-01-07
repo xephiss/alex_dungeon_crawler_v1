@@ -12,10 +12,10 @@ current_tile_size = 32 * background_tiles.MULTIPLY
 
 class Levels:
     def __init__(self):
-        self.mapped_level = False
+        self.mapped_level = False       # Validation from game_state so that tiling can be checked at start
         self.level_number = 1
 
-        self.collidable = 'collidable'
+        # Calls the stored levels
         level_one = level_collection.level_one.level_one_dict
         level_two = level_collection.level_two.level_two_dict
         level_three = level_collection.level_three.level_three_dict
@@ -28,11 +28,11 @@ class Levels:
         self.end_of_level_tiles = []
 
         # Collision algorithm
-        '''self.collision_boxes = []'''
+        '''self.collision_boxes = []''' # Not used due to splitting of coordinates
         self.collision_boxes_x = []
         self.collision_boxes_y = []
 
-        current_level = self.level_array[self.level_number - 1]
+        current_level = self.level_array[self.level_number - 1]     # Current level index
         collidable_array = current_level['collidable']
         row = 0
         column = 0
@@ -51,11 +51,11 @@ class Levels:
                 column += 1
 
     def get_level(self):
-        self.clear_end_of_level_tiles()
-        if self.level_number >= self.max_levels:
+        self.clear_end_of_level_tiles()     # Makes sure end tile: ladder, is cleared away
+        if self.level_number >= self.max_levels:    # Validation that level number is valid
             self.level_number = 1
 
-        self.collision_boxes_x = []
+        self.collision_boxes_x = []  # Holds collision coordinates of map-based collision (walls)
         self.collision_boxes_y = []
 
         current_level = self.level_array[self.level_number - 1]
@@ -92,7 +92,7 @@ class Levels:
                 row = 0
                 column += 1
 
-    def draw_collision(self, screen):   # Draws tiles that are collided with, e.g the pillars
+    def draw_collision(self, screen):   # Draws tiles that are collided with, e.g the pillars that are not walls
         current_level = self.level_array[self.level_number - 1]
         tile_array = current_level['collidable']
         row = 0
@@ -136,12 +136,12 @@ class Levels:
         self.draw_collision(screen)
         self.draw_back_aesthetic(screen)
 
-        for tile in self.end_of_level_tiles:
+        for tile in self.end_of_level_tiles:    # Adds in the ladder tile entity
             tile.draw(screen)
 
     def spawn_end_of_level_tile(self, x_position: float, y_position: float):
-        self.end_of_level_tiles.append(Ladder(x_position, y_position))
+        self.end_of_level_tiles.append(Ladder(x_position, y_position))      # Creates the end tile
 
     def clear_end_of_level_tiles(self):
-        self.end_of_level_tiles = []
+        self.end_of_level_tiles = []    # Method to clear the end tile
 

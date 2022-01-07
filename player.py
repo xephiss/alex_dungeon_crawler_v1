@@ -35,10 +35,17 @@ class Player:
         # movement states
         self.move_accumulator = 0.0
 
+        # Boolean attributes to say when to move character up or down
         self.move_up = False
         self.move_down = False
         self.move_right = False
         self.move_left = False
+
+        # Initialises movement key attributes
+        self.move_key_up, self.move_key_down, self.move_key_left, self.move_key_right = None, None, None, None
+        self.attack_key_up, self.attack_key_down, self.attack_key_left, self.attack_key_right = None, None, None, None
+
+        settings_file.preset_choice(self, self.settings[0])  # Receives the preset keys
 
         # When direction is False, player faces right
         self.direction = False
@@ -47,7 +54,7 @@ class Player:
 
         # attack states
         # Weapons: sword, fireball, flame
-        self.current_weapon = 'fireball'
+        self.current_weapon = 'flame'
         self.attacked = False
         self.attack_accumulator = 0.0
         self.attack_delay = 1.0     # Can change in an attack method
@@ -148,26 +155,26 @@ class Player:
             if collide_x == False:
                 self.position.x = move_to_x
 
-    def on_key_press(self, event):
+    def on_key_press(self, event):      # Updates events when button key is pressed
         if event.type == pygame.KEYDOWN:
-            if event.key == settings_file.move_key_up:
+            if event.key == self.move_key_up:
                 self.move_up = True
-            if event.key == settings_file.move_key_down:
+            if event.key == self.move_key_down:
                 self.move_down = True
-            if event.key == settings_file.move_key_left:
+            if event.key == self.move_key_left:
                 self.move_left = True
                 self.direction = True
-            if event.key == settings_file.move_key_right:
+            if event.key == self.move_key_right:
                 self.move_right = True
                 self.direction = False
 
-            if event.key == settings_file.attack_key_up:
+            if event.key == self.attack_key_up:
                 self.attack_up = True
-            if event.key == settings_file.attack_key_down:
+            if event.key == self.attack_key_down:
                 self.attack_down = True
-            if event.key == settings_file.attack_key_left:
+            if event.key == self.attack_key_left:
                 self.attack_left = True
-            if event.key == settings_file.attack_key_right:
+            if event.key == self.attack_key_right:
                 self.attack_right = True
 
             # Debugging and Testing
@@ -185,22 +192,22 @@ class Player:
 
     def on_key_release(self, event):
         if event.type == pygame.KEYUP:
-            if event.key == K_w:
+            if event.key == self.move_key_up:
                 self.move_up = False
-            if event.key == K_s:
+            if event.key == self.move_key_down:
                 self.move_down = False
-            if event.key == K_a:
+            if event.key == self.move_key_left:
                 self.move_left = False
-            if event.key == K_d:
+            if event.key == self.move_key_right:
                 self.move_right = False
 
-            if event.key == K_UP:
+            if event.key == self.attack_key_up:
                 self.attack_up = False
-            if event.key == K_DOWN:
+            if event.key == self.attack_key_down:
                 self.attack_down = False
-            if event.key == K_LEFT:
+            if event.key == self.attack_key_left:
                 self.attack_left = False
-            if event.key == K_RIGHT:
+            if event.key == self.attack_key_right:
                 self.attack_right = False
 
     def next_frame(self, delta_time):
@@ -216,7 +223,8 @@ class Player:
 
             self.display_frame = self.frames[self.current_frame_index]
 
-    '''def draw_player_bar(self, screen):
+    ''' moved
+    def draw_player_bar(self, screen):
         # Changeable colour variable
         colour_hex = int(255 * self.health/self.max_health)
         if self.health > 20:        # Buffer colour for more time as red

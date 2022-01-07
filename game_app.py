@@ -18,7 +18,7 @@ class GameApp:
         time_delta = self.clock.tick(60)/1000.0
         self.running = True
 
-        self.health = 0.0
+        self.health = 0.0 #!
 
         self.states = {'main_menu': MainMenuState(self.window_surface, self.ui_manager),
                        'settings': SettingsState(self.window_surface, self.ui_manager),

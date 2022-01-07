@@ -53,7 +53,7 @@ class MeleeEnemy(EnemyBlueprint):
         screen.blit(frame, (int(self.position.x), int(self.position.y)))
 
     def check_attack(self, player_x, player_y, player_height, delta_time):
-        # Prevents constant firing, by implementing a reload time
+        # For melee, reload may be used to pause attack in future
         if self.reloading == True:
             self.attack_time_accumulator += delta_time
             # Can make attack speed semi_random in the future
@@ -61,7 +61,7 @@ class MeleeEnemy(EnemyBlueprint):
                 self.attack_time_accumulator = 0.0
                 self.reloading = False
 
-        if self.reloading == False:
+        if self.reloading == False: # Code from range enemy
             # If the player is left or right, with a bit of a view region so that it is not a single pixel line trigger
             if self.position.y - 2 < player_y + player_height/2 and player_y < self.position.y + self.size_y:
                 # Melee not implemented yet

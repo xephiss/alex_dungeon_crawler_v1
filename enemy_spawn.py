@@ -27,16 +27,16 @@ class Spawn:
     def general_spawn(self):        # Spawning algorithm used for tiles which are always valid: Corner regions
         x = random.randint(1, 2)
         y = random.randint(1, 2)
-        flip_x = random.randint(0, 1)
-        flip_y = random.randint(0, 1)
+        flip_x = random.randint(0, 1)   # Left or right corner
+        flip_y = random.randint(0, 1)   # Top or bottom corner
 
-        if flip_x == 0:
+        if flip_x == 0:     # Left
             self.general_spawn_x = x * current_tile_size
-        elif flip_x == 1:
+        elif flip_x == 1:   # Right
             self.general_spawn_x = (9 - x) * current_tile_size
-        if flip_y == 0:
-            self.general_spawn_y = (y+1) * current_tile_size
-        elif flip_y == 1:
+        if flip_y == 0:     # Top
+            self.general_spawn_y = (y + 1) * current_tile_size
+        elif flip_y == 1:   # Bottom
             self.general_spawn_y = (9 - y) * current_tile_size
 
 

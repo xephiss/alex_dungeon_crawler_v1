@@ -7,24 +7,27 @@ movement_modifier = float(settings_saved.readline())
 damage_modifier = float(settings_saved.readline())
 settings_saved.close()
 
-if preset == 'preset_wasd\n':
-    move_key_up = K_w
-    move_key_down = K_s
-    move_key_left = K_a
-    move_key_right = K_d
 
-    attack_key_up = K_UP
-    attack_key_down = K_DOWN
-    attack_key_left = K_LEFT
-    attack_key_right = K_RIGHT
+# Function so that any changes in settings can be called as a function in player after setting changes
+def preset_choice(self, preset_key):
+    if preset_key == 'preset_wasd\n':
+        self.move_key_up = K_w
+        self.move_key_down = K_s
+        self.move_key_left = K_a
+        self.move_key_right = K_d
 
-elif preset == 'preset_arrow\n':
-    move_key_up = K_UP
-    move_key_down = K_DOWN
-    move_key_left = K_LEFT
-    move_key_right = K_RIGHT
+        self.attack_key_up = K_UP
+        self.attack_key_down = K_DOWN
+        self.attack_key_left = K_LEFT
+        self.attack_key_right = K_RIGHT
 
-    attack_key_up = K_w
-    attack_key_down = K_s
-    attack_key_left = K_a
-    attack_key_right = K_d
+    elif preset_key == 'preset_arrow\n':
+        self.move_key_up = K_UP
+        self.move_key_down = K_DOWN
+        self.move_key_left = K_LEFT
+        self.move_key_right = K_RIGHT
+
+        self.attack_key_up = K_w
+        self.attack_key_down = K_s
+        self.attack_key_left = K_a
+        self.attack_key_right = K_d

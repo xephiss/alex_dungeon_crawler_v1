@@ -17,7 +17,7 @@ class Ladder:
 
         self.touched_by_player = False
 
-    def on_collided(self):
+    def on_collided(self):      # Sets a collision update to true, links with draw in the state file
         if self.fade_count > 25:  # Prevents player from going to the next level as soon as it spawns
             self.touched_by_player = True
 
