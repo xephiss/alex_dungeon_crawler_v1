@@ -34,19 +34,19 @@ class MainMenuState:
         # Renders the title text and position
         self.title_text1 = self.title_font_front.render('Krypt', True, (200, 10, 50))
         self.title_pos_rect1 = self.title_text1.get_rect()      # Receive area
-        self.title_pos_rect1.center = (321, 79)                 # Define position to render center
+        self.title_pos_rect1.center = (321, 129)                 # Define position to render center
         self.title_text2 = self.title_font_back.render('Krypt', True, (200, 120, 30))
         self.title_pos_rect2 = self.title_text2.get_rect()
-        self.title_pos_rect2.center = (319, 80)
+        self.title_pos_rect2.center = (319, 130)
 
         # Uses the values in the attribute 'ui_manager' to style buttons
-        self.start_game_button = UIButton(pygame.Rect((245, 210), (150, 30)),
+        self.start_game_button = UIButton(pygame.Rect((245, 250), (150, 30)),
                                           'Start Game',
                                           self.ui_manager)
-        self.settings_button = UIButton(pygame.Rect((245, 260), (150, 30)),
+        self.settings_button = UIButton(pygame.Rect((245, 310), (150, 30)),
                                         'Settings',
                                         self.ui_manager)
-        self.quit_button = UIButton(pygame.Rect((245, 310), (150, 30)),
+        self.quit_button = UIButton(pygame.Rect((245, 370), (150, 30)),
                                     'Quit',
                                     self.ui_manager)
 

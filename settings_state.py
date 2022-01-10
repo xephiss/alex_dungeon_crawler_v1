@@ -6,9 +6,6 @@ import settings_file
 from pygame_gui.elements import UIButton, UIHorizontalSlider
 from pygame_gui import UI_BUTTON_PRESSED
 
-# Debug
-from pygame.locals import *
-
 
 class SettingsState:
     def __init__(self, window_surface, ui_manager):
@@ -26,14 +23,12 @@ class SettingsState:
         self.preset_text_pos_rect = None
 
         # Initialises Button
-        self.back_button = None
-        self.health_setting_button = None
-        self.movement_setting_button = None
-        self.damage_setting_button = None
-        self.preset_wasd_button = None
-        self.preset_arrow_button = None
-
-        self.health_setting_slider = None
+        self.back_button, self.preset_text, self.preset_wasd_button, self.preset_arrow_button = None, None, None, None
+        # Initialises Slider
+        self.health_setting_slider, self.movement_setting_slider, self.damage_setting_slider = None, None, None
+        # Initialises Text and Rectangles
+        self.preset_text_move, self.preset_text_attack = None, None
+        self.preset_text_move_pos_rect, self.preset_text_attack_pos_rect = None, None
 
         # Loads the settings and places it into a single array so that it can be called as a whole
         self.movement_preset = settings_file.preset
@@ -42,7 +37,7 @@ class SettingsState:
         self.damage_modifier = settings_file.damage_modifier
         self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier, self.damage_modifier]
 
-        if self.movement_preset == 'preset_wasd\n':     # Compares saved preset value
+        if self.movement_preset == 'preset_wasd\n':  # Compares saved preset value
             self.preset_words_move = 'Movement: WASD'
             self.preset_words_attack = "Directional Attack: Arrow Keys"
         else:
@@ -59,48 +54,52 @@ class SettingsState:
         self.title_pos_rect.center = (320, 50)
 
         # Health Settings
-        self.health_text = self.settings_font.render(str(round(self.health_modifier * 100, 3)), True, (250, 100, 30))
+        self.health_text = self.settings_font.render("Max Health: " + str(round(self.health_modifier * 100, 3)),
+                                                     True, (210, 10, 60))
         self.health_text_pos_rect = self.health_text.get_rect()
-        self.health_text_pos_rect.center = (400, 255)
+        self.health_text_pos_rect.center = (320, 300)
 
         # Movement Settings
-        self.movement_text = self.settings_font.render(str(round(self.movement_modifier * 100, 3)), True,
-                                                       (250, 100, 30))
+        self.movement_text = self.settings_font.render("Movement Speed: " + str(round(self.movement_modifier * 100, 3)),
+                                                       True, (100, 10, 160))
         self.movement_text_pos_rect = self.movement_text.get_rect()
-        self.movement_text_pos_rect.center = (400, 315)
+        self.movement_text_pos_rect.center = (320, 380)
 
         # Player Damage Settings
-        self.damage_text = self.settings_font.render(str(round(self.damage_modifier * 100, 3)), True, (250, 100, 30))
+        self.damage_text = self.settings_font.render("Player Damage: " + str(round(self.damage_modifier * 100, 3)),
+                                                     True, (200, 10, 10))
         self.damage_text_pos_rect = self.damage_text.get_rect()
-        self.damage_text_pos_rect.center = (400, 375)
+        self.damage_text_pos_rect.center = (320, 460)
 
         # Control Settings
+        self.preset_text = self.settings_font.render("Pick your control scheme:", True, (240, 40, 0))
+        self.preset_text_pos_rect = self.preset_text.get_rect()
+        self.preset_text_pos_rect.center = (285, 120)
+
         self.preset_text_move = self.settings_font.render(self.preset_words_move, True, (200, 60, 0))
         self.preset_text_move_pos_rect = self.preset_text_move.get_rect()
-        self.preset_text_move_pos_rect.center = (320, 170)
+        self.preset_text_move_pos_rect.center = (320, 195)
 
         self.preset_text_attack = self.settings_font.render(self.preset_words_attack, True, (200, 60, 0))
         self.preset_text_attack_pos_rect = self.preset_text_attack.get_rect()
-        self.preset_text_attack_pos_rect.center = (320, 200)
+        self.preset_text_attack_pos_rect.center = (320, 225)
 
         # Buttons
         self.back_button = UIButton(pygame.Rect((400, 550), (200, 30)),  # (position), (dimensions), 'Text', format
                                     'Back to menu', self.ui_manager)
-        self.health_setting_button = UIButton(pygame.Rect((140, 240), (200, 30)),
-                                              'Toggle Health%', self.ui_manager)
-        self.movement_setting_button = UIButton(pygame.Rect((140, 300), (200, 30)),
-                                                'Toggle Movement%', self.ui_manager)
-        self.damage_setting_button = UIButton(pygame.Rect((140, 360), (200, 30)),
-                                              'Toggle Damage%', self.ui_manager)
+        self.preset_wasd_button = UIButton(pygame.Rect((200, 145), (100, 25)),
+                                           'Preset 1', self.ui_manager)
+        self.preset_arrow_button = UIButton(pygame.Rect((340, 145), (100, 25)),
+                                            'Preset 2', self.ui_manager)
 
-        self.preset_wasd_button = UIButton(pygame.Rect((200, 130), (100, 25)),
-                                              'Preset 1', self.ui_manager)
-        self.preset_arrow_button = UIButton(pygame.Rect((340, 130), (100, 25)),
-                                               'Preset 2', self.ui_manager)
-
-        # Slider[(Position), (Dimensions), Default start value (variable), Range of valid values, Format]
-        self.health_setting_slider = UIHorizontalSlider(pygame.Rect((140, 580), (300, 20)), self.health_modifier, (0.3, 2.0), self.ui_manager)
-
+        # Sliders
+        # [(Position), (Dimensions), Default start value (variable), Range of valid values, Format]
+        self.health_setting_slider = UIHorizontalSlider(pygame.Rect((170, 315), (300, 20)), self.health_modifier,
+                                                        (0.3, 2.0), self.ui_manager)
+        self.movement_setting_slider = UIHorizontalSlider(pygame.Rect((170, 395), (300, 20)), self.movement_modifier,
+                                                          (0.3, 2.0), self.ui_manager)
+        self.damage_setting_slider = UIHorizontalSlider(pygame.Rect((170, 475), (300, 20)), self.damage_modifier,
+                                                        (0.3, 2.0), self.ui_manager)
 
     def stop(self):
         # Stops all running processes
@@ -111,42 +110,21 @@ class SettingsState:
         self.health_text_pos_rect = None
 
         self.back_button.kill()
-        self.health_setting_button.kill()
-        self.movement_setting_button.kill()
-        self.damage_setting_button.kill()
         self.preset_wasd_button.kill()
         self.preset_arrow_button.kill()
 
+        self.back_button, self.preset_text, self.preset_wasd_button, self.preset_arrow_button = None, None, None, None
+
         self.health_setting_slider.kill()
+        self.movement_setting_slider.kill()
+        self.damage_setting_slider.kill()
 
-        self.health_setting_button = None
-        self.back_button = None
-        self.movement_setting_button = None
-        self.damage_setting_button = None
-        self.preset_wasd_button = None
-        self.preset_arrow_button = None
-
-        self.health_setting_slider = None
+        self.health_setting_slider, self.movement_setting_slider, self.damage_setting_slider = None, None, None
 
     def handle_events(self, event):
         if event.type == pygame.USEREVENT and event.user_type == UI_BUTTON_PRESSED:
             if event.ui_element == self.back_button:
                 self.transition_target = 'main_menu'
-
-            if event.ui_element == self.health_setting_button:
-                self.health_modifier += 0.1
-                if self.health_modifier > 2.1:
-                    self.health_modifier = 0.3
-
-            if event.ui_element == self.movement_setting_button:
-                self.movement_modifier += 0.1
-                if self.movement_modifier > 2.1:
-                    self.movement_modifier = 0.5
-
-            if event.ui_element == self.damage_setting_button:
-                self.damage_modifier += 0.1
-                if self.damage_modifier > 2.1:
-                    self.damage_modifier = 0.3
 
             if event.ui_element == self.preset_wasd_button:
                 self.movement_preset = 'preset_wasd\n'
@@ -161,42 +139,46 @@ class SettingsState:
             self.preset_text_move = self.settings_font.render(self.preset_words_move, True, (200, 60, 0))
             self.preset_text_attack = self.settings_font.render(self.preset_words_attack, True, (200, 60, 0))
 
-            # Saving the data in settings
-            settings_saved = open("settings_save.txt.", "w")
-            settings_saved.write(str(self.movement_preset) + str(self.health_modifier)
-                                 + "\n" + str(self.movement_modifier) + "\n" + str(self.damage_modifier) + "\n")
-            settings_saved.close()
-            # Update the rendering
-            self.health_text = self.settings_font.render(str(round(self.health_modifier * 100, 3)), True,
-                                                         (250, 100, 30))
-            self.movement_text = self.settings_font.render(str(round(self.movement_modifier * 100, 3)), True,
-                                                           (250, 100, 30))
-            self.damage_text = self.settings_font.render(str(round(self.damage_modifier * 100, 3)), True,
-                                                         (250, 100, 30))
-            self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
-                                   self.damage_modifier]
-
-            # Debugs
+        # Slider value update and saving
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
-                if event.ui_element == self.health_setting_slider:
-                    print(event.value)
+                if event.ui_element == self.health_setting_slider:  # Health Setting
+                    health_modifier_value = event.value
+                    self.health_modifier = (health_modifier_value * 100 // 10) / 10  # rounds value to nearest 10
 
+                if event.ui_element == self.movement_setting_slider:  # Movement Setting
+                    movement_modifier_value = event.value
+                    self.movement_modifier = (movement_modifier_value * 100 // 10) / 10
 
-                    self.health_modifier_test = event.value
-                    self.health_modifier = (self.health_modifier_test * 100 // 10) / 10 # // is integer division
-                    print(self.health_modifier)
+                if event.ui_element == self.damage_setting_slider:  # Damage Setting
+                    damage_modifier_value = event.value
+                    self.damage_modifier = (damage_modifier_value * 100 // 10) / 10
 
-
+        # Saving the data in settings
+        settings_saved = open("settings_save.txt.", "w")
+        settings_saved.write(str(self.movement_preset) + str(self.health_modifier)
+                             + "\n" + str(self.movement_modifier) + "\n" + str(self.damage_modifier) + "\n")
+        settings_saved.close()
+        # Update the rendering
+        self.health_text = self.settings_font.render("Max Health: " + str(round(self.health_modifier * 100, 3)),
+                                                     True, (200, 10, 60))
+        self.movement_text = self.settings_font.render("Movement Speed: " + str(round(self.movement_modifier * 100, 3)),
+                                                       True, (100, 10, 160))
+        self.damage_text = self.settings_font.render("Player Damage: " + str(round(self.damage_modifier * 100, 3)),
+                                                     True, (200, 10, 10))
+        self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
+                               self.damage_modifier]
 
     def update(self, time_delta):
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
         # Draw all the text boxes, may not have to always be updated
-        self.window_surface.blit(self.title_text, self.title_pos_rect)
-        self.window_surface.blit(self.health_text, self.health_text_pos_rect)
-        self.window_surface.blit(self.movement_text, self.movement_text_pos_rect)
-        self.window_surface.blit(self.damage_text, self.damage_text_pos_rect)
+        self.window_surface.blit(self.title_text, self.title_pos_rect)      # Title
+        self.window_surface.blit(self.health_text, self.health_text_pos_rect)       # Health Value
+        self.window_surface.blit(self.movement_text, self.movement_text_pos_rect)   # Speed Value
+        self.window_surface.blit(self.damage_text, self.damage_text_pos_rect)       # Damage Value
+        # Control Presets
+        self.window_surface.blit(self.preset_text, self.preset_text_pos_rect)
         self.window_surface.blit(self.preset_text_move, self.preset_text_move_pos_rect)
         self.window_surface.blit(self.preset_text_attack, self.preset_text_attack_pos_rect)
 
@@ -205,10 +187,3 @@ class SettingsState:
         # Saving as an array allows passing between states
         self.settings_array = [self.movement_preset, self.health_modifier, self.movement_modifier,
                                self.damage_modifier]
-
-        #slider_value = round(self.sliderTest.get_current_value(), 3)
-        #print(slider_value)
-        value = self.health_setting_slider.get_current_value()
-        #print(value)
-
-
