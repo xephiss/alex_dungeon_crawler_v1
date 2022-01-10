@@ -53,8 +53,8 @@ class Player:
         self.collision_mapped = False
 
         # attack states
-        # Weapons: sword, fireball, flame
-        self.current_weapon = 'flame'
+        # Weapons: fireball, flame, sword
+        self.current_weapon = 'fireball'
         self.attacked = False
         self.attack_accumulator = 0.0
         self.attack_delay = 1.0     # Can change in an attack method
@@ -177,17 +177,19 @@ class Player:
             if event.key == self.attack_key_right:
                 self.attack_right = True
 
-            # Debugging and Testing
+            # Weapon Change Keys
+            if event.key == K_1:    # Fireball
+                self.current_weapon = 'fireball'
+            if event.key == K_2:    # Flame
+                self.current_weapon = 'flame'
+            if event.key == K_3:    # Sword
+                self.current_weapon = 'sword'
+
+            # Debugging and Testing Keys
             if event.key == K_p:    # Death Key
                 self.health = 0
             if event.key == K_o:    # Heal Key
                 self.health += 20
-            if event.key == K_1:    # Sword
-                self.current_weapon = 'sword'
-            if event.key == K_2:    # Flame
-                self.current_weapon = 'flame'
-            if event.key == K_3:    # Fireball
-                self.current_weapon = 'fireball'
 
 
     def on_key_release(self, event):

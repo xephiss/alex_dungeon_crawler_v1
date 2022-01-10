@@ -106,18 +106,18 @@ class PlayerProjectile:
 
             # Different colour slash depending on percentage health : White -> Yellow -> Blue -> Purple
             # Different attack colour delas different damage
-            if health > 0.75:
+            if health > 0.85:
                 self.current_projectile_array = sword_direction_array[2]
                 self.weapon_damage = 10
-            elif health > 0.5:
+            elif health > 0.7:
                 self.current_projectile_array = sword_direction_array[3]
-                self.weapon_damage = 15
+                self.weapon_damage = 20
             elif health > 0.25:
                 self.current_projectile_array = sword_direction_array[0]
-                self.weapon_damage = 20
+                self.weapon_damage = 35
             elif health > 0.0:
                 self.current_projectile_array = sword_direction_array[1]
-                self.weapon_damage = 25
+                self.weapon_damage = 49
 
             self.width = 175 * player_attack_sprites.swordMULTI
             self.height = 128 * player_attack_sprites.swordMULTI

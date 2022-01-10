@@ -12,7 +12,7 @@ class SettingsState:
         self.transition_target = None
         self.window_surface = window_surface
         self.ui_manager = ui_manager
-        self.title_font = self.ui_manager.get_theme().get_font(["title_screen_front"])
+        self.title_font = self.ui_manager.get_theme().get_font(["setting_title"])
         self.settings_font = self.ui_manager.get_theme().get_font(["settings_text"])
 
         self.background_surf = None
@@ -27,8 +27,8 @@ class SettingsState:
         # Initialises Slider
         self.health_setting_slider, self.movement_setting_slider, self.damage_setting_slider = None, None, None
         # Initialises Text and Rectangles
-        self.preset_text_move, self.preset_text_attack = None, None
-        self.preset_text_move_pos_rect, self.preset_text_attack_pos_rect = None, None
+        self.preset_text_move, self.preset_text_attack, self.extra_controls_text = None, None, None
+        self.preset_text_move_pos_rect, self.preset_text_attack_pos_rect, self.extra_controls_pos = None, None, None
 
         # Loads the settings and places it into a single array so that it can be called as a whole
         self.movement_preset = settings_file.preset
@@ -57,19 +57,19 @@ class SettingsState:
         self.health_text = self.settings_font.render("Max Health: " + str(round(self.health_modifier * 100, 3)),
                                                      True, (210, 10, 60))
         self.health_text_pos_rect = self.health_text.get_rect()
-        self.health_text_pos_rect.center = (320, 300)
+        self.health_text_pos_rect.center = (320, 320)
 
         # Movement Settings
         self.movement_text = self.settings_font.render("Movement Speed: " + str(round(self.movement_modifier * 100, 3)),
                                                        True, (100, 10, 160))
         self.movement_text_pos_rect = self.movement_text.get_rect()
-        self.movement_text_pos_rect.center = (320, 380)
+        self.movement_text_pos_rect.center = (320, 400)
 
         # Player Damage Settings
         self.damage_text = self.settings_font.render("Player Damage: " + str(round(self.damage_modifier * 100, 3)),
                                                      True, (200, 10, 10))
         self.damage_text_pos_rect = self.damage_text.get_rect()
-        self.damage_text_pos_rect.center = (320, 460)
+        self.damage_text_pos_rect.center = (320, 480)
 
         # Control Settings
         self.preset_text = self.settings_font.render("Pick your control scheme:", True, (240, 40, 0))
@@ -84,8 +84,12 @@ class SettingsState:
         self.preset_text_attack_pos_rect = self.preset_text_attack.get_rect()
         self.preset_text_attack_pos_rect.center = (320, 225)
 
+        self.extra_controls_text = self.settings_font.render("Change weapon buttons: 1 / 2 / 3", True, (198, 58, 6))
+        self.extra_controls_pos = self.extra_controls_text.get_rect()
+        self.extra_controls_pos.center = (320, 257)
+
         # Buttons
-        self.back_button = UIButton(pygame.Rect((400, 550), (200, 30)),  # (position), (dimensions), 'Text', format
+        self.back_button = UIButton(pygame.Rect((400, 570), (200, 30)),  # (position), (dimensions), 'Text', format
                                     'Back to menu', self.ui_manager)
         self.preset_wasd_button = UIButton(pygame.Rect((200, 145), (100, 25)),
                                            'Preset 1', self.ui_manager)
@@ -94,11 +98,11 @@ class SettingsState:
 
         # Sliders
         # [(Position), (Dimensions), Default start value (variable), Range of valid values, Format]
-        self.health_setting_slider = UIHorizontalSlider(pygame.Rect((170, 315), (300, 20)), self.health_modifier,
+        self.health_setting_slider = UIHorizontalSlider(pygame.Rect((170, 335), (300, 20)), self.health_modifier,
                                                         (0.3, 2.0), self.ui_manager)
-        self.movement_setting_slider = UIHorizontalSlider(pygame.Rect((170, 395), (300, 20)), self.movement_modifier,
+        self.movement_setting_slider = UIHorizontalSlider(pygame.Rect((170, 425), (300, 20)), self.movement_modifier,
                                                           (0.3, 2.0), self.ui_manager)
-        self.damage_setting_slider = UIHorizontalSlider(pygame.Rect((170, 475), (300, 20)), self.damage_modifier,
+        self.damage_setting_slider = UIHorizontalSlider(pygame.Rect((170, 495), (300, 20)), self.damage_modifier,
                                                         (0.3, 2.0), self.ui_manager)
 
     def stop(self):
@@ -181,6 +185,7 @@ class SettingsState:
         self.window_surface.blit(self.preset_text, self.preset_text_pos_rect)
         self.window_surface.blit(self.preset_text_move, self.preset_text_move_pos_rect)
         self.window_surface.blit(self.preset_text_attack, self.preset_text_attack_pos_rect)
+        self.window_surface.blit(self.extra_controls_text, self.extra_controls_pos)
 
         self.ui_manager.draw_ui(self.window_surface)  # Draw the UI Bits
 
