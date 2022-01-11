@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 import enemy_instance
 import enemy_spawn
@@ -17,14 +16,15 @@ class GameState:
         self.title_font = pygame.font.Font(None, 64)
         self.instructions_font = pygame.font.Font(None, 32)
         self.ui_font = pygame.font.Font(None, 20)
+        self.help_ui_font = pygame.font.Font(None, 15)
 
         self.background_surf = None
         self.title_text = None
         self.title_pos_rect = None
         self.instructions_text = None
         self.instructions_text_pos_rect = None
-        self.ui_text = None
-        self.ui_text_pos_rect = None
+        self.ui_text, self.help_text = None, None
+        self.ui_text_pos_rect, self.help_text_pos_rect = None, None
 
         self.time_delta = time_delta
 
@@ -37,24 +37,18 @@ class GameState:
         self.settings = settings
 
     def start(self):
-        self.transition_target = None
+        self.transition_target = None   # State to transfer to
         self.background_surf = pygame.Surface((640, 640))
         self.background_surf.fill((200, 150, 100))
 
-        # self.title_text = self.title_font.render('The Game', True, (255, 255, 255))
-        # self.title_pos_rect = self.title_text.get_rect()
-        # self.title_pos_rect.center = (400, 50)
-
-        # self.instructions_text = self.instructions_font.render('Press ESC to return to main menu',
-        # True, (255, 255, 255))
-
-        # self.instructions_text_pos_rect = self.instructions_text.get_rect()
-        # self.instructions_text_pos_rect.center = (400, 100)
-
-        # Creating the character UI text, and defining the position
+        # Creating the User Interface text, and defining the position
         self.ui_text = self.ui_font.render('Collision Invulnerability', True, (200, 200, 200))
         self.ui_text_pos_rect = self.ui_text.get_rect()
         self.ui_text_pos_rect.center = (105, 600)
+
+        self.help_text = self.help_ui_font.render('Press ESC to return to menu', True, (200, 190, 190))
+        self.help_text_pos_rect = self.help_text.get_rect()
+        self.help_text_pos_rect.topright = (608, 620)
 
         # self.player1 = player.Player()
         self.level = game_map.Levels()
@@ -65,7 +59,7 @@ class GameState:
 
         self.enemy_count = 0
         self.active_enemies = []
-        # self.enemy1 = enemy.Enemy()
+        self.max_enemy = random_max_enemy()
 
         # Debugging
         self.touched_next_level = True
@@ -108,14 +102,6 @@ class GameState:
     def update(self, time_delta):
         # clear the window to the background surface
         self.window_surface.blit(self.background_surf, (0, 0))
-        # stick the title at the top
-        # self.window_surface.blit(self.title_text, self.title_pos_rect)
-        # stick the instructions below
-
-        # self.window_surface.blit(self.instructions_text, self.instructions_text_pos_rect)
-        # self.level.draw_map(self.window_surface)
-        # self.level.draw_aesthetic(self.window_surface)
-        # self.level.draw_collision(self.window_surface)
 
         # Background and map tiles drawn before all game entities
         self.level.draw(self.window_surface)
@@ -214,5 +200,6 @@ class GameState:
 
         # UI Stuff
         self.window_surface.blit(self.ui_text, self.ui_text_pos_rect)  # Draw the text
+        self.window_surface.blit(self.help_text, self.help_text_pos_rect)
         invulnerable_front_box = pygame.Rect(32, 612, 120, 14)  # Pos x, y, width, height
         pygame.draw.rect(self.window_surface, (0, 0, 0), invulnerable_front_box, 5)  # Colour, image, line size

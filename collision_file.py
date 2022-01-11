@@ -43,6 +43,4 @@ class CollisionClass:
                 y_temp = (index // 10) * current_tile_size
                 self.collidable_positions_projectile.append([x_temp, y_temp])
 
-
-
             index += 1

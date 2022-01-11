@@ -10,7 +10,6 @@ class MainMenuState:
         self.transition_target = None
         self.window_surface = window_surface
         self.ui_manager = ui_manager
-        # self.title_font = pygame.font.Font(None, 64)  - Old Code
         # Receive styling for fonts
         self.title_font_front = self.ui_manager.get_theme().get_font(["title_screen_front"])
         self.title_font_back = self.ui_manager.get_theme().get_font(["title_screen_back"])

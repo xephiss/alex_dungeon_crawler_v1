@@ -4,6 +4,7 @@ import range_enemy_sprite
 import projectile_sprite
 from enemy_blueprint_parent import EnemyBlueprint
 import game_map
+
 current_tile_size = game_map.current_tile_size
 
 
@@ -46,11 +47,11 @@ class RangeEnemy(EnemyBlueprint):
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index].copy()
-        if self.direction == True:      # Face left or right
+        if self.direction == True:  # Face left or right
             frame = pygame.transform.flip(frame, True, False)
 
         # Uses built-in function to add an rgb colour over the drawn entity
-        if self.in_damage_state:        # Flashes white when hit
+        if self.in_damage_state:  # Flashes white when hit
             frame.blit(self.white_hit_surf, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
         if self.current_enemy == 'rangeDemon':
@@ -64,7 +65,7 @@ class RangeEnemy(EnemyBlueprint):
                 screen.blit(frame, (int(self.position.x),
                                     int(self.position.y)))
 
-        else:       # General draw instruction
+        else:  # General draw instruction
             screen.blit(frame, (int(self.position.x), int(self.position.y)))
 
     def check_attack(self, player_x, player_y, player_height, delta_time):
@@ -78,11 +79,11 @@ class RangeEnemy(EnemyBlueprint):
 
         if self.reloading == False:
             # If the player is left or right, with a bit of a view region so that it is not a single pixel line trigger
-            if self.position.y - 2 < player_y + player_height/2 and player_y < self.position.y + self.size_y:
-                if self.current_enemy_type == 'range':      # Ranged enemies spawn a projectile
+            if self.position.y - 2 < player_y + player_height / 2 and player_y < self.position.y + self.size_y:
+                if self.current_enemy_type == 'range':  # Ranged enemies spawn a projectile
                     self.active_projectiles.append(projectile_sprite.Projectile(self.projectile, self.position.x,
-                                                                                (self.position.y + self.size_y/3),
-                                                                                player_x, self.size_x/1.5))
+                                                                                (self.position.y + self.size_y / 3),
+                                                                                player_x, self.size_x / 1.5))
                     self.reloading = True
 
                 else:
@@ -95,8 +96,10 @@ class RangeEnemy(EnemyBlueprint):
                 projectile.general_updates(screen, delta_time)  # Draw, movement and rotation methods are in this
 
                 for collidable_tile in collidablexy:
-                    if (projectile.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(projectile.position.x) + 6 and
-                    projectile.position.y  < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(projectile.position.y) + 6):
+                    if (projectile.position.x < collidable_tile[0] + current_tile_size and collidable_tile[0] < int(
+                            projectile.position.x) + 6 and
+                            projectile.position.y < collidable_tile[1] + current_tile_size and collidable_tile[1] < int(
+                                projectile.position.y) + 6):
                         projectile.projectile_death()
                 # For future planning of delayed projectile death for death animation
                 if projectile.death == True:

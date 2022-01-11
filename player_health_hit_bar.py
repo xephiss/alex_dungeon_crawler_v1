@@ -28,5 +28,3 @@ def draw_player_bar(self, screen):
     invulnerable_bar = pygame.Rect(35.5, 617, 114 * ((3 - self.hurt_time_accumulator) / 3.0), 3)  # Surface
     pygame.draw.rect(screen, (20, 150, 150), invulnerable_bar, 8)  # Colour and line thickness
 
-    # invulnerable_front_box = pygame.Rect(32, 600, 100, 14)
-    # pygame.draw.rect(screen, (0, 0, 0), invulnerable_front_box, 5)

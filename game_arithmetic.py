@@ -25,16 +25,18 @@ def map_collision_v1(position, map_positions_array):
 # returns a random value. The higher the number, the rarer the occurrence.
 # Will be used to spawn a random max number of enemies, hence larger numbers is rarer
 def random_max_enemy():
-    random_value = random.randint(1, 100)
+    random_value = random.randint(0, 100)
     if random_value == 100:
-        return 20
-    elif random_value > 98:
-        return 10
+        return 20   # ~1%
+    elif random_value > 97:
+        return 10   # ~2%
     elif random_value > 85:
-        return 6
-    elif random_value > 55:
-        return 5
+        return 7    # ~12%
+    elif random_value > 75:
+        return 6    # ~10%
+    elif random_value > 50:
+        return 5    # ~25%
     elif random_value > 20:
-        return 4
+        return 4    # ~30%
     else:
-        return 3
+        return 3    # ~20%

@@ -121,5 +121,3 @@ for colourset in range(0, 4):
 sword_array = [sword_array_right, sword_array_left, sword_array_up, sword_array_down]
 # 3D Array: Direction -> Colour -> Frame
 
-# for i in range(0, 5):
-#     sword_array[i] = pygame.transform.rotate(sword_array[i], 45)

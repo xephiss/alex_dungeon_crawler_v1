@@ -10,8 +10,8 @@ class PlayerProjectile:
         self.current_frame_index = 0
         self.animation_delay = 0
         self.direction = direction
-        sword_direction_array = []      # Prevents python alert for local variable line 100, 102...
-        self.attack_delay = 1.0         # Different weapons have different fire rate
+        sword_direction_array = []  # Prevents python alert for local variable line 100, 102...
+        self.attack_delay = 1.0  # Different weapons have different fire rate
         # Positional Attributes
         self.position = pygame.math.Vector2(spawn_pos.x, spawn_pos.y)
         self.change_position = pygame.math.Vector2(0, 0)
@@ -22,14 +22,13 @@ class PlayerProjectile:
         self.current_projectile_array = None
         self.hit_enemy = False
         self.weapon_damage = 30
-        self.hitbox = pygame.Rect(0, 0, 0, 0)       # Declares the hitbox variable as a .rect surface
+        self.hitbox = pygame.Rect(0, 0, 0, 0)  # Declares the hitbox variable as a .rect surface
 
-
-        if weapon == 'fireball':
+        if weapon == 'fireball':  # Initial spawn location of fireball
             if direction == 'right':
                 self.current_projectile_array = player_attack_sprites.fireball_array[0]
-                self.position.x += 28       # Fine tuning spawn position - x
-                self.position.y += 9        # Fine tuning spawn position - y
+                self.position.x += 28  # Fine tuning spawn position - x
+                self.position.y += 9  # Fine tuning spawn position - y
             if direction == 'left':
                 self.current_projectile_array = player_attack_sprites.fireball_array[1]
                 self.position.x -= 32
@@ -57,8 +56,8 @@ class PlayerProjectile:
             # [0][X] are the horizontal flames, [1][X] is are the vertical flames
             if direction == 'right':
                 self.current_projectile_array = player_attack_sprites.flame_array[0][0]
-                self.change_position.x = 30     # Fine tuning spawn position - x
-                self.change_position.y = 13     # Fine tuning spawn position - y
+                self.change_position.x = 30  # Fine tuning spawn position - x
+                self.change_position.y = 13  # Fine tuning spawn position - y
             if direction == 'left':
                 self.current_projectile_array = player_attack_sprites.flame_array[0][1]
                 self.change_position.x = -60
@@ -83,12 +82,12 @@ class PlayerProjectile:
             self.weapon_damage = 50
             self.attack_delay = 1.0
 
-        else:       # Swords
+        else:  # Swords
             if direction == 'right':
                 sword_direction_array = player_attack_sprites.sword_array[0]
             elif direction == 'left':
                 sword_direction_array = player_attack_sprites.sword_array[1]
-                self.change_position.x = -50    # Fine tunes spawn position based of character axis
+                self.change_position.x = -50  # Fine tunes spawn position based of character axis
 
             elif direction == 'up':
                 sword_direction_array = player_attack_sprites.sword_array[2]
@@ -105,7 +104,7 @@ class PlayerProjectile:
             self.position.y += self.change_position.y
 
             # Different colour slash depending on percentage health : White -> Yellow -> Blue -> Purple
-            # Different attack colour delas different damage
+            # Different attack colour has different damage
             if health > 0.85:
                 self.current_projectile_array = sword_direction_array[2]
                 self.weapon_damage = 10
@@ -128,27 +127,10 @@ class PlayerProjectile:
             self.attack_delay = 0.5
 
         self.number_frames = len(self.current_projectile_array)
-        # Default direction is right, unless it is 'flame[1] (vertical)'
-        # if direction == 'down':
-        #     if weapon != 'flame':
-        #         for i in range(0, self.number_frames):
-        #             self.current_projectile_array[i] = pygame.transform.rotate(self.current_projectile_array[i], 90)
-        #
-        # if direction == 'up':
-        #     if weapon == 'flame':
-        #         for i in range(0, self.number_frames):
-        #             self.current_projectile_array[i] = pygame.transform.rotate(self.current_projectile_array[i], 180)
-        #     else:
-        #         for i in range(0, self.number_frames):
-        #             self.current_projectile_array[i] = pygame.transform.rotate(self.current_projectile_array[i], -90)
-        # if direction == 'left':
-        #     for i in range(0, self.number_frames):
-        #         self.current_projectile_array[i] = pygame.transform.rotate(self.current_projectile_array[i], 180)
-
         self.display_frame = self.current_projectile_array[self.current_frame_index]
 
     def update(self, delta_time):
-        if self.death == False:
+        if self.death is False:
             self.time_accumulator += delta_time
             if self.time_accumulator > self.animation_delay:
                 self.current_frame_index += 1
@@ -164,8 +146,8 @@ class PlayerProjectile:
                 self.display_frame = self.current_projectile_array[self.current_frame_index]
 
     def draw(self, screen):
-        screen.blit(self.display_frame, (self.position.x, self.position.y))     # Frame sprite
-        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))   # Rectangle hit-region
+        screen.blit(self.display_frame, (self.position.x, self.position.y))  # Frame sprite
+        self.hitbox = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))  # Rectangle hit-region
 
     def move(self, delta_time, player_pos):
         if self.weapon == 'fireball':
@@ -196,4 +178,4 @@ debugging = False
 if debugging:
     def debug_hitbox(self, screen):
         self.rectangle = self.display_frame.get_rect(topleft=(self.position.x, self.position.y))
-        pygame.draw.rect(screen, (200,150,200,20), self.rectangle)
+        pygame.draw.rect(screen, (200, 150, 200, 20), self.rectangle)

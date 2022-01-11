@@ -1,5 +1,4 @@
 import pygame
-import random
 import melee_enemy_sprite
 from enemy_blueprint_parent import EnemyBlueprint
 from game_arithmetic import *
@@ -76,7 +75,7 @@ class MeleeEnemy(EnemyBlueprint):
                 not (pygame.Rect.colliderect(self.sprite_hitbox, other_hitbox) and self.sprite_hitbox != other_hitbox)
 
         ):
-            # Use functions to calculate distacne between points, and displacement vector
+            # Use functions to calculate distance between points, and displacement vector
             length = pythagoras_length(self.position.x - player_pos.x, self.position.y - player_pos.y)
             displacement = displacement_vector(player_pos, self.position)
             unit = unit_vector(displacement, length)

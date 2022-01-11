@@ -60,4 +60,3 @@ class Projectile:
         self.update_movement(delta_time)
         self.rotation(delta_time)
 
-# In enemy file, need a reload speed
