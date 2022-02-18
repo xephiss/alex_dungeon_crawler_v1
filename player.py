@@ -39,9 +39,7 @@ class Player:
         self.attack_key_up, self.attack_key_down, self.attack_key_left, self.attack_key_right = None, None, None, None
 
         settings_file.preset_choice(self, self.settings[0])  # Receives the preset keys
-
         self.direction = False      # When direction is False, player faces right
-
         self.collision_mapped = False   # Check for map collision per level change
 
         # Attack states
@@ -226,7 +224,7 @@ class Player:
             self.health = self.max_health
 
         if len(projectile_array) != 0:
-            for projectile in projectile_array:
+            for projectile in projectile_array:     # Projectile collision, as sprite has invisible regions
                 if (projectile.position.x <= self.position.x + self.size_x and
                         self.position.x <= projectile.position.x + 15 and
                         projectile.position.y <= self.position.y + self.size_y and

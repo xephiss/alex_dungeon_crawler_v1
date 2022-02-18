@@ -3,8 +3,8 @@ import pygame
 tilesheet = pygame.image.load("Tiles/Dungeon_Tileset_Yellow tiles 32x32 16by20.png")
 MULTIPLY = 2
 
-tilesheet = pygame.transform.smoothscale(tilesheet, (512*MULTIPLY, 640*MULTIPLY))
-base_coordinate = 32 * MULTIPLY
+tilesheet = pygame.transform.smoothscale(tilesheet, (512*MULTIPLY, 640*MULTIPLY))   # Resizing
+base_coordinate = 32 * MULTIPLY     # Each tile is 32x32 by default, along with the multiplication of size
 
 
 # Dictionary of tiling, starting top left to bottom right

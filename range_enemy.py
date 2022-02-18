@@ -47,7 +47,7 @@ class RangeEnemy(EnemyBlueprint):
 
     def draw(self, screen):
         frame = self.frames[self.current_frame_index].copy()
-        if self.direction == True:  # Face left or right
+        if self.direction is True:  # Face left or right
             frame = pygame.transform.flip(frame, True, False)
 
         # Uses built-in function to add an rgb colour over the drawn entity
@@ -102,10 +102,10 @@ class RangeEnemy(EnemyBlueprint):
                                 projectile.position.y) + 6):
                         projectile.projectile_death()
                 # For future planning of delayed projectile death for death animation
-                if projectile.death == True:
+                if projectile.death is True:
                     self.active_projectiles.remove(projectile)
 
-                if projectile.position.x < 0 or projectile.position.x > 640:
+                if projectile.position.x < 0 or projectile.position.x > 640:        # Out of bounds, then remove
                     self.active_projectiles.remove(projectile)
 
     def move(self, player_pos, player_hitbox, other_hitbox, number_divide, collideablexy):

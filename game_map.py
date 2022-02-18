@@ -1,4 +1,3 @@
-import pygame
 import background_tiles
 import levels_file.level_collection as level_collection     # Stores it as a variable
 # Imports all the levels in another file, then import that file: level_collection
@@ -28,7 +27,6 @@ class Levels:
         self.end_of_level_tiles = []
 
         # Collision algorithm
-        '''self.collision_boxes = []''' # Not used due to splitting of coordinates
         self.collision_boxes_x = []
         self.collision_boxes_y = []
 
@@ -75,9 +73,6 @@ class Levels:
             else:
                 row = 0
                 column += 1
-    # keytable = ('test', 'test2')
-    # for i in keytable:
-    #    print(tiles[i])
 
     def draw_map(self, screen):     # Draws the background map tiles, e.g the floor
         current_level = self.level_array[self.level_number - 1]

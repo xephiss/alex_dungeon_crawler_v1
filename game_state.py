@@ -10,6 +10,7 @@ from game_arithmetic import random_max_enemy
 
 class GameState:
     def __init__(self, window_surface, time_delta, settings):
+        # UI attributes
         self.transition_target = None
         self.window_surface = window_surface
 
@@ -49,14 +50,12 @@ class GameState:
         self.help_text = self.help_ui_font.render('Press ESC to return to menu', True, (200, 190, 190))
         self.help_text_pos_rect = self.help_text.get_rect()
         self.help_text_pos_rect.topright = (608, 620)
-
-        # self.player1 = player.Player()
+        # Map, tiles, collision fetching
         self.level = game_map.Levels()
         self.spawn_tiles = enemy_spawn.Spawn(self.level.level_array[self.level.level_number - 1])
         self.collision_class = collision_file.CollisionClass(self.level.level_array[self.level.level_number - 1])
-
+        # Player and enemy generation
         self.players = [player.Player(self.level.end_of_level_tiles, self.settings)]  # Creates player instance
-
         self.enemy_count = 0
         self.active_enemies = []
         self.max_enemy = random_max_enemy()

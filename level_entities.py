@@ -5,8 +5,7 @@ entities_sprite_sheet = pygame.image.load("frames/100_tiles_16x16pi.png")
 ladder = entities_sprite_sheet.subsurface(pygame.Rect(9 * 16, 3 * 16, 16, 16))
 SIZE_MULTI = 3
 ladder = pygame.transform.smoothscale(ladder, (16 * SIZE_MULTI, 16 * SIZE_MULTI))
-#ladder.set_colorkey(pygame.Color('#25131a'))
-#ladder.set
+
 
 class Ladder:
     def __init__(self, x_position: float, y_position: float):

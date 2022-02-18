@@ -74,30 +74,21 @@ for i in temp:
 # Array will be [[right, left], [up, down]]
 flame_array = [[h_flame_array_r, h_flame_array_l], [v_flame_array_u, v_flame_array_d]]
 
+# Sword sprites
 swordMULTI = 2
 sword_slash_sheet = pygame.transform.smoothscale(sword_slash_sheet, (int(175 * swordMULTI), int(128 * swordMULTI)))
-
 # Directional sprite arrays for sword slash
 # temp will hold a single colour, single direction
-temp_array_u = []
-temp_array_r = []
-temp_array_d = []
-temp_array_l = []
+temp_array_u, temp_array_r, temp_array_d, temp_array_l = [], [], [], []
 
 #These hold single direction, all colours
-sword_array_right = []
-sword_array_left = []
-sword_array_up = []
-sword_array_down = []
+sword_array_right, sword_array_left, sword_array_up, sword_array_down = [], [], [], []
 
 # Sword slashes: Blue, Purple, White, Yellow
 for colourset in range(0, 4):
     initial_temp_array = []
     # Single direction, all colours
-    temp_array_u = []
-    temp_array_r = []
-    temp_array_d = []
-    temp_array_l = []
+    temp_array_u, temp_array_r, temp_array_d, temp_array_l = [], [], [], []
     for slashframe in range(0, 5):
         temp_frame = sword_slash_sheet.subsurface(35 * slashframe * swordMULTI, 32 * colourset * swordMULTI, 35 * swordMULTI, 32 * swordMULTI)
         initial_temp_array.append(temp_frame)

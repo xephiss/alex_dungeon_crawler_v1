@@ -3,7 +3,7 @@ import range_enemy
 import melee_enemy
 
 
-# Stores both types of enemies under one class.
+# Stores both types of enemies under one class. Acts as a linker file between different enemy types so that methods.
 class EnemyInstance:
     def __init__(self, position_x, position_y):
         random_enemy_type = random.randint(0, 4)        # Pick a random chance for melee or range

@@ -67,7 +67,7 @@ class MeleeEnemy(EnemyBlueprint):
                 pass
 
     def attack(self, screen, delta_time, collidablexy):
-        pass
+        pass        # No actual attack for melee yet. Only collision damage
 
     def move(self, player_pos, player_hitbox, other_hitbox, number_divide, collideablexy):
         if (not self.reloading and
